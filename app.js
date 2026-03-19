@@ -1459,29 +1459,28 @@ async function loadPage40() {
 // direktZumAngebot (Button)
 // -----------------------------
 
-// function direktZumAngebot() {
+ function direktZumAngebot() {
 
-//    const ids = [
-//        "pj-contact", "pj-email", "pj-phone", "pj-number", "shk-name", "shk-contact",
-//        "shk-email", "shk-phone", "site-address", "execution-date", "offer-date", "estrich", "bodenbelag",
-//         "systemmarke", "system", "rohrtyp1", "rohrtyp2", "dämmung", "wärmeleitgruppe1", "wärmeleitgruppe2","aufbauhöhe", "unbeheizt",
-//         "heizkreisverteiler", "besichtigung", "schnellauslegung", "berechnung", "heizlastberechnung"
-//    ];
+    const ids = [
+        "pj-contact", "pj-email", "pj-phone", "pj-number", "shk-name", "shk-contact",
+        "shk-email", "shk-phone", "site-address", "execution-date", "offer-date", "estrich", "bodenbelag",
+         "systemmarke", "system", "rohrtyp1", "rohrtyp2", "dämmung", "wärmeleitgruppe1", "wärmeleitgruppe2","aufbauhöhe", "unbeheizt",
+         "heizkreisverteiler", "besichtigung", "schnellauslegung", "berechnung", "heizlastberechnung"
+    ];
 
-//    const alleAusgefüllt = ids.every(id => {
-//        const val = document.getElementById(id)?.value?.trim();
-//        return val && val.length > 0;
-//    });
-
-//    if (alleAusgefüllt) {
-//        savePage5Data();
-//        localStorage.setItem("angebotTyp", "anfrage");
-//        showPage("page-40");
-//   } else {
-//        localStorage.setItem("angebotTyp", "kv");
-//        showPage("page-41");
-//    }
-// }
+    const alleAusgefüllt = ids.every(id => {
+        const val = document.getElementById(id)?.value?.trim();
+        return val && val.length > 0;
+    });
+    if (alleAusgefüllt) {
+        savePage5Data();
+        localStorage.setItem("angebotTyp", "anfrage");
+        showPage("page-40");
+   } else {
+        localStorage.setItem("angebotTyp", "kv");
+        showPage("page-41");
+    }
+ }
 
 // -----------------------------
 // SEITE 40 – printPage - (Button "Drucken / als PDF speichern")
