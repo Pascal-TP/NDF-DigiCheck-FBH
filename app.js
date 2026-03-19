@@ -91,8 +91,8 @@ function resetStoredInputsOnReload() {
 
     if (!isReload) return;
 
-    fraesenVerwendet = false;
-    fraesenHinweisGezeigt = false;
+    // fraesenVerwendet = false;
+    // fraesenHinweisGezeigt = false;
 
     // Nur deine Eingabe-/Angebotsdaten löschen (Auth bleibt erhalten!)
     const keysToRemove = [
@@ -2170,7 +2170,7 @@ window.goToChange = goToChange;
 window.logout = logout;
 window.submitPage5 = submitPage5;
 // window.direktZumAngebot = direktZumAngebot;
-window.calcRow8 = calcRow8;
+// window.calcRow8 = calcRow8;
 window.printPage40 = printPage40;
 window.sendMailPage40 = sendMailPage40;
 // window.calcRowPage14 = calcRowPage14;
