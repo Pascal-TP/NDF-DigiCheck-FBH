@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title>PJ KalkPro1.0</title>
+    <title>NDF-DigiCheck-FBH</title>
     <script>
         document.documentElement.classList.add("js");
     </script>
@@ -23,11 +23,11 @@
         <img src="logo.png" class="logo">
 
         <!-- Countdown -->
-        <div id="release-info">Release: V1.0.19</div>
+        <div id="release-info">Release: V1.0.1</div>
         <div id="timer">Logout in: 10:00</div>
 
         <!-- NEU: Angemeldet als -->
-        <div id="login-info"></div>
+        <div id="login-info" onclick="toggleUserMenu()"></div>
 
         <div id="user-actions" class="hidden">
             <select id="user-action-select" onchange="handleUserAction(this.value)">
@@ -39,31 +39,7 @@
                     <option value="logout">⏻ Abmelden</option>
                 </optgroup>
 
-                <option value="nav:page-3">➡️ Auswahl KV/Anfrage</option>
-
-                <optgroup label="Neubau">
-                    <option value="nav:page-7">➡️ Hauptmenü Neubau</option>
-                    <option value="nav:page-14-1">Tackersystem</option>
-                    <option value="nav:page-26">Klettsystem</option>
-                    <option value="nav:page-29">Noppensystem</option>
-                    <option value="nav:page-33">Industrieboden</option>
-                </optgroup>
-
-                <optgroup label="Sanierung">
-                    <option value="nav:page-6">➡️ Hauptmenü Sanierung</option>
-                    <option value="nav:page-8">Frässystem</option>
-                    <option value="nav:page-10">3mm Klett</option>
-                    <option value="nav:page-11">Trockenbausystem</option>
-                </optgroup>
-
-                <optgroup label="Estrich + Unterdämmung">
-                    <option value="nav:page-9">Estrich</option>
-                    <option value="nav:page-18">Unterdämmung</option>
-                </optgroup>
-
-                <option value="nav:page-20">➡️ Verteiler & Regeltechnik</option>
-                <option value="nav:page-21">➡️ Dienstleistung</option>
-                <option value="nav:page-22">➡️ Zuschläge</option>
+                <option value="nav:page-5">➡️ FBH-Checkliste</option>
                 <option value="nav:page-34">➡️ Downloadbereich</option>
 
             </select>
@@ -91,26 +67,81 @@
             <div class="ack-row">
                 <label class="ack-label">
                     <input type="checkbox" id="chkPrivacyAck">
-                    <span>Ich habe die allgemeinen Hinweise zur Kenntnis genommen.</span>
+                    <span>Ich habe die Datenschutzerklärung und allgemeinen Hinweise zur Kenntnis genommen.</span>
                 </label>
             </div>
 
             <button id="btnLogin" onclick="login()">Anmelden</button>
-
             <button onclick="forgotPassword()">Passwort vergessen</button><br><br>
+
             <p>(Auf dem Smartphone genießen Sie die optimale Ansicht im Querformat.)</p>
             <br><br>
-            <p><strong>Datenschutzhinweis:</strong><br>
-                Dieses Tool wird ausschließlich intern genutzt.<br>
-                Zur Anmeldung werden E-Mail-Adresse und Login-Zeitpunkte verarbeitet.<br>
-                Personenbezogene Daten, die für die Anfrage an NDF eingegeben werden, dienen ausschließlich<br>der
-                Erstellung von PDF-Dokumenten und werden nicht dauerhaft gespeichert.<br>
-                Eine Weiterverarbeitung oder Auswertung der Daten findet nicht statt.</p>
-
+            <p><strong>Noch keine Login-Daten?</strong><br>
+                <button onclick="showPage('page-register')">Hier registrieren</button>
+                <br>
+                <br>
+                <!-- Buttons/Links zu Datenschutz & Impressum -->
             <div class="legal-links">
+                <a href="#" class="legal-link"
+                    onclick="showPage('page-privacy'); return false;">Datenschutzerklärung</a>
+                <span class="legal-sep">|</span>
+                <a href="#" class="legal-link" onclick="showPage('page-imprint'); return false;">Impressum</a>
+                <span class="legal-sep">|</span>
                 <a href="#" class="legal-link" onclick="showPage('page-hinweis'); return false;">Allgemeine Hinweise</a>
             </div>
+        </div>
 
+        <!-- SEITE 1.1 Registrierung:  -->
+        <div id="page-register" class="page">
+            <h2>Registrierung</h2>
+
+            <input id="reg-firma" placeholder="Firmenname *">
+            <input id="reg-name" placeholder="Name Ansprechpartner *">
+            <input id="reg-strasse" placeholder="Straße *">
+            <input id="reg-hausnr" placeholder="Hausnummer *">
+            <input id="reg-plz" placeholder="PLZ *">
+            <input id="reg-ort" placeholder="Ort *">
+            <input id="reg-email" placeholder="E-Mail-Adresse *">
+            <input id="reg-tel" placeholder="Telefonnummer *">
+
+            <div id="reg-error" style="color:red; margin-top:8px;"></div>
+            <div id="reg-info" style="color:green; margin-top:8px;"></div><br>
+
+            <p>Wir prüfen Ihre Angaben und Sie erhalten innerhalb<br>von 24h eine System-E-Mail für Ihre
+                Passwortvergabe.<br>(Schauen Sie auch in Ihrem Spam-Ordner.)</p>
+            <br>
+
+            <div class="ack-row">
+                <label class="ack-label">
+                    <input type="checkbox" id="chkPrivacyAck2">
+                    <span>Ich habe die Datenschutzerklärung zur Kenntnis genommen.</span>
+                </label>
+            </div>
+
+            <button id="btnRegisterSend" onclick="registerRequest()">Registrierung absenden</button>
+            <button type="button" onclick="showPage('page-login')">Zurück zum Login</button>
+            <br>
+            <br>
+            <div class="legal-links">
+                <a href="#" class="legal-link"
+                    onclick="showPage('page-privacy'); return false;">Datenschutzerklärung</a>
+                <span class="legal-sep">|</span>
+                <a href="#" class="legal-link" onclick="showPage('page-imprint'); return false;">Impressum</a>
+            </div>
+        </div>
+
+        <!-- SEITE 1.1 Registrierung:  -->
+        <div id="page-admin" class="page">
+            <h2>Adminbereich</h2>
+
+            <div style="margin: 10px 0;">
+                <button onclick="showPage('page-3')">← Zurück</button>
+            </div>
+
+            <h3>Registrierungen (wartend)</h3>
+            <div id="admin-registrations" class="box">
+                <div>Lade Daten…</div>
+            </div>
         </div>
 
         <!-- SEITE: ALLGEMEINE HINWEISE -->
@@ -155,6 +186,158 @@
             </div>
         </div>
 
+        <!-- SEITE: DATENSCHUTZ -->
+        <div class="page" id="page-privacy">
+            <h2>Datenschutzerklärung – NDF KalkPro1.0
+            </h2>
+
+            <div class="box" style="text-align:left;">
+
+                <h3>1. Verantwortlicher</h3>
+                Verantwortlich für die Datenverarbeitung im Zusammenhang mit dem Tool „NDF KalkPro1.0“ ist:<br>
+                NDF Norddeutsche Flächenheizsysteme GmbH<br>
+                Raiffeisenstraße 13<br>
+                21641 Apensen<br>
+                Telefon: 04163 910 80 91<br>
+                E-Mail: info@ndf-gmbh.de
+
+                <h3>2. Zweck und Rechtsgrundlage der Verarbeitung</h3>
+                Wir verarbeiten personenbezogene Daten, um die Nutzung des Tools zu ermöglichen, insbesondere:<br>
+
+                - Registrierung und Anmeldung von Nutzern<br>
+
+                - Bereitstellung der Funktionen des Tools (Kalkulation, PDF-Erstellung)
+                Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Vertrag / vorvertragliche Maßnahmen) bzw. Art. 6 Abs. 1
+                lit.
+                f DSGVO (berechtigtes Interesse an der sicheren Bereitstellung des Tools), soweit anwendbar.
+
+                <h3>3. Welche Daten verarbeiten wir?</h3>
+                Je nach Nutzung des Tools können folgende Daten verarbeitet werden:<br>
+
+                a) Registrierung/Anmeldung (Pflichtangaben)<br>
+
+                - E-Mail-Adresse<br>
+
+                - Passwort (wird im Regelfall von Firebase als Hash/Authentifizierungsinformation verarbeitet, nicht im
+                Klartext von uns)<br>
+
+                - Technische Metadaten zur Anmeldung (z. B. Zeitpunkt der Anmeldung)<br>
+
+                b) Nutzungsdaten / technische Daten<br>
+                Bei der Nutzung können technisch erforderliche Daten anfallen (z. B. IP-Adresse,
+                Geräte-/Browser-Informationen, Zeitstempel), soweit dies zur Bereitstellung und Sicherheit des Dienstes
+                erforderlich ist.<br>
+
+                c) Eingaben im Tool / PDF-Erstellung<br>
+                Sofern das Tool Eingabefelder für personenbezogene Angaben enthält (z. B. Name/Adresse), werden diese
+                ausschließlich zur Darstellung/Verarbeitung im Tool und zur Erstellung von PDF-Dokumenten verwendet.
+                Eingaben werden nach Neuladen oder über ‚Eingaben löschen‘ entfernt und nicht dauerhaft gespeichert.
+
+                <h3>4. Empfänger / Dienstleister (Firebase/Google)</h3>
+                Zur Bereitstellung von Authentifizierung und ggf. Datenhaltung nutzen wir Google Firebase (Google
+                Ireland
+                Limited bzw. Google LLC als Konzernunternehmen). Firebase wird hierbei typischerweise als
+                Auftragsverarbeiter tätig.
+
+                <h3>5. Drittlandübermittlung</h3>
+                Im Rahmen der Nutzung von Firebase kann es zu Datenübermittlungen in Drittländer (z. B. USA) kommen. Wir
+                stützen solche Übermittlungen – soweit erforderlich – auf geeignete Garantien (z. B.
+                Standardvertragsklauseln / entsprechende Mechanismen von Google).
+
+                <h3>6. Speicherdauer / Löschung</h3>
+                Wir speichern personenbezogene Daten nur so lange, wie es für die oben genannten Zwecke erforderlich
+                ist:<br>
+
+                - Registrierungs-/Kontodaten: bis zur Löschung des Benutzerkontos bzw. solange ein aktiver Zugang
+                besteht<br>
+
+                - Protokoll-/Sicherheitsdaten: 90 Tage<br>
+
+                - Eingaben zur PDF-Erstellung: bis durch Nutzer gelöscht
+
+                <h3>7. Rechte der betroffenen Personen</h3>
+                Betroffene Personen haben – soweit die Voraussetzungen vorliegen – folgende Rechte:<br>
+
+                - Auskunft (Art. 15 DSGVO)<br>
+
+                - Berichtigung (Art. 16 DSGVO)<br>
+
+                - Löschung (Art. 17 DSGVO)<br>
+
+                - Einschränkung (Art. 18 DSGVO)<br>
+
+                - Datenübertragbarkeit (Art. 20 DSGVO)<br>
+
+                - Widerspruch (Art. 21 DSGVO)<br>
+
+                <h3>8. Beschwerderecht</h3>
+                Sie haben das Recht, sich bei einer Datenschutzaufsichtsbehörde zu beschweren.
+
+                <h3>9. Pflicht zur Bereitstellung von Daten</h3>
+                Ohne die für Registrierung/Anmeldung erforderlichen Daten ist eine Nutzung des Tools nicht möglich.
+
+                <h3>10. Automatisierte Entscheidungen / Profiling</h3>
+                Eine automatisierte Entscheidungsfindung einschließlich Profiling findet nicht statt.
+
+                Stand: 27.02.2026<br><br>
+            </div>
+
+
+            <div class="button-bar">
+                <button onclick="showPage('page-login')">Zurück zum Login</button>
+            </div>
+        </div>
+
+        <!-- SEITE: IMPRESSUM -->
+        <div class="page" id="page-imprint">
+            <h2>Impressum</h2>
+
+            <div class="box" style="text-align:left;">
+                <h3>NDF Norddeutsche Flächenheizsysteme GmbH</h3>
+                Raiffeisenstraße 13<br>
+                21641 Apensen<br>
+                <br>
+                Handelsregister: 203838<br>
+                Registergericht: Tostedt<br>
+                <br>
+                Vertreten durch:<br>
+                Tilman Thesenfitz-Patsalis, Marcel Zens<br>
+                <br>
+                Kontakt:<br>
+                Telefon: 04163 910 80 91<br>
+                E-Mail: info@ndf-gmbh.de<br>
+                <br>
+                Umsatzsteuer-ID:<br>
+                Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz:
+                DE288934923<br>
+                <br>
+                Angaben zur Berufs­haftpflicht­versicherung:<br>
+                Name und Sitz des Versicherers:<br>
+                R+V Allgemeine Versicherung AG<br>
+                Raiffeisenplatz 1<br>
+                65189 Wiesbaden<br>
+                <br>
+                Geltungsraum der Versicherung:<br>
+                Weltweit außer USA und Canada<br>
+                <br>
+                Redaktionell verantwortlich:<br>
+                Tilman Thesenfitz Patsalis, Marcel Zens<br>
+                <br>
+                EU-Streitschlichtung:<br>
+                Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:
+                https://ec.europa.eu/consumers/odr/.<br>
+                Unsere E-Mail-Adresse finden Sie oben im Impressum.<br>
+                <br>
+                Verbraucher­streit­beilegung/Universal­schlichtungs­stelle:<br>
+                Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer
+                Verbraucherschlichtungsstelle teilzunehmen.<br>
+            </div>
+
+
+            <div class="button-bar">
+                <button onclick="showPage('page-login')">Zurück zum Login</button>
+            </div>
+        </div>
 
         <!-- SEITE 2: PASSWORT ÄNDERN -->
         <div class="page" id="page-change">
@@ -177,19 +360,16 @@
         <div class="page" id="page-3">
             <h2>Bitte auswählen</h2>
 
-            <button onclick="showPage('page-4')">KV</button>
-            <button onclick="showPage('page-5')">Anfrage an NDF</button>
-
-            <p class="hint">
-                KV = Kostenvoranschlag – die schnelle und direkte Ermittlung eines Richtpreises für den Kunden<br><br>
-                Anfrage an NDF – Ermittlung eines Richtpreises für den Kunden, jedoch mit der Möglichkeit ein
-                qualifiziertes Angebot von NDF per Mail anzufragen.<br>
-            </p>
+            <button onclick="showPage('page-34')">Downloadbereich</button>
+            <button onclick="showPage('page-5')">FBH-Checkliste</button>
+            <br>
+            <br>
+            <br>
             <button id="btnExportLog" class="hidden" onclick="exportLoginLog()">Login-Log herunterladen</button>
 
         </div>
 
-        <!-- SEITE 4: HAUPTMENÜ -->
+        <!-- SEITE 4: HAUPTMENÜ 
         <div class="page" id="page-4">
             <h2>Hauptmenü</h2>
 
@@ -199,7 +379,7 @@
             <br>
             <br>
             <button onclick="showPage('page-3')">Zurück zur Auswahl "KV oder Anfrage"</button>
-        </div>
+        </div> -->
 
         <!-- SEITE 5: ANFRAGE AN NDF -->
         <div class="page" id="page-5">
@@ -513,30 +693,30 @@
             </div>
         </div>
 
-        <!-- SEITE 6: HAUPTMENÜ SANIERUNG -->
+        <!-- SEITE 6: HAUPTMENÜ SANIERUNG 
         <div class="page" id="page-6">
-            <h2>Hauptmenü Sanierung</h2>
+            <h2>Hauptmenü Sanierung</h2> -->
 
-            <!-- Auswahlbuttons untereinander -->
+        <!-- Auswahlbuttons untereinander
             <div>
                 <button onclick="showPage('page-8')">Fräsen</button><br>
                 <button onclick="showPage('page-9')">Estrich</button><br>
                 <button onclick="showPage('page-10')">Klett 3mm</button><br>
                 <button onclick="showPage('page-11')">Trockenbau</button>
-            </div>
+            </div> -->
 
-            <!-- Navigationsbuttons nebeneinander -->
+        <!-- Navigationsbuttons nebeneinander 
             <div style="margin-top:40px;">
                 <button onclick="showPage('page-4')">Zurück zum Hauptmenü</button>
                 <button onclick="showPage('page-18')">Weiter</button>
             </div>
-        </div>
+        </div>-->
 
-        <!-- SEITE 7: HAUPTMENÜ NEUBAU -->
+        <!-- SEITE 7: HAUPTMENÜ NEUBAU
         <div class="page" id="page-7">
-            <h2>Hauptmenü Neubau</h2>
+            <h2>Hauptmenü Neubau</h2>-->
 
-            <!-- Auswahlbuttons untereinander -->
+        <!-- Auswahlbuttons untereinander
             <div>
                 <button onclick="showPage('page-9')">Estrich</button><br>
                 <button onclick="showPage('page-13')">unbeheizte Fläche</button><br>
@@ -545,16 +725,16 @@
                 <button onclick="showPage('page-29')">Noppensystem</button><br>
                 <button onclick="showPage('page-33')">Industrieboden</button><br>
                 <button onclick="showPage('page-18')">Unterdämmung</button>
-            </div>
+            </div>-->
 
-            <!-- Navigationsbuttons nebeneinander -->
+        <!-- Navigationsbuttons nebeneinander
             <div style="margin-top:40px;">
                 <button onclick="showPage('page-4')">Zurück zum Hauptmenü</button>
 
             </div>
-        </div>
+        </div>-->
 
-        <!-- SEITE 14: TACKERSYSTEM -->
+        <!-- SEITE 14: TACKERSYSTEM 
         <div class="page" id="page-14">
             <h2>Tackersystem</h2>
 
@@ -565,9 +745,9 @@
                 <button onclick="showPage('page-18')">Weiter</button>
                 <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
             </div>
-        </div>
+        </div>-->
 
-        <!-- SEITE 14.1: AUSWAHL MARKE -->
+        <!-- SEITE 14.1: AUSWAHL MARKE
         <div class="page" id="page-14-1">
             <h2>Auswahl Marke</h2>
 
@@ -578,9 +758,9 @@
             <br><br>
 
             <button onclick="showPage('page-7')">Zurück zum Hauptmenü Neubau</button>
-        </div>
+        </div>-->
 
-        <!-- SEITE 14.3: ROTH -->
+        <!-- SEITE 14.3: ROTH 
         <div class="page" id="page-14-3">
 
             <div id="content-14-3" class="price-table"></div>
@@ -590,23 +770,23 @@
                 <button onclick="showPage('page-18')">Weiter</button>
                 <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
             </div>
-        </div>
+        </div>-->
 
-        <!-- SEITE 40: KOSTENVORANSCHLAG / ANFRAGE -->
+        <!-- SEITE 40: KOSTENVORANSCHLAG / ANFRAGE
         <div class="page" id="page-40">
-            <h2 id="page40-title">Kostenvoranschlag</h2>
+            <h2 id="page40-title">Kostenvoranschlag</h2>-->
 
-            <!-- Anfrage-Daten (nur bei Anfrage sichtbar) -->
+        <!-- Anfrage-Daten (nur bei Anfrage sichtbar) 
             <div id="anfrage-daten" style="display:none; margin:20px auto; max-width:1100px; text-align:left;">
                 <div class="subtitle">Anfrage-Daten</div>
                 <div id="anfrage-daten-content"></div>
                 <hr style="margin:20px 0;">
-            </div>
+            </div>-->
 
-            <!-- Zusammenfassung der Mengen -->
-            <div id="summary-content"></div>
+        <!-- Zusammenfassung der Mengen 
+            <div id="summary-content"></div> -->
 
-            <!-- Gesamtsumme / Angebotspreis -->
+        <!-- Gesamtsumme / Angebotspreis 
             <div id="angebotspreis" class="gesamt">Gesamtpreis: 0,00 €</div>
             <div id="angebotspreisRabatt" class="gesamt rabatt">
                 Gesamtpreis abzgl. SHK-Rabatt (15%): 0,00 €
@@ -618,25 +798,25 @@
                 Achtung!<br>
                 Bei Frässystemen können je nach Entfernung und Flächengröße zusätzliche Aufschläge anfallen.<br>
                 Bitte erfragen Sie hierzu ein individuelles Angebot.
-            </div>
+            </div>-->
 
-            <!-- NEU: Seitenbezogene Textblöcke aus ndfX.csv (nur wenn Mengen gesetzt) -->
-            <div id="seitenhinweise-content"></div>
+        <!-- NEU: Seitenbezogene Textblöcke aus ndfX.csv (nur wenn Mengen gesetzt)
+            <div id="seitenhinweise-content"></div>-->
 
-            <!-- Allgemeine Hinweise aus CSV -->
-            <div id="hinweise-content"></div>
+        <!-- Allgemeine Hinweise aus CSV
+            <div id="hinweise-content"></div>-->
 
-            <!-- Buttons -->
+        <!-- Buttons
             <div class="button-bar">
                 <button onclick="showPage('page-4')">Zurück zum Hauptmenü</button>
-                <button onclick="printPage40()">Drucken / speichern als PDF</button>
-                <!-- <button onclick="sendMailPage40()">Senden als Text-Mail</button><br>-->
+                <button onclick="printPage40()">Drucken / speichern als PDF</button>-->
+        <!-- <button onclick="sendMailPage40()">Senden als Text-Mail</button><br>
                 <button onclick="sharePdf()">PDF download</button>
                 <button type="button" class="btn" onclick="exportCsvPage40()">CSV-Export</button>
             </div>
-        </div>
+        </div>-->
 
-        <!-- SEITE 41: Hinweis fehlende Anfrage-Daten -->
+        <!-- SEITE 41: Hinweis fehlende Anfrage-Daten 
         <div class="page" id="page-41">
             <h2>Hinweis</h2>
 
@@ -648,9 +828,9 @@
                 <button onclick="showPage('page-5')">Zur Anfrage</button>
                 <button onclick="showPage('page-40')">KV anzeigen</button>
             </div>
-        </div>
+        </div>-->
 
-        <!-- SEITE 14.2: UPONOR -->
+        <!-- SEITE 14.2: UPONOR 
         <div class="page" id="page-14-2">
 
             <div id="content-14-2" class="price-table"></div>
@@ -661,9 +841,9 @@
                 <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
             </div>
 
-        </div>
+        </div>-->
 
-        <!-- SEITE 8: Frässystem -->
+        <!-- SEITE 8: Frässystem
         <div class="page" id="page-8">
             <h2>Fräsen</h2>
 
@@ -674,9 +854,9 @@
                 <button onclick="showPage('page-20')">Weiter</button>
                 <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
             </div>
-        </div>
+        </div>-->
 
-        <!-- SEITE 18: Unterdämmung -->
+        <!-- SEITE 18: Unterdämmung 
         <div class="page" id="page-18">
             <h2>Unterdämmung</h2>
 
@@ -687,9 +867,9 @@
                 <button onclick="showPage('page-20')">Weiter</button>
                 <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
             </div>
-        </div>
+        </div>-->
 
-        <!-- SEITE 20: Verteiler & Regeltechnik -->
+        <!-- SEITE 20: Verteiler & Regeltechnik
         <div class="page" id="page-20">
             <h2>Verteiler & Regeltechnik</h2>
 
@@ -700,9 +880,9 @@
                 <button onclick="showPage('page-21')">Weiter</button>
                 <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
             </div>
-        </div>
+        </div>-->
 
-        <!-- SEITE 21: Dienstleistungen -->
+        <!-- SEITE 21: Dienstleistungen
         <div class="page" id="page-21">
             <h2>Dienstleistungen</h2>
 
@@ -713,9 +893,9 @@
                 <button onclick="showPage('page-22')">Weiter</button>
                 <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
             </div>
-        </div>
+        </div>-->
 
-        <!-- SEITE 22: Zuschläge -->
+        <!-- SEITE 22: Zuschläge
         <div class="page" id="page-22">
             <h2>Zuschläge</h2>
 
@@ -725,9 +905,9 @@
                 <button onclick="showPage('page-4')">Zurück zum Hauptmenü</button>
                 <button onclick="direktZumAngebot()">Weiter</button>
             </div>
-        </div>
+        </div>-->
 
-        <!-- SEITE 9: Estrich -->
+        <!-- SEITE 9: Estrich
         <div class="page" id="page-9">
             <h2>Estrich</h2>
 
@@ -738,9 +918,9 @@
                 <button onclick="showPage('page-18')">Weiter</button>
                 <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
             </div>
-        </div>
+        </div>-->
 
-        <!-- SEITE 10: Klett3mm -->
+        <!-- SEITE 10: Klett3mm
         <div class="page" id="page-10">
             <h2>Klett 3mm</h2>
 
@@ -751,27 +931,27 @@
                 <button onclick="showPage('page-18')">Weiter</button>
                 <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
             </div>
-        </div>
+        </div>-->
 
-        <!-- SEITE 11: MENÜ TROCKENBAU -->
+        <!-- SEITE 11: MENÜ TROCKENBAU
         <div class="page" id="page-11">
-            <h2>Menü Trockenbau</h2>
+            <h2>Menü Trockenbau</h2>-->
 
-            <!-- Auswahlbuttons untereinander -->
+        <!-- Auswahlbuttons untereinander
             <div>
                 <button onclick="showPage('page-23')">Aufbau 50mm</button><br>
                 <button onclick="showPage('page-24')">Aufbau 20/30mm + 3mm Deckschicht</button><br>
                 <button onclick="showPage('page-25')">Aufbau 25mm (XPS)</button><br>
-            </div>
+            </div>-->
 
-            <!-- Navigationsbuttons nebeneinander -->
+        <!-- Navigationsbuttons nebeneinander
             <div style="margin-top:40px;">
                 <button onclick="showPage('page-6')">Zurück zum Hauptmenü Sanierung</button>
                 <button onclick="showPage('page-18')">Weiter</button>
             </div>
-        </div>
+        </div>-->
 
-        <!-- SEITE 23: Aufbau 50mm -->
+        <!-- SEITE 23: Aufbau 50mm
         <div class="page" id="page-23">
             <h2>Aufbau 50mm</h2>
 
@@ -782,9 +962,9 @@
                 <button onclick="showPage('page-18')">Weiter</button>
                 <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
             </div>
-        </div>
+        </div>-->
 
-        <!-- SEITE 24: Aufbau 20/30mm + 3mm Deckschicht -->
+        <!-- SEITE 24: Aufbau 20/30mm + 3mm Deckschicht
         <div class="page" id="page-24">
             <h2>Aufbau 20/30mm + 3mm Deckschicht</h2>
 
@@ -795,9 +975,9 @@
                 <button onclick="showPage('page-18')">Weiter</button>
                 <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
             </div>
-        </div>
+        </div>-->
 
-        <!-- SEITE 25: Aufbau 25mm (XPS) -->
+        <!-- SEITE 25: Aufbau 25mm (XPS)
         <div class="page" id="page-25">
             <h2>Aufbau 25mm (XPS)</h2>
 
@@ -808,9 +988,9 @@
                 <button onclick="showPage('page-20')">Weiter</button>
                 <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
             </div>
-        </div>
+        </div>-->
 
-        <!-- SEITE 26: AUSWAHL MARKE Klett -->
+        <!-- SEITE 26: AUSWAHL MARKE Klett
         <div class="page" id="page-26">
             <h2>Auswahl Marke Klettsystem</h2>
 
@@ -819,9 +999,9 @@
             <br><br>
 
             <button onclick="showPage('page-7')">Zurück zum Hauptmenü Neubau</button>
-        </div>
+        </div>-->
 
-        <!-- SEITE 29: AUSWAHL MARKE Noppensystem -->
+        <!-- SEITE 29: AUSWAHL MARKE Noppensystem
         <div class="page" id="page-29">
             <h2>Auswahl Marke Noppensystem</h2>
 
@@ -831,9 +1011,9 @@
             <br><br>
 
             <button onclick="showPage('page-7')">Zurück zum Hauptmenü Neubau</button>
-        </div>
+        </div>-->
 
-        <!-- SEITE 27: Klett Handelsmarke -->
+        <!-- SEITE 27: Klett Handelsmarke
         <div class="page" id="page-27">
             <h2>Klettsystem Handelsmarke</h2>
 
@@ -844,9 +1024,9 @@
                 <button onclick="showPage('page-18')">Weiter</button>
                 <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
             </div>
-        </div>
+        </div>-->
 
-        <!-- SEITE 28: Klett Uponor -->
+        <!-- SEITE 28: Klett Uponor
         <div class="page" id="page-28">
             <h2>Klettsystem Uponor</h2>
 
@@ -857,9 +1037,9 @@
                 <button onclick="showPage('page-18')">Weiter</button>
                 <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
             </div>
-        </div>
+        </div>-->
 
-        <!-- SEITE 30: Noppen Handelsmarke -->
+        <!-- SEITE 30: Noppen Handelsmarke
         <div class="page" id="page-30">
             <h2>Noppensystem Handelsmarke</h2>
 
@@ -870,9 +1050,9 @@
                 <button onclick="showPage('page-18')">Weiter</button>
                 <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
             </div>
-        </div>
+        </div>-->
 
-        <!-- SEITE 31: Noppen Uponor -->
+        <!-- SEITE 31: Noppen Uponor
         <div class="page" id="page-31">
             <h2>Noppensystem Uponor</h2>
 
@@ -883,9 +1063,9 @@
                 <button onclick="showPage('page-18')">Weiter</button>
                 <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
             </div>
-        </div>
+        </div>-->
 
-        <!-- SEITE 32: Noppen Roth -->
+        <!-- SEITE 32: Noppen Roth
         <div class="page" id="page-32">
             <h2>Noppensystem Roth</h2>
 
@@ -896,9 +1076,9 @@
                 <button onclick="showPage('page-18')">Weiter</button>
                 <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
             </div>
-        </div>
+        </div>-->
 
-        <!-- SEITE 33: Industrieboden -->
+        <!-- SEITE 33: Industrieboden
         <div class="page" id="page-33">
             <h2>Industrieboden</h2>
 
@@ -909,9 +1089,9 @@
                 <button onclick="showPage('page-20')">Weiter</button>
                 <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
             </div>
-        </div>
+        </div>-->
 
-        <!-- SEITE 13: unbeheizte Fläche -->
+        <!-- SEITE 13: unbeheizte Fläche
         <div class="page" id="page-13">
             <h2>unbeheizte Fläche</h2>
 
@@ -922,7 +1102,7 @@
                 <button onclick="showPage('page-18')">Weiter</button>
                 <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
             </div>
-        </div>
+        </div>-->
 
         <!-- Eieruhr auf Seite 40 -->
         <div id="loader40" class="loader hidden">
@@ -956,7 +1136,7 @@
             Info - Bauseitige Voraussetzungen Fräsen
         </a><br><br>
 
-	<a href="Allgemeine Hinweise.pdf" target="_blank">
+        <a href="Allgemeine Hinweise.pdf" target="_blank">
             Info - Allgemeine Hinweise
         </a><br><br>
 
@@ -967,6 +1147,18 @@
         <button onclick="showPage('page-4')">Zurück zum Hauptmenü</button>
     </div>
 
+    <!-- Hinweisfenster -->
+
+    <div id="hinweisModal" class="modal">
+        <div class="modal-content">
+            <p id="hinweisText"></p>
+
+            <div id="hinweisButtons">
+                <button type="button" id="hinweisOk">OK</button>
+                <button type="button" id="hinweisCancel">Abbrechen</button>
+            </div>
+        </div>
+    </div>
 
 </body>
 
