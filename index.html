@@ -388,29 +388,29 @@
             <p>(Rote Felder = Pflichteingaben)</p><br><br>
 
             <p class="hint">
-                <strong>Kontakt Peter Jensen:</strong><br>
+                <strong>Ansprechpartner:</strong><br>
             </p>
             <div class="input-field">
-                <input id="pj-contact" class="required" placeholder="Ansprechpartner bei PJ">
+                <input id="pj-contact" class="required" placeholder="Ansprechpartner">
             </div>
             <div class="input-field">
-                <input id="pj-email" class="required" placeholder="Ansprechpartner E-Mail bei PJ">
+                <input id="pj-email" class="required" placeholder="Ansprechpartner E-Mail">
             </div>
             <div class="input-field">
-                <input id="pj-phone" class="required" placeholder="Ansprechpartner Telefon-Nr. bei PJ">
+                <input id="pj-phone" class="required" placeholder="Ansprechpartner Telefon-Nr.">
             </div>
 
             <p class="hint">
                 <strong>Kontakt SHK:</strong><br>
             </p>
             <div class="input-field">
-                <input id="pj-number" class="required" placeholder="SHK - PJ-Kunden-Nr.">
+                <input id="pj-number" class="required" placeholder="SHK-Kunden-Nr.">
             </div>
             <div class="input-field">
                 <input id="shk-name" class="required" placeholder="SHK Name/Firma">
             </div>
             <div class="input-field">
-                <input id="shk-contact" class="required" placeholder="SHK Ansprechpartner">
+                <input id="shk-contact" class="required" placeholder="Ansprechpartner Baustelle">
             </div>
             <div class="input-field">
                 <input id="shk-email" class="required" type="email" placeholder="SHK E-Mail">
@@ -428,16 +428,7 @@
                 <input id="execution-date" class="required" type="date" placeholder="Gewünschter Ausführungstermin">
             </div><br><br>
 
-            <div class="ack-row">
-                <label class="ack-label">
-                    <input type="checkbox" id="chkDetail">
-                    <span><strong>Detailangaben zum Bauvorhaben:</strong></span>
-                </label>
-            </div>
-
-            <div id="page5-detail-fields" class="hidden">
-
-                <p class="hint">
+             <p class="hint">
                     <strong>Angebotsabgabe bis:</strong><br>
                 </p>
                 <div class="input-field">
@@ -652,9 +643,7 @@
                     <textarea id="relevante_Details" placeholder="Relevante Details" rows="6"></textarea>
                 </div>
 
-            </div>
-
-            <br><br>
+                 <br><br>
             <p class="hint"><u>Für eine optimale Angebotserstellung, fügen Sie bitte der E-Mail als Anhang
                     bei:</u><br><br>
                 <strong>• Bemaßter Grundriss</strong> (PDF oder DWG)<br>
@@ -667,7 +656,7 @@
             <div class="error" id="page5-error" style="color:darkred; margin:10px;"></div>
 
             <div class="button-bar">
-                <button id="submitPage5Btn" onclick="submitPage5()">Eingabe und weiter zum Hauptmenü</button>
+                <button id="submitPage5Btn" onclick="direktZumAngebot()">Eingabe und weiter zur Ausgabeseite</button>
             </div>
         </div>
 
