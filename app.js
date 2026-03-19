@@ -2166,4 +2166,4 @@ window.clearInputs = clearInputs;
 // window.loadPage13 = loadPage13;
 // window.calcRow13 = calcRow13;
 // window.berechneGesamt13 = berechneGesamt13;
-window.toggleKomplettFlow = toggleKomplettFlow;
+// window.toggleKomplettFlow = toggleKomplettFlow;
