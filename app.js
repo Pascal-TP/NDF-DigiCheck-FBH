@@ -570,31 +570,6 @@ function goToChange() {
     showPage("page-change");
 }
 
-function handleUserAction(val) {
-    if (!val) return;
-
-    // ✅ Navigationseinträge
-    if (val.startsWith("nav:")) {
-        const pageId = val.replace("nav:", "");
-        showPage(pageId);
-        const sel = document.getElementById("user-action-select");
-        if (sel) sel.value = "";
-        return;
-    }
-
-    if (val === "clear") {
-        showConfirm("Alle Eingaben wirklich löschen?", () => {
-            clearInputs();
-        });
-    }
-    if (val === "changePw") goToChange();
-    if (val === "logout") logout();
-
-    const sel = document.getElementById("user-action-select");
-    if (sel) sel.value = "";
-}
-window.handleUserAction = handleUserAction;
-
 async function savePassword() {
     const n1 = newPass1.value;
     const n2 = newPass2.value;
