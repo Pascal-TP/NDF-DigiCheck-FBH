@@ -436,15 +436,16 @@ async function showPage(id, fromHistory = false) {
     //  if (id === "page-33") loadPage33();
     //  if (id === "page-13") loadPage13();
 
-    // if (id === "page-40") {
-    //   showLoader40(true);
-    //   try {
-    //     page40Promise = loadPage40();
-    //     await page40Promise;
-    //   } finally {
-    //    showLoader40(false);
-    //   }
-    // }
+     if (id === "page-40") {
+       showLoader40(true);
+       try {
+         page40Promise = loadPage40();
+         await page40Promise;
+       } finally {
+        showLoader40(false);
+       }
+     }
+     
     // Checkboxen beim Seitenwechsel zurücksetzen
     const cb1 = document.getElementById("chkPrivacyAck");
     const cb2 = document.getElementById("chkPrivacyAck2");
