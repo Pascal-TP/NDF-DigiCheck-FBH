@@ -914,52 +914,6 @@ function updatePage5DetailUI() {
     syncBesichtigungToPage21();
 }
 
-function showHinweis(text) {
-
-    const modal = document.getElementById("hinweisModal");
-    const textBox = document.getElementById("hinweisText");
-    const okBtn = document.getElementById("hinweisOk");
-    const cancelBtn = document.getElementById("hinweisCancel");
-
-    textBox.innerText = text;
-
-    cancelBtn.style.display = "none";   // Abbrechen ausblenden
-    okBtn.onclick = closeHinweis;
-
-    modal.style.display = "block";
-}
-
-function closeHinweis() {
-    document.getElementById("hinweisModal").style.display = "none";
-}
-
-function showConfirm(text, onOk) {
-
-    const modal = document.getElementById("hinweisModal");
-    const textBox = document.getElementById("hinweisText");
-    const okBtn = document.getElementById("hinweisOk");
-    const cancelBtn = document.getElementById("hinweisCancel");
-
-    textBox.innerText = text;
-
-    cancelBtn.style.display = "inline-block"; // Abbrechen anzeigen
-
-    okBtn.onclick = () => {
-        modal.style.display = "none";
-        if (typeof onOk === "function") onOk();
-    };
-
-    cancelBtn.onclick = () => {
-        modal.style.display = "none";
-    };
-
-    modal.style.display = "block";
-}
-
-window.showHinweis = showHinweis;
-window.closeHinweis = closeHinweis;
-window.showConfirm = showConfirm;
-
 function handlePage5Hinweis(selectId, hinweisText) {
     const el = document.getElementById(selectId);
     if (!el) return;
