@@ -1908,7 +1908,7 @@ function clearInputs() {
 //    });
 //  }
 
-setupAutoClearZeroInputs();
+// setupAutoClearZeroInputs();
 
 // -----------------------------
 // Spaltenüberschriften
