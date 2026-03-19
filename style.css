@@ -1,0 +1,579 @@
+body {
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    background: #efefef;
+    text-align: center;
+}
+
+.logo {
+    margin: 150px auto 30px;
+    display: block;
+    width: 50%;
+    max-width: 400px;
+}
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+input,
+select,
+textarea {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    width: 250px;
+    background: #fff6d5;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    box-sizing: border-box;
+    font: inherit;
+}
+
+button {
+    background: #0b2a4a;
+    color: white;
+    border: none;
+    padding: 12px 22px;
+    margin: 6px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+button:hover {
+    background: #163f6f;
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(0px);
+}
+
+.error {
+    color: darkred;
+    margin: 10px;
+}
+
+.hint {
+    max-width: 600px;
+    margin: 20px auto;
+    font-size: 14px;
+}
+
+#release-info {
+    position: fixed;
+    top: 10px;
+    right: 15px;
+    font-size: 14px;
+    text-align: right;
+}
+
+#timer {
+    position: fixed;
+    top: 30px;
+    right: 15px;
+    font-size: 14px;
+    text-align: right;
+}
+
+#login-info {
+  position: fixed;
+  top: 50px;
+  right: 15px;
+  font-size: 14px;
+  text-align: right;
+
+  /* NEU: kein Link-Verhalten */
+  cursor: default;
+  font-weight: 400;
+  user-select: text;
+}
+
+/* ================================
+   TITEL / UNTERTITEL / ZWISCHENTITEL – global
+================================ */
+.title { text-align: center;font-weight: bold; font-size: 24px; margin-top: 25px; }
+.subtitle { text-align: center;font-weight: bold; font-size: 18px; margin-top: 20px; }
+.midtitle { text-align: center;font-weight: bold; font-size: 16px; margin-top: 15px; }
+
+.price-table {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+.price-table .row {
+    display: grid;
+    grid-template-columns: 160px 4fr 100px 100px 120px 120px;
+    gap: 15px;
+    margin-bottom: 12px;
+    align-items: center;
+}
+
+.price-table .col-a { text-align: left; font-weight: bold; }
+.price-table .col-b { text-align: left; padding-left: 5px; }
+.price-table .col-c,
+.price-table .col-d,
+.price-table .col-e { text-align: right; }
+.price-table .col-f { text-align: right; }
+
+
+.price-table input.menge-input {
+    background-color: #fff8dc;
+    padding: 5px;
+    width: 80px;
+    text-align: center;
+}
+/* ================================
+   Smartphone – global für alle Seiten
+================================ */
+@media (max-width: 600px) {
+    .row { display: block; }
+
+    .row > div,
+    .row > input {
+        display: block;
+        width: 100%;
+        text-align: left;
+        margin-bottom: 5px;
+    }
+
+    input.menge-input { width: 100%; }
+}
+
+#page-40 {
+    max-width: 1100px;
+    margin: auto;
+    padding: 30px;
+    background: white;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+.row {
+    display: grid;
+    grid-template-columns: 
+        80px       /* Pos */
+        1.5fr      /* Beschreibung */
+        1fr        /* Zusatz */
+        100px      /* Menge */
+        120px      /* EP */
+        120px;     /* Gesamt */
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 6px;
+}
+.menge-input {
+    width: 80px;
+    text-align: right;
+}
+
+/* ================================
+   Allgemeine Hinweise (ndf4.csv)
+================================ */
+#hinweise-content {
+    text-align: left;
+}
+
+#hinweise-content .title,
+#hinweise-content .subtitle,
+#hinweise-content .midtitle {
+    text-align: left;
+}
+
+#hinweise-content .hinweis-row {
+    text-align: left;
+    margin: 6px 0;
+    line-height: 1.5;
+}
+#hinweise-content {
+    max-width: 1000px;
+    margin: 30px auto;
+}
+.hidden { display: none; }
+
+/* ================================
+   Seitenbezogene Hinweise (aus ndfX.csv, abhängig von Mengen)
+================================ */
+#seitenhinweise-content {
+  text-align: left;
+  max-width: 1000px;
+  margin: 20px auto 10px auto;
+}
+
+#seitenhinweise-content .title,
+#seitenhinweise-content .subtitle,
+#seitenhinweise-content .midtitle {
+  text-align: left;
+}
+
+#seitenhinweise-content .hinweis-row {
+  text-align: left;
+  margin: 6px 0;
+  line-height: 1.5;
+}
+
+.seitenhinweis-sep {
+  border: 0;
+  border-top: 1px solid #ddd;
+  margin: 16px 0;
+}
+
+
+.gesamt.rabatt {
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 6px;
+  opacity: 0.9;
+}
+
+@media print {
+
+  /* alles ausblenden */
+  .page { display: none !important; }
+
+  /* nur Seite 40 drucken */
+  #page-40 { display: block !important; }
+
+  /* Buttons/Nav etc. ausblenden */
+  button, .nav, #timer, #login-info, #release-info, #user-actions {
+    display: none !important;
+  }
+}
+
+.table-header {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 6px;
+}
+
+.table-header > div {
+  opacity: 0.9;
+}
+
+/* ===== PDF-Modus (für html2pdf/html2canvas) ===== */
+body.pdf-mode .button-bar,
+body.pdf-mode button,
+body.pdf-mode #timer,
+body.pdf-mode #login-info,
+body.pdf-mode #release-info {
+  display: none !important;
+}
+
+/* Das „normale“ Logo oben außerhalb von Seite 40 im PDF ausblenden */
+body.pdf-mode > img.logo {
+  display: none !important;
+}
+
+/* Temporäres PDF-Logo in Seite 40 */
+#page-40 .temp-pdf-logo {
+  display: block;
+  width: 260px;
+  max-width: 70%;
+  margin: 10px auto 20px auto;
+}
+
+/* verhindert, dass einzelne Zeilen im PDF “abgeschnitten” werden */
+#page-40 .row {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.loader {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.85);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+.loader.hidden {
+  display: none !important;
+}
+
+
+.spinner {
+  width: 56px;
+  height: 56px;
+  border: 6px solid #ccc;
+  border-top-color: #0b2a4a;
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+.loader-text {
+  margin-top: 12px;
+  font-weight: 600;
+  color: #0b2a4a;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+body.pdf-mode #loader40 { display: none !important; }
+
+.hidden {
+  display: none !important;
+}
+
+/* No-JS Hinweis: standardmäßig sichtbar */
+.no-js-message {
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 14px 16px;
+  background: #fff6d5;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Wenn JS aktiv ist, No-JS Meldung ausblenden */
+html.js .no-js-message {
+  display: none;
+}
+/* Wenn App gelockt ist: alles verstecken */
+/* … außer öffentliche Seiten */
+body.app-locked .page {
+  display: none !important;
+}
+
+body.app-locked #page-login.active,
+body.app-locked #page-start.active,
+body.app-locked #page-hinweis.active {
+  display: block !important;
+}
+
+#user-actions {
+  position: fixed;
+  top: 70px;        /* unterhalb von login-info */
+  right: 15px;
+  text-align: right;
+  z-index: 1000;
+}
+
+#user-actions select {
+  width: 210px;
+  padding: 8px;
+  background: #fff6d5;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+#user-action-select option[value="logout"] {
+  font-weight: 700;
+  color: #b00020; /* dezentes Rot */
+}
+
+.start-slogan {
+  margin-top: 20px;
+  font-size: 20px;
+  font-weight: 500;
+  color: #333;
+}
+/* Seite 40: falls Inhalt breiter wird, sauber horizontal scrollen statt „verschoben wirken“ */
+#page-40 {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Buttons immer zentrieren */
+#page-40 .button-bar {
+  text-align: center;
+}
+
+/* ===== PDF-Modus: Typografie auf Seite 40 kleiner (Blob-PDF) ===== */
+body.pdf-mode #page-40 .title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 8px 0 4px;
+}
+
+body.pdf-mode #page-40 .subtitle {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 6px 0 3px;
+}
+
+body.pdf-mode #page-40 .midtitle {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 6px 0 2px;
+}
+
+body.pdf-mode #page-40 .hinweis-row {
+  font-size: 11.5px;
+  color: #333;
+}
+
+
+/* =========================================
+   Seite 40 – reduzierte Textgrößen
+========================================= */
+#page-40 .title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 8px 0 4px;
+}
+
+#page-40 .subtitle {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 6px 0 3px;
+}
+
+#page-40 .midtitle {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 6px 0 2px;
+}
+
+#page-40 .hinweis-row {
+  font-size: 11.5px;
+  color: #333;
+}
+
+/* Seite 40 – Positions-Typografie */
+#page-40 table,
+#page-40 th,
+#page-40 td,
+#page-40 .summary-row,
+#page-40 .summary-cell {
+  font-size: 11.5px;
+}
+
+/* === Legal Links (allgemeine Hinweise) === */
+.legal-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 12px 0;
+  flex-wrap: wrap;
+}
+
+.legal-link {
+  color: #0b2a4a;
+  text-decoration: underline;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.legal-link:hover {
+  opacity: 0.85;
+}
+
+.legal-sep {
+  opacity: 0.6;
+}
+
+/* === Checkbox-Block zentriert, Text darin links === */
+.ack-row {
+  display: flex;
+  justify-content: center;
+  margin: 12px 0;
+}
+
+/* Checkbox + Text kompakt */
+.ack-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  /* kleiner */
+  max-width: 900px;
+  line-height: 1.2;
+}
+
+/* Text einzeilig */
+.ack-label span {
+  white-space: nowrap;
+}
+
+/* Checkbox-Abstand kontrollieren */
+.ack-label input[type="checkbox"] {
+  margin: 0;
+  /* Standard-Margins entfernen */
+  margin-right: 4px;
+  /* definierter Abstand */
+  transform: translateY(1px);
+  /* optische Feinjustierung */
+}
+
+/* Optional: minimal kleiner machen (wirkt kompakter) */
+.ack-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+}
+
+/* auf sehr kleinen Displays darf es umbrechen, sonst wird es zu breit */
+@media (max-width: 420px) {
+  .ack-label span {
+    white-space: normal;
+  }
+}
+
+/* === Box-Layout für allg.Hinweise === */
+.box {
+  max-width: 1000px;
+  margin: 18px auto;
+  background: #ffffff;
+  padding: 18px 22px;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+  line-height: 1.35;
+}
+
+/* === Pseudo-disabled Button (klickbar, zeigt aber "gesperrt") === */
+button.btn-disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+button.btn-disabled:hover {
+  background: #4dad32;
+  /* hover-effekt aus */
+  transform: none !important;
+}
+
+/* Allg.Hinweise-Überschriften wirklich fett */
+#page-hinweis h3 {
+  font-weight: 800 !important;
+  margin: 16px 0 8px;
+}
+
+/* Pflichtfelder */
+.required {
+    border: 2px solid #e74c3c;
+    background-color: #fff6f6;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  margin: 15% auto;
+  width: 400px;
+  text-align: center;
+  border-radius: 6px;
+}
+.modal-content button {
+  cursor: pointer;
+}

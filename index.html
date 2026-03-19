@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>PJ KalkPro1.0</title>
+    <script>
+        document.documentElement.classList.add("js");
+    </script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon.ico">
+</head>
+
+<body>
+    <noscript>
+        <div class="no-js-message">
+            Diese Anwendung benötigt JavaScript. Bitte aktivieren Sie JavaScript.
+        </div>
+    </noscript>
+
+    <div id="app" class="hidden">
+        <img src="logo.png" class="logo">
+
+        <!-- Countdown -->
+        <div id="release-info">Release: V1.0.19</div>
+        <div id="timer">Logout in: 10:00</div>
+
+        <!-- NEU: Angemeldet als -->
+        <div id="login-info"></div>
+
+        <div id="user-actions" class="hidden">
+            <select id="user-action-select" onchange="handleUserAction(this.value)">
+                <option value="">Aktion auswählen…</option>
+
+                <optgroup label="Aktionen">
+                    <option value="clear">Eingaben löschen</option>
+                    <option value="changePw">Passwort ändern</option>
+                    <option value="logout">⏻ Abmelden</option>
+                </optgroup>
+
+                <option value="nav:page-3">➡️ Auswahl KV/Anfrage</option>
+
+                <optgroup label="Neubau">
+                    <option value="nav:page-7">➡️ Hauptmenü Neubau</option>
+                    <option value="nav:page-14-1">Tackersystem</option>
+                    <option value="nav:page-26">Klettsystem</option>
+                    <option value="nav:page-29">Noppensystem</option>
+                    <option value="nav:page-33">Industrieboden</option>
+                </optgroup>
+
+                <optgroup label="Sanierung">
+                    <option value="nav:page-6">➡️ Hauptmenü Sanierung</option>
+                    <option value="nav:page-8">Frässystem</option>
+                    <option value="nav:page-10">3mm Klett</option>
+                    <option value="nav:page-11">Trockenbausystem</option>
+                </optgroup>
+
+                <optgroup label="Estrich + Unterdämmung">
+                    <option value="nav:page-9">Estrich</option>
+                    <option value="nav:page-18">Unterdämmung</option>
+                </optgroup>
+
+                <option value="nav:page-20">➡️ Verteiler & Regeltechnik</option>
+                <option value="nav:page-21">➡️ Dienstleistung</option>
+                <option value="nav:page-22">➡️ Zuschläge</option>
+                <option value="nav:page-34">➡️ Downloadbereich</option>
+
+            </select>
+        </div>
+
+
+        <!-- SEITE 0: STARTSEITE -->
+        <div class="page active" id="page-start">
+
+            <div class="start-slogan">
+                Fußbodenheizung-Montage<br><br>
+                ...von Aufmaß bis Zeitmanagement...
+            </div>
+        </div>
+
+        <!-- SEITE 1: LOGIN -->
+        <div class="page" id="page-login">
+            <h2>Login</h2>
+
+            <input id="loginUser" type="email" placeholder="E-Mail">
+            <input id="loginPass" type="password" placeholder="Passwort">
+
+            <div class="error" id="loginError"></div>
+
+            <div class="ack-row">
+                <label class="ack-label">
+                    <input type="checkbox" id="chkPrivacyAck">
+                    <span>Ich habe die allgemeinen Hinweise zur Kenntnis genommen.</span>
+                </label>
+            </div>
+
+            <button id="btnLogin" onclick="login()">Anmelden</button>
+
+            <button onclick="forgotPassword()">Passwort vergessen</button><br><br>
+            <p>(Auf dem Smartphone genießen Sie die optimale Ansicht im Querformat.)</p>
+            <br><br>
+            <p><strong>Datenschutzhinweis:</strong><br>
+                Dieses Tool wird ausschließlich intern genutzt.<br>
+                Zur Anmeldung werden E-Mail-Adresse und Login-Zeitpunkte verarbeitet.<br>
+                Personenbezogene Daten, die für die Anfrage an NDF eingegeben werden, dienen ausschließlich<br>der
+                Erstellung von PDF-Dokumenten und werden nicht dauerhaft gespeichert.<br>
+                Eine Weiterverarbeitung oder Auswertung der Daten findet nicht statt.</p>
+
+            <div class="legal-links">
+                <a href="#" class="legal-link" onclick="showPage('page-hinweis'); return false;">Allgemeine Hinweise</a>
+            </div>
+
+        </div>
+
+        <!-- SEITE: ALLGEMEINE HINWEISE -->
+        <div class="page" id="page-hinweis">
+            <h2>Allgemeine Hinweise</h2>
+
+            <div class="box" style="text-align:left;">
+
+                <h3>Preisbasis</h3>
+                Bei den Flächen-Warmmwasser-Fußbodenheizunsgsystemen fällt unter 80 m² Fläche zusätzlich eine
+                Mindermengenpauschale an.<br>
+
+                <h3>Nicht enthaltene Leistungen</h3>
+                Wir weisen darauf hin, dass folgende Leistungen nicht im Leistungspaket enthalten sind:<br>
+
+                - Verdrahtung Klemmleiste, Stellantriebe und Raumthermostat<br>
+                - Spülen, Befüllen, Entlüften und Einstellen der Fußbodenheizung<br>
+                - Funktionsheizen, Hydraulischer Abgleich
+
+                <h3>Untergrund</h3>
+                Die angebotenen Montageleistungen gehen von einer den Toleranzen entsprechenden Untergrund aus.<br>
+                Dämmung und Systembahnen werden in einer Stärke montiert, Höhendifferenzen sind über den Estrich
+                auszugleichen.<br>
+                Die Montage von unterschiedlichen Dämmungen und/oder Systembahnen oder sogar in einzelnen Räumen um
+                unsachgemäßen Rohbau kostengünstig auszugleichen, schließen wir hiermit aus.
+
+                <h3>Bauseitige Maßnahme</h3>
+                Die Klemmverschraubungen am Heizkreisverteiler sind nach ca. 4 Wochen nachzuziehen, um weiterhin die
+                Dichtheit des Systems zu gewährleisten.<br>
+                Diese Maßnahme ist bauseits bzw. vom Gewerk Heizung durchzuführen.<br>
+                <br>
+
+                <h3>Fräsen</h3>
+                Das Merkblatt "Bauseitige Voraussetzungen für das Frässystem" ist zu beachten!<br>
+                <br>
+
+                Stand: April 2025<br><br>
+            </div>
+
+            <div class="button-bar">
+                <button onclick="showPage('page-login')">Zurück zum Login</button>
+            </div>
+        </div>
+
+
+        <!-- SEITE 2: PASSWORT ÄNDERN -->
+        <div class="page" id="page-change">
+            <h2>Passwort ändern</h2>
+
+            <input id="oldPass" type="password" placeholder="Altes Passwort">
+            <input id="newPass1" type="password" placeholder="Neues Passwort">
+            <input id="newPass2" type="password" placeholder="Neues Passwort wiederholen"><br><br>
+
+            <p><strong>Passwortrichtlinie:</strong> mind. 8 Zeichen, Großbuchstaben, Kleinbuchstaben, Sonderzeichen,
+                numerische Zeichen</p><br><br>
+
+            <div class="error" id="changeError"></div>
+
+            <button onclick="savePassword()">Speichern</button>
+            <button onclick="showPage('page-3')">Abbrechen</button>
+        </div>
+
+        <!-- SEITE 3: AUSWAHL -->
+        <div class="page" id="page-3">
+            <h2>Bitte auswählen</h2>
+
+            <button onclick="showPage('page-4')">KV</button>
+            <button onclick="showPage('page-5')">Anfrage an NDF</button>
+
+            <p class="hint">
+                KV = Kostenvoranschlag – die schnelle und direkte Ermittlung eines Richtpreises für den Kunden<br><br>
+                Anfrage an NDF – Ermittlung eines Richtpreises für den Kunden, jedoch mit der Möglichkeit ein
+                qualifiziertes Angebot von NDF per Mail anzufragen.<br>
+            </p>
+            <button id="btnExportLog" class="hidden" onclick="exportLoginLog()">Login-Log herunterladen</button>
+
+        </div>
+
+        <!-- SEITE 4: HAUPTMENÜ -->
+        <div class="page" id="page-4">
+            <h2>Hauptmenü</h2>
+
+            <button onclick="showPage('page-6')">Sanierung</button>
+            <button onclick="showPage('page-7')">Neubau</button>
+            <br>
+            <br>
+            <br>
+            <button onclick="showPage('page-3')">Zurück zur Auswahl "KV oder Anfrage"</button>
+        </div>
+
+        <!-- SEITE 5: ANFRAGE AN NDF -->
+        <div class="page" id="page-5">
+            <h2>Anfrage an NDF</h2>
+
+            <p>(Rote Felder = Pflichteingaben)</p><br><br>
+
+            <p class="hint">
+                <strong>Kontakt Peter Jensen:</strong><br>
+            </p>
+            <div class="input-field">
+                <input id="pj-contact" class="required" placeholder="Ansprechpartner bei PJ">
+            </div>
+            <div class="input-field">
+                <input id="pj-email" class="required" placeholder="Ansprechpartner E-Mail bei PJ">
+            </div>
+            <div class="input-field">
+                <input id="pj-phone" class="required" placeholder="Ansprechpartner Telefon-Nr. bei PJ">
+            </div>
+
+            <p class="hint">
+                <strong>Kontakt SHK:</strong><br>
+            </p>
+            <div class="input-field">
+                <input id="pj-number" class="required" placeholder="SHK - PJ-Kunden-Nr.">
+            </div>
+            <div class="input-field">
+                <input id="shk-name" class="required" placeholder="SHK Name/Firma">
+            </div>
+            <div class="input-field">
+                <input id="shk-contact" class="required" placeholder="SHK Ansprechpartner">
+            </div>
+            <div class="input-field">
+                <input id="shk-email" class="required" type="email" placeholder="SHK E-Mail">
+            </div>
+            <div class="input-field">
+                <input id="shk-phone" class="required" placeholder="SHK Telefon-Nr.">
+            </div>
+            <div class="input-field">
+                <input id="site-address" class="required" placeholder="Adresse Baustelle">
+            </div>
+            <p class="hint">
+                <strong>Gewünschter Ausführungstermin:</strong><br>
+            </p>
+            <div class="input-field">
+                <input id="execution-date" class="required" type="date" placeholder="Gewünschter Ausführungstermin">
+            </div><br><br>
+
+            <div class="ack-row">
+                <label class="ack-label">
+                    <input type="checkbox" id="chkDetail">
+                    <span><strong>Detailangaben zum Bauvorhaben:</strong></span>
+                </label>
+            </div>
+
+            <div id="page5-detail-fields" class="hidden">
+
+                <p class="hint">
+                    <strong>Angebotsabgabe bis:</strong><br>
+                </p>
+                <div class="input-field">
+                    <input id="offer-date" class="required" type="date" placeholder="Angebotsabgabe bis">
+                </div><br>
+                <p class="hint">
+                    <strong>_________________________________</strong><br>
+                </p><br>
+                <p class="hint">
+                    <strong>Estrich anbieten?</strong><br>
+                </p>
+                <div class="input-field">
+                    <select id="estrich" class="required">
+                        <option value="" selected disabled>Auswahl</option>
+                        <option value="ja">ja</option>
+                        <option value="nein">nein</option>
+                    </select>
+                </div>
+                <p class="hint">
+                    <strong>Bodenbelag anbieten?</strong><br>
+                </p>
+                <div class="input-field">
+                    <select id="bodenbelag" class="required">
+                        <option value="" selected disabled>Auswahl</option>
+                        <option value="ja">ja</option>
+                        <option value="nein">nein</option>
+                    </select>
+                </div><br>
+                <p class="hint">
+                    <strong>_________________________________</strong><br>
+                </p><br>
+                <p class="hint">
+                    <strong>Systemmarke:</strong><br>
+                </p>
+                <div class="input-field">
+                    <select id="systemmarke" class="required">
+                        <option value="" selected disabled>Auswahl</option>
+                        <option value="Handelsmarke">Handelsmarke</option>
+                        <option value="Uponor">Uponor</option>
+                        <option value="Uponor">Roth</option>
+                    </select>
+                </div>
+                <p class="hint">
+                    <strong>System:</strong><br>
+                </p>
+                <div class="input-field">
+                    <select id="system" class="required">
+                        <option value="" selected disabled>Auswahl</option>
+                        <option value="Tacker">Tacker</option>
+                        <option value="Noppe">Noppe</option>
+                        <option value="Klett">Klett</option>
+                        <option value="Industriebodenheizung">Industriebodenheizung</option>
+                        <option value="Trockenbau">Trockenbau</option>
+                        <option value="Fräsen">Fräsen</option>
+                        <option value="Anderes">Anderes (siehe Freihtext)</option>
+                    </select>
+                </div><br>
+                <p class="hint">
+                    <strong>_________________________________</strong><br>
+                </p><br>
+                <p class="hint">
+                    <strong>Rohrtyp - Kunststoffrohr:</strong><br>
+                </p>
+                <div class="input-field">
+                    <select id="rohrtyp1" class="required">
+                        <option value="" selected disabled>Auswahl</option>
+                        <option value="RT_12er">RT 12er</option>
+                        <option value="RT_17er">RT 17er</option>
+                        <option value="RT_20er">RT 20er</option>
+                        <option value="Xa_17er">Xa 17er</option>
+                        <option value="Xa_20er">Xa 20er</option>
+                        <option value="keine_Auswahl">keine Auswahl</option>
+                    </select>
+                </div>
+                <p class="hint">
+                    <strong>Rohrtyp - Metallrohr:</strong><br>
+                </p>
+                <div class="input-field">
+                    <select id="rohrtyp2" class="required">
+                        <option value="" selected disabled>Auswahl</option>
+                        <option value="Metallverbund_14er">Metallverbund 14er</option>
+                        <option value="Metallverbund_16er">Metallverbund 16er</option>
+                        <option value="keine_Auswahl">keine Auswahl</option>
+                    </select>
+                </div><br>
+                <p class="hint">
+                    <strong>_________________________________</strong><br>
+                </p><br>
+                <p class="hint">
+                    <strong>Dämmung:</strong><br>
+                </p>
+                <div class="input-field">
+                    <select id="dämmung" class="required">
+                        <option value="" selected disabled>Auswahl</option>
+                        <option value="nur_oberlage">Nur Oberlage</option>
+                        <option value="mit_dämmung">Komplett mit Dämmung</option>
+                        <option value="ohne_dämmung">Komplett ohne Dämmung</option>
+                    </select>
+                </div>
+                <p class="hint">
+                    <strong>Wärmeleitgruppe (WLG) Unterdämmung:</strong><br>
+                </p>
+                <div class="input-field">
+                    <select id="wärmeleitgruppe1" class="required">
+                        <option value="" selected disabled>Auswahl</option>
+                        <option value="WLG_023">WLG 023</option>
+                        <option value="WLG_032">WLG 032</option>
+                        <option value="WLG_035">WLG 035</option>
+                        <option value="keineAnfor">keine besondere Anforderung</option>
+                    </select>
+                </div>
+                <p class="hint">
+                    <strong>Wärmeleitgruppe (WLG) Systemdämmung:</strong><br>
+                </p>
+                <div class="input-field">
+                    <select id="wärmeleitgruppe2" class="required">
+                        <option value="" selected disabled>Auswahl</option>
+                        <option value="WLG_032">WLG 032</option>
+                        <option value="WLG_035">WLG 035</option>
+                        <option value="WLG_040">WLG 040</option>
+                        <option value="WLG_045">WLG 045</option>
+                        <option value="keineAnfor">keine besondere Anforderung</option>
+                    </select>
+                </div>
+                <p class="hint">
+                    <strong>Aufbauhöhe:</strong><br>
+                </p>
+                <div class="input-field">
+                    <input id="aufbauhöhe" class="required" placeholder="Aufbauhöhe (mm)">
+                </div>
+                <div class="legal-links">
+                    <a href="#" class="legal-link" onclick="showPage('page-aufbau'); return false;">Hinweis
+                        Aufbauhöhe</a>
+                </div><br>
+                <p class="hint">
+                    <strong>_________________________________</strong><br>
+                </p><br>
+                <p class="hint">
+                    <strong>Unbeheizte Flächen?</strong><br>
+                </p>
+                <div class="input-field">
+                    <select id="unbeheizt" class="required">
+                        <option value="" selected disabled>Auswahl</option>
+                        <option value="ja">ja</option>
+                        <option value="nein">nein</option>
+                    </select>
+                </div>
+                <div class="input-field">
+                    <input id="unbeheizte_Fläche" placeholder="Wo / m² unbeheizte Fläche?">
+                </div><br>
+                <p class="hint">
+                    <strong>_________________________________</strong><br>
+                </p><br>
+                <p class="hint">
+                    <strong>Heizkreisverteiler?</strong><br>
+                </p>
+                <div class="input-field">
+                    <select id="heizkreisverteiler" class="required">
+                        <option value="" selected disabled>Auswahl</option>
+                        <option value="nur_lieferung">Nur Lieferung</option>
+                        <option value="lieferung_montage">Lieferung und Montage</option>
+                        <option value="bauseits">Bauseits</option>
+                    </select>
+                </div><br>
+                <p class="hint">
+                    <strong>_________________________________</strong><br>
+                </p><br>
+                <p class="hint">
+                    <strong>Baustellenbesichtigung (Beratungspauschale)?</strong><br>
+                </p>
+                <div class="input-field">
+                    <select id="besichtigung" class="required">
+                        <option value="" selected disabled>Auswahl</option>
+                        <option value="ja">ja</option>
+                        <option value="nein">nein</option>
+                    </select>
+                </div>
+                <p class="hint">
+                    <strong>Einfache Projektierung und Schnellauslegung?</strong><br>
+                </p>
+                <div class="input-field">
+                    <select id="schnellauslegung" class="required">
+                        <option value="" selected disabled>Auswahl</option>
+                        <option value="ja">ja</option>
+                        <option value="nein">nein</option>
+                    </select>
+                </div>
+                <p class="hint">
+                    <strong>Heizflächenberechnung?</strong><br>
+                </p>
+                <div class="input-field">
+                    <select id="berechnung" class="required">
+                        <option value="" selected disabled>Auswahl</option>
+                        <option value="ja">ja</option>
+                        <option value="nein">nein</option>
+                    </select>
+                </div>
+                <p class="hint">
+                    <strong>Heizlastberechnung?</strong><br>
+                </p>
+                <div class="input-field">
+                    <select id="heizlastberechnung" class="required">
+                        <option value="" selected disabled>Auswahl</option>
+                        <option value="ja">ja</option>
+                        <option value="nein">nein</option>
+                    </select>
+                </div><br>
+                <p class="hint">
+                    <strong>_________________________________</strong><br>
+                </p><br>
+                <div class="input-field">
+                    <textarea id="relevante_Details" placeholder="Relevante Details" rows="6"></textarea>
+                </div>
+
+            </div>
+
+            <br><br>
+            <p class="hint"><u>Für eine optimale Angebotserstellung, fügen Sie bitte der E-Mail als Anhang
+                    bei:</u><br><br>
+                <strong>• Bemaßter Grundriss</strong> (PDF oder DWG)<br>
+                <strong>• Gebäudeschnitt / Ansichten</strong> -> Wenn Dämmung angeboten werden soll.<br>
+                <strong>• EnEV-/GEG-Nachweis oder U-Wert-Vorgaben</strong> (Vorgabe der WLG)<br>
+                <strong>• Heizlastberechnung</strong> (falls vorhanden)<br>
+                <br>
+            </p>
+
+            <div class="error" id="page5-error" style="color:darkred; margin:10px;"></div>
+
+            <div class="button-bar">
+                <button id="submitPage5Btn" onclick="submitPage5()">Eingabe und weiter zum Hauptmenü</button>
+            </div>
+        </div>
+
+        <!-- SEITE: HINWEIS Aufbauhöhe -->
+        <div class="page" id="page-aufbau">
+            <h2>Hinweis Aufbauhöhe</h2>
+
+            <div class="box" style="text-align:left;">
+
+                <h3>Aufbaubeispiel:</h3>
+                A Bodenbelag (Standard = 15mm)<br>
+                B Standard-Estrichhöhe = 60-65mm (Rohrüberdeckung = 45 mm)<br>
+                C Heizrohr 17 x 2,0 = 17 mm<br>
+                D Systemdämmung 30mm = 30 mm<br>
+                E Zusatzdämmung EPS= 20 mm<br>
+                = Gesamtaufbauhöhe = 130 mm<br><br><br>
+
+                <img src="aufbauhöhe.png" alt="Aufbauhöhe">
+            </div>
+
+            <div class="button-bar">
+                <button onclick="showPage('page-5')">Zurück zur Eingabeseite</button>
+            </div>
+        </div>
+
+        <!-- SEITE 6: HAUPTMENÜ SANIERUNG -->
+        <div class="page" id="page-6">
+            <h2>Hauptmenü Sanierung</h2>
+
+            <!-- Auswahlbuttons untereinander -->
+            <div>
+                <button onclick="showPage('page-8')">Fräsen</button><br>
+                <button onclick="showPage('page-9')">Estrich</button><br>
+                <button onclick="showPage('page-10')">Klett 3mm</button><br>
+                <button onclick="showPage('page-11')">Trockenbau</button>
+            </div>
+
+            <!-- Navigationsbuttons nebeneinander -->
+            <div style="margin-top:40px;">
+                <button onclick="showPage('page-4')">Zurück zum Hauptmenü</button>
+                <button onclick="showPage('page-18')">Weiter</button>
+            </div>
+        </div>
+
+        <!-- SEITE 7: HAUPTMENÜ NEUBAU -->
+        <div class="page" id="page-7">
+            <h2>Hauptmenü Neubau</h2>
+
+            <!-- Auswahlbuttons untereinander -->
+            <div>
+                <button onclick="showPage('page-9')">Estrich</button><br>
+                <button onclick="showPage('page-13')">unbeheizte Fläche</button><br>
+                <button onclick="showPage('page-14-1')">Tackersystem</button><br>
+                <button onclick="showPage('page-26')">Klettsystem</button><br>
+                <button onclick="showPage('page-29')">Noppensystem</button><br>
+                <button onclick="showPage('page-33')">Industrieboden</button><br>
+                <button onclick="showPage('page-18')">Unterdämmung</button>
+            </div>
+
+            <!-- Navigationsbuttons nebeneinander -->
+            <div style="margin-top:40px;">
+                <button onclick="showPage('page-4')">Zurück zum Hauptmenü</button>
+
+            </div>
+        </div>
+
+        <!-- SEITE 14: TACKERSYSTEM -->
+        <div class="page" id="page-14">
+            <h2>Tackersystem</h2>
+
+            <div id="page14-content" class="price-table"></div>
+
+            <div class="button-bar">
+                <button onclick="showPage('page-7')">Zurück zum Hauptmenü Neubau</button>
+                <button onclick="showPage('page-18')">Weiter</button>
+                <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
+            </div>
+        </div>
+
+        <!-- SEITE 14.1: AUSWAHL MARKE -->
+        <div class="page" id="page-14-1">
+            <h2>Auswahl Marke</h2>
+
+            <button onclick="showPage('page-14')">Handelsmarke</button>
+            <button onclick="showPage('page-14-2')">Uponor</button>
+            <button onclick="showPage('page-14-3')">Roth</button>
+
+            <br><br>
+
+            <button onclick="showPage('page-7')">Zurück zum Hauptmenü Neubau</button>
+        </div>
+
+        <!-- SEITE 14.3: ROTH -->
+        <div class="page" id="page-14-3">
+
+            <div id="content-14-3" class="price-table"></div>
+
+            <div class="button-bar">
+                <button onclick="showPage('page-7')">Zurück zum Hauptmenü Neubau</button>
+                <button onclick="showPage('page-18')">Weiter</button>
+                <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
+            </div>
+        </div>
+
+        <!-- SEITE 40: KOSTENVORANSCHLAG / ANFRAGE -->
+        <div class="page" id="page-40">
+            <h2 id="page40-title">Kostenvoranschlag</h2>
+
+            <!-- Anfrage-Daten (nur bei Anfrage sichtbar) -->
+            <div id="anfrage-daten" style="display:none; margin:20px auto; max-width:1100px; text-align:left;">
+                <div class="subtitle">Anfrage-Daten</div>
+                <div id="anfrage-daten-content"></div>
+                <hr style="margin:20px 0;">
+            </div>
+
+            <!-- Zusammenfassung der Mengen -->
+            <div id="summary-content"></div>
+
+            <!-- Gesamtsumme / Angebotspreis -->
+            <div id="angebotspreis" class="gesamt">Gesamtpreis: 0,00 €</div>
+            <div id="angebotspreisRabatt" class="gesamt rabatt">
+                Gesamtpreis abzgl. SHK-Rabatt (15%): 0,00 €
+            </div>
+
+            <div style="text-align:center; margin-bottom:20px;">(netto, freibleibend)</div>
+
+            <div id="fraesen-hinweis-print" style="display:none; margin-top:20px; color:darkred; font-weight:600;">
+                Achtung!<br>
+                Bei Frässystemen können je nach Entfernung und Flächengröße zusätzliche Aufschläge anfallen.<br>
+                Bitte erfragen Sie hierzu ein individuelles Angebot.
+            </div>
+
+            <!-- NEU: Seitenbezogene Textblöcke aus ndfX.csv (nur wenn Mengen gesetzt) -->
+            <div id="seitenhinweise-content"></div>
+
+            <!-- Allgemeine Hinweise aus CSV -->
+            <div id="hinweise-content"></div>
+
+            <!-- Buttons -->
+            <div class="button-bar">
+                <button onclick="showPage('page-4')">Zurück zum Hauptmenü</button>
+                <button onclick="printPage40()">Drucken / speichern als PDF</button>
+                <!-- <button onclick="sendMailPage40()">Senden als Text-Mail</button><br>-->
+                <button onclick="sharePdf()">PDF download</button>
+                <button type="button" class="btn" onclick="exportCsvPage40()">CSV-Export</button>
+            </div>
+        </div>
+
+        <!-- SEITE 41: Hinweis fehlende Anfrage-Daten -->
+        <div class="page" id="page-41">
+            <h2>Hinweis</h2>
+
+            <p>
+                Für eine Anfrage an NDF müssen zuerst die Kontaktdaten vollständig ausgefüllt werden.
+            </p>
+
+            <div class="button-bar">
+                <button onclick="showPage('page-5')">Zur Anfrage</button>
+                <button onclick="showPage('page-40')">KV anzeigen</button>
+            </div>
+        </div>
+
+        <!-- SEITE 14.2: UPONOR -->
+        <div class="page" id="page-14-2">
+
+            <div id="content-14-2" class="price-table"></div>
+
+            <div class="button-bar">
+                <button onclick="showPage('page-7')">Zurück zum Hauptmenü Neubau</button>
+                <button onclick="showPage('page-18')">Weiter</button>
+                <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
+            </div>
+
+        </div>
+
+        <!-- SEITE 8: Frässystem -->
+        <div class="page" id="page-8">
+            <h2>Fräsen</h2>
+
+            <div id="content-8" class="price-table"></div>
+
+            <div class="button-bar">
+                <button onclick="showPage('page-6')">Zurück zum Hauptmenü Sanierung</button>
+                <button onclick="showPage('page-20')">Weiter</button>
+                <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
+            </div>
+        </div>
+
+        <!-- SEITE 18: Unterdämmung -->
+        <div class="page" id="page-18">
+            <h2>Unterdämmung</h2>
+
+            <div id="content-18" class="price-table"></div>
+
+            <div class="button-bar">
+                <button onclick="showPage('page-4')">Zurück zum Hauptmenü</button>
+                <button onclick="showPage('page-20')">Weiter</button>
+                <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
+            </div>
+        </div>
+
+        <!-- SEITE 20: Verteiler & Regeltechnik -->
+        <div class="page" id="page-20">
+            <h2>Verteiler & Regeltechnik</h2>
+
+            <div id="content-20" class="price-table"></div>
+
+            <div class="button-bar">
+                <button onclick="showPage('page-4')">Zurück zum Hauptmenü</button>
+                <button onclick="showPage('page-21')">Weiter</button>
+                <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
+            </div>
+        </div>
+
+        <!-- SEITE 21: Dienstleistungen -->
+        <div class="page" id="page-21">
+            <h2>Dienstleistungen</h2>
+
+            <div id="content-21" class="price-table"></div>
+
+            <div class="button-bar">
+                <button onclick="showPage('page-4')">Zurück zum Hauptmenü</button>
+                <button onclick="showPage('page-22')">Weiter</button>
+                <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
+            </div>
+        </div>
+
+        <!-- SEITE 22: Zuschläge -->
+        <div class="page" id="page-22">
+            <h2>Zuschläge</h2>
+
+            <div id="content-22" class="price-table"></div>
+
+            <div class="button-bar">
+                <button onclick="showPage('page-4')">Zurück zum Hauptmenü</button>
+                <button onclick="direktZumAngebot()">Weiter</button>
+            </div>
+        </div>
+
+        <!-- SEITE 9: Estrich -->
+        <div class="page" id="page-9">
+            <h2>Estrich</h2>
+
+            <div id="content-9" class="price-table"></div>
+
+            <div class="button-bar">
+                <button onclick="showPage('page-4')">Zurück zum Hauptmenü</button>
+                <button onclick="showPage('page-18')">Weiter</button>
+                <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
+            </div>
+        </div>
+
+        <!-- SEITE 10: Klett3mm -->
+        <div class="page" id="page-10">
+            <h2>Klett 3mm</h2>
+
+            <div id="content-10" class="price-table"></div>
+
+            <div class="button-bar">
+                <button onclick="showPage('page-4')">Zurück zum Hauptmenü</button>
+                <button onclick="showPage('page-18')">Weiter</button>
+                <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
+            </div>
+        </div>
+
+        <!-- SEITE 11: MENÜ TROCKENBAU -->
+        <div class="page" id="page-11">
+            <h2>Menü Trockenbau</h2>
+
+            <!-- Auswahlbuttons untereinander -->
+            <div>
+                <button onclick="showPage('page-23')">Aufbau 50mm</button><br>
+                <button onclick="showPage('page-24')">Aufbau 20/30mm + 3mm Deckschicht</button><br>
+                <button onclick="showPage('page-25')">Aufbau 25mm (XPS)</button><br>
+            </div>
+
+            <!-- Navigationsbuttons nebeneinander -->
+            <div style="margin-top:40px;">
+                <button onclick="showPage('page-6')">Zurück zum Hauptmenü Sanierung</button>
+                <button onclick="showPage('page-18')">Weiter</button>
+            </div>
+        </div>
+
+        <!-- SEITE 23: Aufbau 50mm -->
+        <div class="page" id="page-23">
+            <h2>Aufbau 50mm</h2>
+
+            <div id="content-23" class="price-table"></div>
+
+            <div class="button-bar">
+                <button onclick="showPage('page-6')">Zurück zum Hauptmenü Sanierung</button>
+                <button onclick="showPage('page-18')">Weiter</button>
+                <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
+            </div>
+        </div>
+
+        <!-- SEITE 24: Aufbau 20/30mm + 3mm Deckschicht -->
+        <div class="page" id="page-24">
+            <h2>Aufbau 20/30mm + 3mm Deckschicht</h2>
+
+            <div id="content-24" class="price-table"></div>
+
+            <div class="button-bar">
+                <button onclick="showPage('page-6')">Zurück zum Hauptmenü Sanierung</button>
+                <button onclick="showPage('page-18')">Weiter</button>
+                <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
+            </div>
+        </div>
+
+        <!-- SEITE 25: Aufbau 25mm (XPS) -->
+        <div class="page" id="page-25">
+            <h2>Aufbau 25mm (XPS)</h2>
+
+            <div id="content-25" class="price-table"></div>
+
+            <div class="button-bar">
+                <button onclick="showPage('page-6')">Zurück zum Hauptmenü Sanierung</button>
+                <button onclick="showPage('page-20')">Weiter</button>
+                <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
+            </div>
+        </div>
+
+        <!-- SEITE 26: AUSWAHL MARKE Klett -->
+        <div class="page" id="page-26">
+            <h2>Auswahl Marke Klettsystem</h2>
+
+            <button onclick="showPage('page-27')">Handelsmarke</button>
+            <button onclick="showPage('page-28')">Uponor</button>
+            <br><br>
+
+            <button onclick="showPage('page-7')">Zurück zum Hauptmenü Neubau</button>
+        </div>
+
+        <!-- SEITE 29: AUSWAHL MARKE Noppensystem -->
+        <div class="page" id="page-29">
+            <h2>Auswahl Marke Noppensystem</h2>
+
+            <button onclick="showPage('page-30')">Handelsmarke</button>
+            <button onclick="showPage('page-31')">Uponor</button>
+            <button onclick="showPage('page-32')">Roth</button>
+            <br><br>
+
+            <button onclick="showPage('page-7')">Zurück zum Hauptmenü Neubau</button>
+        </div>
+
+        <!-- SEITE 27: Klett Handelsmarke -->
+        <div class="page" id="page-27">
+            <h2>Klettsystem Handelsmarke</h2>
+
+            <div id="content-27" class="price-table"></div>
+
+            <div class="button-bar">
+                <button onclick="showPage('page-7')">Zurück zum Hauptmenü Neubau</button>
+                <button onclick="showPage('page-18')">Weiter</button>
+                <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
+            </div>
+        </div>
+
+        <!-- SEITE 28: Klett Uponor -->
+        <div class="page" id="page-28">
+            <h2>Klettsystem Uponor</h2>
+
+            <div id="content-28" class="price-table"></div>
+
+            <div class="button-bar">
+                <button onclick="showPage('page-7')">Zurück zum Hauptmenü Neubau</button>
+                <button onclick="showPage('page-18')">Weiter</button>
+                <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
+            </div>
+        </div>
+
+        <!-- SEITE 30: Noppen Handelsmarke -->
+        <div class="page" id="page-30">
+            <h2>Noppensystem Handelsmarke</h2>
+
+            <div id="content-30" class="price-table"></div>
+
+            <div class="button-bar">
+                <button onclick="showPage('page-7')">Zurück zum Hauptmenü Neubau</button>
+                <button onclick="showPage('page-18')">Weiter</button>
+                <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
+            </div>
+        </div>
+
+        <!-- SEITE 31: Noppen Uponor -->
+        <div class="page" id="page-31">
+            <h2>Noppensystem Uponor</h2>
+
+            <div id="content-31" class="price-table"></div>
+
+            <div class="button-bar">
+                <button onclick="showPage('page-7')">Zurück zum Hauptmenü Neubau</button>
+                <button onclick="showPage('page-18')">Weiter</button>
+                <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
+            </div>
+        </div>
+
+        <!-- SEITE 32: Noppen Roth -->
+        <div class="page" id="page-32">
+            <h2>Noppensystem Roth</h2>
+
+            <div id="content-32" class="price-table"></div>
+
+            <div class="button-bar">
+                <button onclick="showPage('page-7')">Zurück zum Hauptmenü Neubau</button>
+                <button onclick="showPage('page-18')">Weiter</button>
+                <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
+            </div>
+        </div>
+
+        <!-- SEITE 33: Industrieboden -->
+        <div class="page" id="page-33">
+            <h2>Industrieboden</h2>
+
+            <div id="content-33" class="price-table"></div>
+
+            <div class="button-bar">
+                <button onclick="showPage('page-7')">Zurück zum Hauptmenü Neubau</button>
+                <button onclick="showPage('page-20')">Weiter</button>
+                <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
+            </div>
+        </div>
+
+        <!-- SEITE 13: unbeheizte Fläche -->
+        <div class="page" id="page-13">
+            <h2>unbeheizte Fläche</h2>
+
+            <div id="content-13" class="price-table"></div>
+
+            <div class="button-bar">
+                <button onclick="showPage('page-7')">Zurück zum Hauptmenü Neubau</button>
+                <button onclick="showPage('page-18')">Weiter</button>
+                <button onclick="direktZumAngebot()">Direkt zur Ausgabeseite</button>
+            </div>
+        </div>
+
+        <!-- Eieruhr auf Seite 40 -->
+        <div id="loader40" class="loader hidden">
+            <div class="spinner"></div>
+            <div class="loader-text">Ausgabe wird erstellt…</div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script type="module" src="app.js"></script>
+
+    <div id="hinweisModal" class="modal">
+        <div class="modal-content">
+            <p id="hinweisText"></p>
+
+            <div id="hinweisButtons">
+                <button type="button" id="hinweisOk">OK</button>
+                <button type="button" id="hinweisCancel">Abbrechen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SEITE 34: Downloadbereich -->
+    <div class="page" id="page-34">
+        <h2>Download - Datenblätter / Checklisten / Infos</h2>
+
+        <a href="Schnittstelle SHK-Fachhandwerk.pdf" target="_blank">
+            Info - Schnittstelle SHK-Fachhandwerk
+        </a><br><br>
+
+        <a href="Bauseitige Voraussetzungen Fräsen.pdf" target="_blank">
+            Info - Bauseitige Voraussetzungen Fräsen
+        </a><br><br>
+
+	<a href="Allgemeine Hinweise.pdf" target="_blank">
+            Info - Allgemeine Hinweise
+        </a><br><br>
+
+
+
+        <br><br>
+
+        <button onclick="showPage('page-4')">Zurück zum Hauptmenü</button>
+    </div>
+
+
+</body>
+
+</html>
