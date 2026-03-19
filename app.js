@@ -182,13 +182,13 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBZqRmkbgeMDPUEKgowBKnXCzg0xPQnZVE",
-    authDomain: "pw-pj-ndf-f9d52.firebaseapp.com",
-    projectId: "pw-pj-ndf-f9d52",
-    storageBucket: "pw-pj-ndf-f9d52.firebasestorage.app",
-    messagingSenderId: "732616641079",
-    appId: "1:732616641079:web:60538312ca75b3f3e48db2",
-    measurementId: "G-0G2B43LSGX"
+  apiKey: "AIzaSyDO8sb2v488jel3LuLCsE7-t40Rhf-aoT0",
+  authDomain: "ndf-digicheck-fbh.firebaseapp.com",
+  projectId: "ndf-digicheck-fbh",
+  storageBucket: "ndf-digicheck-fbh.firebasestorage.app",
+  messagingSenderId: "165203818651",
+  appId: "1:165203818651:web:4a5b72bb52a4b283786e3e",
+  measurementId: "G-6S2XTBJRYJ"
 };
 
 const fbApp = initializeApp(firebaseConfig);
