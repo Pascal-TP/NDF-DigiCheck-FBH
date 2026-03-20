@@ -1444,7 +1444,7 @@ async function loadPage40() {
 function direktZumAngebot() {
 
     const ids = [
-        "pj-contact", "pj-email", "pj-phone", "pj-number", "shk-name", "shk-contact",
+        "pj-number", "shk-name", "shk-contact",
         "shk-email", "shk-phone", "site-address", "execution-date", "offer-date", "estrich", "bodenbelag",
         "systemmarke", "system", "rohrtyp1", "rohrtyp2", "dämmung", "wärmeleitgruppe1", "wärmeleitgruppe2", "aufbauhöhe", "unbeheizt",
         "heizkreisverteiler", "besichtigung", "schnellauslegung", "berechnung", "heizlastberechnung"
