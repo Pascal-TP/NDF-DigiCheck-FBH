@@ -1559,14 +1559,9 @@ function sendMailPage40() {
 
 function clearInputs() {
 
-    // localStorage komplett löschen
     localStorage.clear();
-     localStorage.removeItem("page5Data");
+    localStorage.removeItem("page5Data");
     localStorage.removeItem("angebotTyp");
-
-
-    //fraesenVerwendet = false;
-    //fraesenHinweisGezeigt = false;
 
     // Eingabefelder im DOM leeren
     document.querySelectorAll("input").forEach(inp => inp.value = "");
@@ -1703,8 +1698,7 @@ function clearInputs() {
     // const p40r = document.getElementById("angebotspreisRabatt");
     // if (p40r) p40r.innerText = "Gesamtpreis abzgl. SHK-Rabatt (15%): 0,00 €";
 
-    // zurück zu "page-3"
-    showPage("page-3");
+    
 }
 
 
