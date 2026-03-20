@@ -97,7 +97,7 @@ function resetStoredInputsOnReload() {
     // Nur deine Eingabe-/Angebotsdaten löschen (Auth bleibt erhalten!)
     const keysToRemove = [
         "page5Data",
-        //  "angebotTyp",
+        "angebotTyp",
         //  "angebotSummen",
         //   "page14Data",
         //  "page142Data",
@@ -1561,9 +1561,12 @@ function clearInputs() {
 
     // localStorage komplett löschen
     localStorage.clear();
+     localStorage.removeItem("page5Data");
+    localStorage.removeItem("angebotTyp");
 
-    fraesenVerwendet = false;
-    fraesenHinweisGezeigt = false;
+
+    //fraesenVerwendet = false;
+    //fraesenHinweisGezeigt = false;
 
     // Eingabefelder im DOM leeren
     document.querySelectorAll("input").forEach(inp => inp.value = "");
