@@ -182,13 +182,13 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDO8sb2v488jel3LuLCsE7-t40Rhf-aoT0",
-  authDomain: "ndf-digicheck-fbh.firebaseapp.com",
-  projectId: "ndf-digicheck-fbh",
-  storageBucket: "ndf-digicheck-fbh.firebasestorage.app",
-  messagingSenderId: "165203818651",
-  appId: "1:165203818651:web:4a5b72bb52a4b283786e3e",
-  measurementId: "G-6S2XTBJRYJ"
+    apiKey: "AIzaSyDO8sb2v488jel3LuLCsE7-t40Rhf-aoT0",
+    authDomain: "ndf-digicheck-fbh.firebaseapp.com",
+    projectId: "ndf-digicheck-fbh",
+    storageBucket: "ndf-digicheck-fbh.firebasestorage.app",
+    messagingSenderId: "165203818651",
+    appId: "1:165203818651:web:4a5b72bb52a4b283786e3e",
+    measurementId: "G-6S2XTBJRYJ"
 };
 
 const fbApp = initializeApp(firebaseConfig);
@@ -436,16 +436,16 @@ async function showPage(id, fromHistory = false) {
     //  if (id === "page-33") loadPage33();
     //  if (id === "page-13") loadPage13();
 
-     if (id === "page-40") {
-       showLoader40(true);
-       try {
-         page40Promise = loadPage40();
-         await page40Promise;
-       } finally {
-        showLoader40(false);
-       }
-     }
-     
+    if (id === "page-40") {
+        showLoader40(true);
+        try {
+            page40Promise = loadPage40();
+            await page40Promise;
+        } finally {
+            showLoader40(false);
+        }
+    }
+
     // Checkboxen beim Seitenwechsel zurücksetzen
     const cb1 = document.getElementById("chkPrivacyAck");
     const cb2 = document.getElementById("chkPrivacyAck2");
@@ -841,21 +841,13 @@ function startTimer() {
 
 function getPage5BasicIds() {
     return [
-        "pj-contact",
-        "pj-email",
-        "pj-phone",
         "pj-number",
         "shk-name",
         "shk-contact",
         "shk-email",
         "shk-phone",
         "site-address",
-        "execution-date"
-    ];
-}
-
-function getPage5DetailIds() {
-    return [
+        "execution-date",
         "offer-date",
         "estrich",
         "bodenbelag",
@@ -878,20 +870,20 @@ function getPage5DetailIds() {
     ];
 }
 
-function clearPage5DetailFields() {
-    getPage5DetailIds().forEach(id => {
-        const el = document.getElementById(id);
-        if (!el) return;
-
-        if (el.tagName === "SELECT") {
-            el.selectedIndex = 0;
-        } else if (el.type === "checkbox") {
-            el.checked = false;
-        } else {
-            el.value = "";
-        }
-    });
-}
+//function clearPage5DetailFields() {
+//    getPage5DetailIds().forEach(id => {
+//        const el = document.getElementById(id);
+//        if (!el) return;
+//
+//        if (el.tagName === "SELECT") {
+//            el.selectedIndex = 0;
+//        } else if (el.type === "checkbox") {
+//            el.checked = false;
+//        } else {
+//            el.value = "";
+//        }
+//    });
+//}
 
 function updatePage5DetailUI() {
     const chk = document.getElementById("chkDetail");
@@ -908,23 +900,23 @@ function updatePage5DetailUI() {
             : "Eingabe und weiter zum Hauptmenü";
     }
 
-    if (!active) {
-        clearPage5DetailFields();
-        savePage5Data();
-    }
+    //  if (!active) {
+    //      clearPage5DetailFields();
+    //      savePage5Data();
+    //  }
     syncBesichtigungToPage21();
 }
 
-function handlePage5Hinweis(selectId, hinweisText) {
-    const el = document.getElementById(selectId);
-    if (!el) return;
-
-    el.addEventListener("change", () => {
-        if (el.value === "ja") {
-            showHinweis(hinweisText);
-        }
-    });
-}
+//function handlePage5Hinweis(selectId, hinweisText) {
+//    const el = document.getElementById(selectId);
+//    if (!el) return;
+//
+//    el.addEventListener("change", () => {
+//        if (el.value === "ja") {
+//            showHinweis(hinweisText);
+//        }
+//    });
+//}
 
 
 // -----------------------------
@@ -936,39 +928,31 @@ function submitPage5() {
     const detailAktiv = !!document.getElementById("chkDetail")?.checked;
 
     const fields = [
-        { id: "pj-contact", name: "Ansprechpartner bei PJ" },
-        { id: "pj-email", name: "Ansprechpartner E-Mail bei PJ" },
-        { id: "pj-phone", name: "Ansprechpartner Telefon-Nr. bei PJ" },
-        { id: "pj-number", name: "SHK - PJ-Kunden-Nr." },
+        { id: "pj-number", name: "SHK - Kunden-Nr." },
         { id: "shk-name", name: "SHK Name/Firma" },
         { id: "shk-contact", name: "SHK Ansprechpartner" },
         { id: "shk-email", name: "SHK E-Mail" },
         { id: "shk-phone", name: "SHK Telefon-Nr." },
         { id: "site-address", name: "Adresse Baustelle" },
-        { id: "execution-date", name: "Gewünschter Ausführungstermin" }
+        { id: "execution-date", name: "Gewünschter Ausführungstermin" },
+        { id: "offer-date", name: "Angebotsabgabe bis" },
+        { id: "estrich", name: "Estrich anbieten?" },
+        { id: "bodenbelag", name: "Bodenbelag anbieten?" },
+        { id: "systemmarke", name: "Systemmarke" },
+        { id: "system", name: "System" },
+        { id: "rohrtyp1", name: "Rohrtyp Kunststoffrohr" },
+        { id: "rohrtyp2", name: "Rohrtyp Metallrohr" },
+        { id: "dämmung", name: "Dämmung" },
+        { id: "wärmeleitgruppe1", name: "Wärmeleitgruppe (WLG) Unterdämmung:" },
+        { id: "wärmeleitgruppe2", name: "Wärmeleitgruppe (WLG) Systemdämmung:" },
+        { id: "aufbauhöhe", name: "Aufbauhöhe" },
+        { id: "unbeheizt", name: "Unbeheizte Fläche" },
+        { id: "heizkreisverteiler", name: "Heizkreisverteiler" },
+        { id: "besichtigung", name: "Baustellenbesichtigung" },
+        { id: "schnellauslegung", name: "Schnellauslegung" },
+        { id: "berechnung", name: "Heizflächenberechnung" },
+        { id: "heizlastberechnung", name: "Heizlastberechnung" }
     ];
-
-    if (detailAktiv) {
-        fields.push(
-            { id: "offer-date", name: "Angebotsabgabe bis" },
-            { id: "estrich", name: "Estrich anbieten?" },
-            { id: "bodenbelag", name: "Bodenbelag anbieten?" },
-            { id: "systemmarke", name: "Systemmarke" },
-            { id: "system", name: "System" },
-            { id: "rohrtyp1", name: "Rohrtyp Kunststoffrohr" },
-            { id: "rohrtyp2", name: "Rohrtyp Metallrohr" },
-            { id: "dämmung", name: "Dämmung" },
-            { id: "wärmeleitgruppe1", name: "Wärmeleitgruppe (WLG) Unterdämmung:" },
-            { id: "wärmeleitgruppe2", name: "Wärmeleitgruppe (WLG) Systemdämmung:" },
-            { id: "aufbauhöhe", name: "Aufbauhöhe" },
-            { id: "unbeheizt", name: "Unbeheizte Fläche" },
-            { id: "heizkreisverteiler", name: "Heizkreisverteiler" },
-            { id: "besichtigung", name: "Baustellenbesichtigung" },
-            { id: "schnellauslegung", name: "Schnellauslegung" },
-            { id: "berechnung", name: "Heizflächenberechnung" },
-            { id: "heizlastberechnung", name: "Heizlastberechnung" }
-        );
-    }
 
     let missing = [];
 
@@ -994,7 +978,7 @@ function submitPage5() {
 
 function savePage5Data() {
     const ids = [
-        "pj-contact", "pj-email", "pj-phone", "pj-number", "shk-name", "shk-contact",
+        "pj-number", "shk-name", "shk-contact",
         "shk-email", "shk-phone", "site-address", "execution-date",
         "offer-date", "estrich", "bodenbelag", "systemmarke", "system",
         "rohrtyp1", "rohrtyp2", "dämmung", "wärmeleitgruppe1", "wärmeleitgruppe2", "aufbauhöhe",
@@ -1266,10 +1250,7 @@ async function loadPage40() {
         const p5 = JSON.parse(localStorage.getItem("page5Data") || "{}");
 
         const labels = {
-            "pj-contact": "Ansprechpartner bei PJ",
-            "pj-email": "Ansprechpartner E-Mail bei PJ",
-            "pj-phone": "Ansprechpartner Telefon-Nr. bei PJ",
-            "pj-number": "SHK - PJ-Kunden-Nr.",
+            "pj-number": "SHK - Kunden-Nr.",
             "shk-name": "SHK Name/Firma",
             "shk-contact": "SHK Ansprechpartner",
             "shk-email": "SHK E-Mail",
@@ -1460,13 +1441,13 @@ async function loadPage40() {
 // direktZumAngebot (Button)
 // -----------------------------
 
- function direktZumAngebot() {
+function direktZumAngebot() {
 
     const ids = [
         "pj-contact", "pj-email", "pj-phone", "pj-number", "shk-name", "shk-contact",
         "shk-email", "shk-phone", "site-address", "execution-date", "offer-date", "estrich", "bodenbelag",
-         "systemmarke", "system", "rohrtyp1", "rohrtyp2", "dämmung", "wärmeleitgruppe1", "wärmeleitgruppe2","aufbauhöhe", "unbeheizt",
-         "heizkreisverteiler", "besichtigung", "schnellauslegung", "berechnung", "heizlastberechnung"
+        "systemmarke", "system", "rohrtyp1", "rohrtyp2", "dämmung", "wärmeleitgruppe1", "wärmeleitgruppe2", "aufbauhöhe", "unbeheizt",
+        "heizkreisverteiler", "besichtigung", "schnellauslegung", "berechnung", "heizlastberechnung"
     ];
 
     const alleAusgefüllt = ids.every(id => {
@@ -1477,11 +1458,11 @@ async function loadPage40() {
         savePage5Data();
         localStorage.setItem("angebotTyp", "anfrage");
         showPage("page-40");
-   } else {
+    } else {
         localStorage.setItem("angebotTyp", "kv");
         showPage("page-41");
     }
- }
+}
 
 // -----------------------------
 // SEITE 40 – printPage - (Button "Drucken / als PDF speichern")
@@ -1504,7 +1485,7 @@ function sendMailPage40() {
     let mailAdresse = "";
 
     if (angebotTyp === "anfrage") {
-        subject = "Anfrage Peter Jensen";
+        subject = "Anfrage NDF GmbH";
         mailAdresse = "info@ndf-gmbh.de";
     } else {
         subject = `Kostenvoranschlag Peter Jensen - NDF - ${new Date().toLocaleDateString("de-DE")}`;
@@ -1590,7 +1571,7 @@ function clearInputs() {
     const chkDetail = document.getElementById("chkDetail");
     if (chkDetail) chkDetail.checked = false;
 
-    clearPage5DetailFields();
+    // clearPage5DetailFields();
     updatePage5DetailUI();
 
     const page5Error = document.getElementById("page5-error");
@@ -1598,6 +1579,7 @@ function clearInputs() {
 
     // Dynamische Inhalte leeren (damit nichts „stehen bleibt“)
     const idsToClear = [
+        "page5Data"
         //         "page14-content",
         //        "content-14-3",
         //        "content-14-2",

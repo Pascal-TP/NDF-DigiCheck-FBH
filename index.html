@@ -389,19 +389,6 @@
             <p>(Rote Felder = Pflichteingaben)</p><br><br>
 
             <p class="hint">
-                <strong>Ansprechpartner:</strong><br>
-            </p>
-            <div class="input-field">
-                <input id="pj-contact" class="required" placeholder="Ansprechpartner">
-            </div>
-            <div class="input-field">
-                <input id="pj-email" class="required" placeholder="Ansprechpartner E-Mail">
-            </div>
-            <div class="input-field">
-                <input id="pj-phone" class="required" placeholder="Ansprechpartner Telefon-Nr.">
-            </div>
-
-            <p class="hint">
                 <strong>Kontakt SHK:</strong><br>
             </p>
             <div class="input-field">
@@ -411,7 +398,7 @@
                 <input id="shk-name" class="required" placeholder="SHK Name/Firma">
             </div>
             <div class="input-field">
-                <input id="shk-contact" class="required" placeholder="Ansprechpartner Baustelle">
+                <input id="shk-contact" class="required" placeholder="SHK Ansprechpartner">
             </div>
             <div class="input-field">
                 <input id="shk-email" class="required" type="email" placeholder="SHK E-Mail">
@@ -799,10 +786,10 @@
         <!-- Buttons-->
             <div class="button-bar">
                 <button onclick="showPage('page-3')">Zurück zum Hauptmenü</button>
+                <button onclick="sendMailPage40()">Senden als Text-Mail</button><br>
                 <button onclick="printPage40()">Drucken / speichern als PDF</button>
-         <button onclick="sendMailPage40()">Senden als Text-Mail</button><br>
                 <button onclick="sharePdf()">PDF download</button>
-                <button type="button" class="btn" onclick="exportCsvPage40()">CSV-Export</button>
+              <!--  <button type="button" class="btn" onclick="exportCsvPage40()">CSV-Export</button>-->
             </div>
         </div>
 
