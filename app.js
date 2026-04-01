@@ -89,13 +89,14 @@ function resetStoredInputsOnReload() {
 
     if (!isReload) return;
 
-
+    // Upload-Dateien aus altem Stand löschen
+    void clearUploadedFilesFromStorage();
 
     // Nur deine Eingabe-/Angebotsdaten löschen (Auth bleibt erhalten!)
     const keysToRemove = [
         "page5Data",
         "angebotTyp",
-
+        "uploadedFiles"
     ];
 
     keysToRemove.forEach(k => localStorage.removeItem(k));
@@ -170,7 +171,8 @@ import {
 import {
     getStorage,
     ref as storageRef,
-    uploadBytes
+    uploadBytes,
+    deleteObject
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js";
 
 import {
@@ -303,12 +305,12 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  const fileInput = document.getElementById("request-files");
-  if (!fileInput) return;
+    const fileInput = document.getElementById("request-files");
+    if (!fileInput) return;
 
-  fileInput.addEventListener("change", handleFileUpload);
+    fileInput.addEventListener("change", handleFileUpload);
 
-  renderFileList();
+    renderFileList();
 });
 
 // -----------------------------
@@ -449,8 +451,8 @@ async function showPage(id, fromHistory = false) {
     }
 
     if (id === "page-admin") {
-    await loadAdminPage();
-}
+        await loadAdminPage();
+    }
 
     // Checkboxen beim Seitenwechsel zurücksetzen
     const cb1 = document.getElementById("chkPrivacyAck");
@@ -508,6 +510,9 @@ async function login() {
             return;
         }
 
+        await clearUploadedFilesFromStorage();
+        localStorage.removeItem("uploadedFiles");
+
         updateAdminUI_();
         startTimer();
         showPage("page-3");
@@ -527,6 +532,7 @@ window.toggleUserMenu = toggleUserMenu;
 
 async function logout() {
     try {
+        await clearUploadedFilesFromStorage();
         await signOut(auth);
 
         currentUser = null;
@@ -921,95 +927,127 @@ function savePage5Data() {
 // -----------------------------
 
 async function handleFileUpload(event) {
-  const files = Array.from(event.target.files);
+    const files = Array.from(event.target.files);
 
-const currentTotal = getUploadedFilesTotalSize();
-const newFilesTotal = files.reduce((sum, file) => sum + file.size, 0);
-const maxTotalSize = 20 * 1024 * 1024;
+    const currentTotal = getUploadedFilesTotalSize();
+    const newFilesTotal = files.reduce((sum, file) => sum + file.size, 0);
+    const maxTotalSize = 20 * 1024 * 1024;
 
-if (currentTotal + newFilesTotal > maxTotalSize) {
-  showHinweis("Die maximale Gesamtgröße aller hochgeladenen Dateien beträgt 20 MB.");
-  event.target.value = "";
-  return;
-}
-
-for (const file of files) {
-
-    try {
-      const safeMail = (auth.currentUser?.email || "unknown")
-        .replace(/[^a-zA-Z0-9._-]/g, "_");
-
-      const path = `requests/${safeMail}/attachments/${Date.now()}_${file.name}`;
-
-      const fileRef = storageRef(blazeStorage, path);
-
-      await uploadBytes(fileRef, file);
-
-      uploadedFiles.push({
-        name: file.name,
-        path: path,
-        size: file.size
-      });
-
-    } catch (err) {
-      console.error("Upload Fehler:", err);
-      showHinweis("Fehler beim Hochladen: " + file.name);
+    if (currentTotal + newFilesTotal > maxTotalSize) {
+        showHinweis("Die maximale Gesamtgröße aller hochgeladenen Dateien beträgt 20 MB.");
+        event.target.value = "";
+        return;
     }
-  }
 
-  localStorage.setItem("uploadedFiles", JSON.stringify(uploadedFiles));
+    for (const file of files) {
 
-  renderFileList();
+        try {
+            const safeMail = (auth.currentUser?.email || "unknown")
+                .replace(/[^a-zA-Z0-9._-]/g, "_");
 
-  // Input zurücksetzen (damit gleiche Datei erneut gewählt werden kann)
-  event.target.value = "";
+            const path = `requests/${safeMail}/attachments/${Date.now()}_${file.name}`;
+
+            const fileRef = storageRef(blazeStorage, path);
+
+            await uploadBytes(fileRef, file);
+
+            uploadedFiles.push({
+                name: file.name,
+                path: path,
+                size: file.size
+            });
+
+        } catch (err) {
+            console.error("Upload Fehler:", err);
+            showHinweis("Fehler beim Hochladen: " + file.name);
+        }
+    }
+
+    localStorage.setItem("uploadedFiles", JSON.stringify(uploadedFiles));
+
+    renderFileList();
+
+    // Input zurücksetzen (damit gleiche Datei erneut gewählt werden kann)
+    event.target.value = "";
 }
 
 function getUploadedFilesTotalSize() {
-  return uploadedFiles.reduce((sum, file) => sum + (file.size || 0), 0);
+    return uploadedFiles.reduce((sum, file) => sum + (file.size || 0), 0);
 }
 
 // SEITE 5 – Anzeie der Dateien
 
 function renderFileList() {
-  const container = document.getElementById("file-list");
-  if (!container) return;
+    const container = document.getElementById("file-list");
+    if (!container) return;
 
-  container.innerHTML = "";
+    container.innerHTML = "";
 
-  uploadedFiles.forEach((file, index) => {
-    const div = document.createElement("div");
-    div.className = "file-item";
+    uploadedFiles.forEach((file, index) => {
+        const div = document.createElement("div");
+        div.className = "file-item";
 
-    div.innerHTML = `
+        div.innerHTML = `
   <span class="file-name">${file.name}</span>
   <button type="button" onclick="removeFile(${index})">Entfernen</button>
 `;
 
-    container.appendChild(div);
-  });
+        container.appendChild(div);
+    });
 }
 
 // SEITE 5 – Entfernen der Dateien
 
 async function removeFile(index) {
-  const file = uploadedFiles[index];
+    const file = uploadedFiles[index];
 
-  try {
-    const fileRef = storageRef(blazeStorage, file.path);
-    await deleteObject(fileRef);
-  } catch (err) {
-    console.warn("Datei konnte nicht gelöscht werden:", err);
-  }
+    try {
+        const fileRef = storageRef(blazeStorage, file.path);
+        await deleteObject(fileRef);
+    } catch (err) {
+        console.warn("Datei konnte nicht gelöscht werden:", err);
+    }
 
-  uploadedFiles.splice(index, 1);
+    uploadedFiles.splice(index, 1);
 
-  localStorage.setItem("uploadedFiles", JSON.stringify(uploadedFiles));
+    localStorage.setItem("uploadedFiles", JSON.stringify(uploadedFiles));
 
-  renderFileList();
+    renderFileList();
 }
 
 window.removeFile = removeFile;
+
+// SEITE 5 – Löschfunktion der Upload-Dateien
+
+async function clearUploadedFilesFromStorage() {
+    const files = JSON.parse(localStorage.getItem("uploadedFiles") || "[]");
+
+    for (const file of files) {
+        if (!file?.path) continue;
+
+        try {
+            const fileRef = storageRef(blazeStorage, file.path);
+            await deleteObject(fileRef);
+        } catch (err) {
+            console.warn("Datei konnte nicht aus Storage gelöscht werden:", file?.name, err);
+        }
+    }
+
+    localStorage.removeItem("uploadedFiles");
+
+    const fileInput = document.getElementById("request-files");
+    if (fileInput) fileInput.value = "";
+
+    if (typeof uploadedFiles !== "undefined") {
+        uploadedFiles = [];
+    }
+
+    if (typeof renderFileList === "function") {
+        renderFileList();
+    }
+}
+
+window.clearUploadedFilesFromStorage = clearUploadedFilesFromStorage
 
 // -----------------------------
 // SEITE 40 – Ausgabeseite Kostenvoranschlag / Anfrage
@@ -1313,11 +1351,15 @@ function sendMailPage40() {
 // clearInputs - Button "Eingaben löschen"
 // -----------------------------
 
-function clearInputs() {
+async function clearInputs() {
+
+    await clearUploadedFilesFromStorage();
 
     localStorage.clear();
     localStorage.removeItem("page5Data");
     localStorage.removeItem("angebotTyp");
+    localStorage.removeItem("uploadedFiles");
+
 
     // Eingabefelder im DOM leeren
     document.querySelectorAll("input").forEach(inp => inp.value = "");
