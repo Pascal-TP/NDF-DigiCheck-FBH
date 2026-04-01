@@ -180,8 +180,6 @@ import {
     httpsCallable
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-functions.js";
 
-import { deleteObject } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
-
 const firebaseConfig = {
     apiKey: "AIzaSyDO8sb2v488jel3LuLCsE7-t40Rhf-aoT0",
     authDomain: "ndf-digicheck-fbh.firebaseapp.com",
