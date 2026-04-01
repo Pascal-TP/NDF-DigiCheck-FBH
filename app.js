@@ -87,13 +87,13 @@ function resetStoredInputsOnReload() {
 
     if (!isReload) return;
 
-    
+
 
     // Nur deine Eingabe-/Angebotsdaten löschen (Auth bleibt erhalten!)
     const keysToRemove = [
         "page5Data",
         "angebotTyp",
-        
+
     ];
 
     keysToRemove.forEach(k => localStorage.removeItem(k));
@@ -187,12 +187,13 @@ const firebaseConfig = {
 };
 
 const blazeConfig = {
-    apiKey: "HIER_API_KEY_AUS_KALKPRO",
-    authDomain: "HIER_AUTH_DOMAIN",
-    projectId: "HIER_PROJECT_ID",
-    storageBucket: "HIER_STORAGE_BUCKET",
-    messagingSenderId: "HIER_SENDER_ID",
-    appId: "HIER_APP_ID"
+    apiKey: "AIzaSyCcHI5sGR7sFwrWRpo2uQ3Plm0HpTvqr30",
+    authDomain: "kalkpro-4cc29.firebaseapp.com",
+    projectId: "kalkpro-4cc29",
+    storageBucket: "kalkpro-4cc29.firebasestorage.app",
+    messagingSenderId: "185447466021",
+    appId: "1:185447466021:web:e0d0720fae971b4ab52bcc",
+    measurementId: "G-V4SF92V16K"
 };
 
 const fbApp = initializeApp(firebaseConfig);
@@ -1130,7 +1131,7 @@ async function loadPage40() {
         });
     }
 
-    
+
     refreshRabattDisplays();
 
 }
@@ -1221,7 +1222,7 @@ function clearInputs() {
     // Dynamische Inhalte leeren (damit nichts „stehen bleibt“)
     const idsToClear = [
         "page5Data"
-        
+
     ];
     idsToClear.forEach(id => {
         const el = document.getElementById(id);
@@ -1239,7 +1240,7 @@ function clearInputs() {
     });
 
     updateAdminUI_();
-   
+
 }
 
 // -----------------------------
