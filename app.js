@@ -1397,6 +1397,8 @@ async function clearInputs() {
 
 }
 
+window.clearInputs = clearInputs
+
 // -----------------------------
 // Spaltenüberschriften
 // -----------------------------
