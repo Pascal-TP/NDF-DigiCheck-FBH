@@ -590,17 +590,27 @@ button.btn-disabled:hover {
 .modal-content button {
   cursor: pointer;
 }
-
 .file-list {
-  margin-top: 10px;
-  font-size: 0.9em;
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
 .file-item {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 5px;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.file-name {
+  display: inline-block;
+  max-width: 500px;
+  word-break: break-word;
 }
 
 .file-item button {

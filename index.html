@@ -630,9 +630,12 @@
                 <br>
             </p>
 
-            <div class="form-group">
-                <label for="request-files">Dateien hochladen (max. 20 MB pro Datei):</label>
-                <input type="file" id="request-files" multiple>
+            <div class="form-group upload-box">
+                <label for="request-files">Dateien hochladen (max. 20 MB gesamt):</label><br>
+                <button type="button" onclick="document.getElementById('request-files').click()">
+                    Dateien auswählen
+                </button>
+                <input type="file" id="request-files" multiple style="display:none;">
                 <div id="file-list" class="file-list"></div>
             </div>
 

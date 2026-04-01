@@ -923,12 +923,17 @@ function savePage5Data() {
 async function handleFileUpload(event) {
   const files = Array.from(event.target.files);
 
-  for (const file of files) {
-    // 🔴 20 MB Limit
-    if (file.size > 20 * 1024 * 1024) {
-      showHinweis(`Datei "${file.name}" ist größer als 20 MB.`);
-      continue;
-    }
+const currentTotal = getUploadedFilesTotalSize();
+const newFilesTotal = files.reduce((sum, file) => sum + file.size, 0);
+const maxTotalSize = 20 * 1024 * 1024;
+
+if (currentTotal + newFilesTotal > maxTotalSize) {
+  showHinweis("Die maximale Gesamtgröße aller hochgeladenen Dateien beträgt 20 MB.");
+  event.target.value = "";
+  return;
+}
+
+for (const file of files) {
 
     try {
       const safeMail = (auth.currentUser?.email || "unknown")
@@ -960,6 +965,10 @@ async function handleFileUpload(event) {
   event.target.value = "";
 }
 
+function getUploadedFilesTotalSize() {
+  return uploadedFiles.reduce((sum, file) => sum + (file.size || 0), 0);
+}
+
 // SEITE 5 – Anzeie der Dateien
 
 function renderFileList() {
@@ -973,9 +982,9 @@ function renderFileList() {
     div.className = "file-item";
 
     div.innerHTML = `
-      <span>${file.name}</span>
-      <button onclick="removeFile(${index})">Entfernen</button>
-    `;
+  <span class="file-name">${file.name}</span>
+  <button type="button" onclick="removeFile(${index})">Entfernen</button>
+`;
 
     container.appendChild(div);
   });
