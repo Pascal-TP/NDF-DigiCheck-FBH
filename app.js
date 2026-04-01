@@ -929,10 +929,10 @@ async function handleFileUpload(event) {
 
     const currentTotal = getUploadedFilesTotalSize();
     const newFilesTotal = files.reduce((sum, file) => sum + file.size, 0);
-    const maxTotalSize = 20 * 1024 * 1024;
+    const maxTotalSize = 10 * 1024 * 1024;
 
     if (currentTotal + newFilesTotal > maxTotalSize) {
-        showHinweis("Die maximale Gesamtgröße aller hochgeladenen Dateien beträgt 20 MB.");
+        showHinweis("Die maximale Gesamtgröße aller hochgeladenen Dateien beträgt 10 MB.");
         event.target.value = "";
         return;
     }
@@ -1674,6 +1674,12 @@ async function sendRequestPdfByEmail() {
         // Zusatzdaten für die Mail / Function
         const page5Data = JSON.parse(localStorage.getItem("page5Data") || "{}");
         const uploadedFiles = JSON.parse(localStorage.getItem("uploadedFiles") || "[]");
+        const totalSize = uploadedFiles.reduce((sum, f) => sum + (f.size || 0), 0);
+
+        if (totalSize > 10 * 1024 * 1024) {
+            showHinweis("Die Gesamtgröße der Dateien ist zu groß für den Versand (max. 10 MB).");
+            return;
+        }
 
         const sendPdfMail = httpsCallable(blazeFunctions, "sendRequestPdfMail");
         await sendPdfMail({
