@@ -1685,7 +1685,7 @@ async function sendRequestPdfByEmail() {
         await sendPdfMail({
             storagePath: path,
             filename: filename,
-            to: "pascal.gasch@tpholding.de",
+            to: "pascal.gasch@tpholding.de, Tilman.Patsalis@tpholding.de",
             requesterEmail: auth.currentUser?.email || "",
             angebotTyp: angebotTyp,
             shkName: page5Data["shk-name"] || "",
