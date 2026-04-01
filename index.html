@@ -366,11 +366,12 @@
             <br>
             <br>
             <button id="btnExportLog" class="hidden" onclick="exportLoginLog()">Login-Log herunterladen</button>
-            <button id="btnAdmin" class="hidden" onclick="showPage('page-admin'); loadAdminPage();">Adminbereich</button>
+            <button id="btnAdmin" class="hidden"
+                onclick="showPage('page-admin'); loadAdminPage();">Adminbereich</button>
 
         </div>
 
-    <!-- SEITE 5: ANFRAGE AN NDF -->
+        <!-- SEITE 5: ANFRAGE AN NDF -->
         <div class="page" id="page-5">
             <h2>Anfrage an NDF</h2>
 
@@ -404,222 +405,222 @@
                 <input id="execution-date" class="required" type="date" placeholder="Gewünschter Ausführungstermin">
             </div><br><br>
 
-             <p class="hint">
-                    <strong>Angebotsabgabe bis:</strong><br>
-                </p>
-                <div class="input-field">
-                    <input id="offer-date" class="required" type="date" placeholder="Angebotsabgabe bis">
-                </div><br>
-                <p class="hint">
-                    <strong>_________________________________</strong><br>
-                </p><br>
-                <p class="hint">
-                    <strong>Estrich anbieten?</strong><br>
-                </p>
-                <div class="input-field">
-                    <select id="estrich" class="required">
-                        <option value="" selected disabled>Auswahl</option>
-                        <option value="ja">ja</option>
-                        <option value="nein">nein</option>
-                    </select>
-                </div>
-                <p class="hint">
-                    <strong>Bodenbelag anbieten?</strong><br>
-                </p>
-                <div class="input-field">
-                    <select id="bodenbelag" class="required">
-                        <option value="" selected disabled>Auswahl</option>
-                        <option value="ja">ja</option>
-                        <option value="nein">nein</option>
-                    </select>
-                </div><br>
-                <p class="hint">
-                    <strong>_________________________________</strong><br>
-                </p><br>
-                <p class="hint">
-                    <strong>Systemmarke:</strong><br>
-                </p>
-                <div class="input-field">
-                    <select id="systemmarke" class="required">
-                        <option value="" selected disabled>Auswahl</option>
-                        <option value="Handelsmarke">Handelsmarke</option>
-                        <option value="Uponor">Uponor</option>
-                        <option value="Uponor">Roth</option>
-                    </select>
-                </div>
-                <p class="hint">
-                    <strong>System:</strong><br>
-                </p>
-                <div class="input-field">
-                    <select id="system" class="required">
-                        <option value="" selected disabled>Auswahl</option>
-                        <option value="Tacker">Tacker</option>
-                        <option value="Noppe">Noppe</option>
-                        <option value="Klett">Klett</option>
-                        <option value="Industriebodenheizung">Industriebodenheizung</option>
-                        <option value="Trockenbau">Trockenbau</option>
-                        <option value="Fräsen">Fräsen</option>
-                        <option value="Anderes">Anderes (siehe Freihtext)</option>
-                    </select>
-                </div><br>
-                <p class="hint">
-                    <strong>_________________________________</strong><br>
-                </p><br>
-                <p class="hint">
-                    <strong>Rohrtyp - Kunststoffrohr:</strong><br>
-                </p>
-                <div class="input-field">
-                    <select id="rohrtyp1" class="required">
-                        <option value="" selected disabled>Auswahl</option>
-                        <option value="RT_12er">RT 12er</option>
-                        <option value="RT_17er">RT 17er</option>
-                        <option value="RT_20er">RT 20er</option>
-                        <option value="Xa_17er">Xa 17er</option>
-                        <option value="Xa_20er">Xa 20er</option>
-                        <option value="keine_Auswahl">keine Auswahl</option>
-                    </select>
-                </div>
-                <p class="hint">
-                    <strong>Rohrtyp - Metallrohr:</strong><br>
-                </p>
-                <div class="input-field">
-                    <select id="rohrtyp2" class="required">
-                        <option value="" selected disabled>Auswahl</option>
-                        <option value="Metallverbund_14er">Metallverbund 14er</option>
-                        <option value="Metallverbund_16er">Metallverbund 16er</option>
-                        <option value="keine_Auswahl">keine Auswahl</option>
-                    </select>
-                </div><br>
-                <p class="hint">
-                    <strong>_________________________________</strong><br>
-                </p><br>
-                <p class="hint">
-                    <strong>Dämmung:</strong><br>
-                </p>
-                <div class="input-field">
-                    <select id="dämmung" class="required">
-                        <option value="" selected disabled>Auswahl</option>
-                        <option value="nur_oberlage">Nur Oberlage</option>
-                        <option value="mit_dämmung">Komplett mit Dämmung</option>
-                        <option value="ohne_dämmung">Komplett ohne Dämmung</option>
-                    </select>
-                </div>
-                <p class="hint">
-                    <strong>Wärmeleitgruppe (WLG) Unterdämmung:</strong><br>
-                </p>
-                <div class="input-field">
-                    <select id="wärmeleitgruppe1" class="required">
-                        <option value="" selected disabled>Auswahl</option>
-                        <option value="WLG_023">WLG 023</option>
-                        <option value="WLG_032">WLG 032</option>
-                        <option value="WLG_035">WLG 035</option>
-                        <option value="keineAnfor">keine besondere Anforderung</option>
-                    </select>
-                </div>
-                <p class="hint">
-                    <strong>Wärmeleitgruppe (WLG) Systemdämmung:</strong><br>
-                </p>
-                <div class="input-field">
-                    <select id="wärmeleitgruppe2" class="required">
-                        <option value="" selected disabled>Auswahl</option>
-                        <option value="WLG_032">WLG 032</option>
-                        <option value="WLG_035">WLG 035</option>
-                        <option value="WLG_040">WLG 040</option>
-                        <option value="WLG_045">WLG 045</option>
-                        <option value="keineAnfor">keine besondere Anforderung</option>
-                    </select>
-                </div>
-                <p class="hint">
-                    <strong>Aufbauhöhe:</strong><br>
-                </p>
-                <div class="input-field">
-                    <input id="aufbauhöhe" class="required" placeholder="Aufbauhöhe (mm)">
-                </div>
-                <div class="legal-links">
-                    <a href="#" class="legal-link" onclick="showPage('page-aufbau'); return false;">Hinweis
-                        Aufbauhöhe</a>
-                </div><br>
-                <p class="hint">
-                    <strong>_________________________________</strong><br>
-                </p><br>
-                <p class="hint">
-                    <strong>Unbeheizte Flächen?</strong><br>
-                </p>
-                <div class="input-field">
-                    <select id="unbeheizt" class="required">
-                        <option value="" selected disabled>Auswahl</option>
-                        <option value="ja">ja</option>
-                        <option value="nein">nein</option>
-                    </select>
-                </div>
-                <div class="input-field">
-                    <input id="unbeheizte_Fläche" placeholder="Wo / m² unbeheizte Fläche?">
-                </div><br>
-                <p class="hint">
-                    <strong>_________________________________</strong><br>
-                </p><br>
-                <p class="hint">
-                    <strong>Heizkreisverteiler?</strong><br>
-                </p>
-                <div class="input-field">
-                    <select id="heizkreisverteiler" class="required">
-                        <option value="" selected disabled>Auswahl</option>
-                        <option value="nur_lieferung">Nur Lieferung</option>
-                        <option value="lieferung_montage">Lieferung und Montage</option>
-                        <option value="bauseits">Bauseits</option>
-                    </select>
-                </div><br>
-                <p class="hint">
-                    <strong>_________________________________</strong><br>
-                </p><br>
-                <p class="hint">
-                    <strong>Baustellenbesichtigung (Beratungspauschale)?</strong><br>
-                </p>
-                <div class="input-field">
-                    <select id="besichtigung" class="required">
-                        <option value="" selected disabled>Auswahl</option>
-                        <option value="ja">ja</option>
-                        <option value="nein">nein</option>
-                    </select>
-                </div>
-                <p class="hint">
-                    <strong>Einfache Projektierung und Schnellauslegung?</strong><br>
-                </p>
-                <div class="input-field">
-                    <select id="schnellauslegung" class="required">
-                        <option value="" selected disabled>Auswahl</option>
-                        <option value="ja">ja</option>
-                        <option value="nein">nein</option>
-                    </select>
-                </div>
-                <p class="hint">
-                    <strong>Heizflächenberechnung?</strong><br>
-                </p>
-                <div class="input-field">
-                    <select id="berechnung" class="required">
-                        <option value="" selected disabled>Auswahl</option>
-                        <option value="ja">ja</option>
-                        <option value="nein">nein</option>
-                    </select>
-                </div>
-                <p class="hint">
-                    <strong>Heizlastberechnung?</strong><br>
-                </p>
-                <div class="input-field">
-                    <select id="heizlastberechnung" class="required">
-                        <option value="" selected disabled>Auswahl</option>
-                        <option value="ja">ja</option>
-                        <option value="nein">nein</option>
-                    </select>
-                </div><br>
-                <p class="hint">
-                    <strong>_________________________________</strong><br>
-                </p><br>
-                <div class="input-field">
-                    <textarea id="relevante_Details" placeholder="Relevante Details" rows="6"></textarea>
-                </div>
+            <p class="hint">
+                <strong>Angebotsabgabe bis:</strong><br>
+            </p>
+            <div class="input-field">
+                <input id="offer-date" class="required" type="date" placeholder="Angebotsabgabe bis">
+            </div><br>
+            <p class="hint">
+                <strong>_________________________________</strong><br>
+            </p><br>
+            <p class="hint">
+                <strong>Estrich anbieten?</strong><br>
+            </p>
+            <div class="input-field">
+                <select id="estrich" class="required">
+                    <option value="" selected disabled>Auswahl</option>
+                    <option value="ja">ja</option>
+                    <option value="nein">nein</option>
+                </select>
+            </div>
+            <p class="hint">
+                <strong>Bodenbelag anbieten?</strong><br>
+            </p>
+            <div class="input-field">
+                <select id="bodenbelag" class="required">
+                    <option value="" selected disabled>Auswahl</option>
+                    <option value="ja">ja</option>
+                    <option value="nein">nein</option>
+                </select>
+            </div><br>
+            <p class="hint">
+                <strong>_________________________________</strong><br>
+            </p><br>
+            <p class="hint">
+                <strong>Systemmarke:</strong><br>
+            </p>
+            <div class="input-field">
+                <select id="systemmarke" class="required">
+                    <option value="" selected disabled>Auswahl</option>
+                    <option value="Handelsmarke">Handelsmarke</option>
+                    <option value="Uponor">Uponor</option>
+                    <option value="Uponor">Roth</option>
+                </select>
+            </div>
+            <p class="hint">
+                <strong>System:</strong><br>
+            </p>
+            <div class="input-field">
+                <select id="system" class="required">
+                    <option value="" selected disabled>Auswahl</option>
+                    <option value="Tacker">Tacker</option>
+                    <option value="Noppe">Noppe</option>
+                    <option value="Klett">Klett</option>
+                    <option value="Industriebodenheizung">Industriebodenheizung</option>
+                    <option value="Trockenbau">Trockenbau</option>
+                    <option value="Fräsen">Fräsen</option>
+                    <option value="Anderes">Anderes (siehe Freihtext)</option>
+                </select>
+            </div><br>
+            <p class="hint">
+                <strong>_________________________________</strong><br>
+            </p><br>
+            <p class="hint">
+                <strong>Rohrtyp - Kunststoffrohr:</strong><br>
+            </p>
+            <div class="input-field">
+                <select id="rohrtyp1" class="required">
+                    <option value="" selected disabled>Auswahl</option>
+                    <option value="RT_12er">RT 12er</option>
+                    <option value="RT_17er">RT 17er</option>
+                    <option value="RT_20er">RT 20er</option>
+                    <option value="Xa_17er">Xa 17er</option>
+                    <option value="Xa_20er">Xa 20er</option>
+                    <option value="keine_Auswahl">keine Auswahl</option>
+                </select>
+            </div>
+            <p class="hint">
+                <strong>Rohrtyp - Metallrohr:</strong><br>
+            </p>
+            <div class="input-field">
+                <select id="rohrtyp2" class="required">
+                    <option value="" selected disabled>Auswahl</option>
+                    <option value="Metallverbund_14er">Metallverbund 14er</option>
+                    <option value="Metallverbund_16er">Metallverbund 16er</option>
+                    <option value="keine_Auswahl">keine Auswahl</option>
+                </select>
+            </div><br>
+            <p class="hint">
+                <strong>_________________________________</strong><br>
+            </p><br>
+            <p class="hint">
+                <strong>Dämmung:</strong><br>
+            </p>
+            <div class="input-field">
+                <select id="dämmung" class="required">
+                    <option value="" selected disabled>Auswahl</option>
+                    <option value="nur_oberlage">Nur Oberlage</option>
+                    <option value="mit_dämmung">Komplett mit Dämmung</option>
+                    <option value="ohne_dämmung">Komplett ohne Dämmung</option>
+                </select>
+            </div>
+            <p class="hint">
+                <strong>Wärmeleitgruppe (WLG) Unterdämmung:</strong><br>
+            </p>
+            <div class="input-field">
+                <select id="wärmeleitgruppe1" class="required">
+                    <option value="" selected disabled>Auswahl</option>
+                    <option value="WLG_023">WLG 023</option>
+                    <option value="WLG_032">WLG 032</option>
+                    <option value="WLG_035">WLG 035</option>
+                    <option value="keineAnfor">keine besondere Anforderung</option>
+                </select>
+            </div>
+            <p class="hint">
+                <strong>Wärmeleitgruppe (WLG) Systemdämmung:</strong><br>
+            </p>
+            <div class="input-field">
+                <select id="wärmeleitgruppe2" class="required">
+                    <option value="" selected disabled>Auswahl</option>
+                    <option value="WLG_032">WLG 032</option>
+                    <option value="WLG_035">WLG 035</option>
+                    <option value="WLG_040">WLG 040</option>
+                    <option value="WLG_045">WLG 045</option>
+                    <option value="keineAnfor">keine besondere Anforderung</option>
+                </select>
+            </div>
+            <p class="hint">
+                <strong>Aufbauhöhe:</strong><br>
+            </p>
+            <div class="input-field">
+                <input id="aufbauhöhe" class="required" placeholder="Aufbauhöhe (mm)">
+            </div>
+            <div class="legal-links">
+                <a href="#" class="legal-link" onclick="showPage('page-aufbau'); return false;">Hinweis
+                    Aufbauhöhe</a>
+            </div><br>
+            <p class="hint">
+                <strong>_________________________________</strong><br>
+            </p><br>
+            <p class="hint">
+                <strong>Unbeheizte Flächen?</strong><br>
+            </p>
+            <div class="input-field">
+                <select id="unbeheizt" class="required">
+                    <option value="" selected disabled>Auswahl</option>
+                    <option value="ja">ja</option>
+                    <option value="nein">nein</option>
+                </select>
+            </div>
+            <div class="input-field">
+                <input id="unbeheizte_Fläche" placeholder="Wo / m² unbeheizte Fläche?">
+            </div><br>
+            <p class="hint">
+                <strong>_________________________________</strong><br>
+            </p><br>
+            <p class="hint">
+                <strong>Heizkreisverteiler?</strong><br>
+            </p>
+            <div class="input-field">
+                <select id="heizkreisverteiler" class="required">
+                    <option value="" selected disabled>Auswahl</option>
+                    <option value="nur_lieferung">Nur Lieferung</option>
+                    <option value="lieferung_montage">Lieferung und Montage</option>
+                    <option value="bauseits">Bauseits</option>
+                </select>
+            </div><br>
+            <p class="hint">
+                <strong>_________________________________</strong><br>
+            </p><br>
+            <p class="hint">
+                <strong>Baustellenbesichtigung (Beratungspauschale)?</strong><br>
+            </p>
+            <div class="input-field">
+                <select id="besichtigung" class="required">
+                    <option value="" selected disabled>Auswahl</option>
+                    <option value="ja">ja</option>
+                    <option value="nein">nein</option>
+                </select>
+            </div>
+            <p class="hint">
+                <strong>Einfache Projektierung und Schnellauslegung?</strong><br>
+            </p>
+            <div class="input-field">
+                <select id="schnellauslegung" class="required">
+                    <option value="" selected disabled>Auswahl</option>
+                    <option value="ja">ja</option>
+                    <option value="nein">nein</option>
+                </select>
+            </div>
+            <p class="hint">
+                <strong>Heizflächenberechnung?</strong><br>
+            </p>
+            <div class="input-field">
+                <select id="berechnung" class="required">
+                    <option value="" selected disabled>Auswahl</option>
+                    <option value="ja">ja</option>
+                    <option value="nein">nein</option>
+                </select>
+            </div>
+            <p class="hint">
+                <strong>Heizlastberechnung?</strong><br>
+            </p>
+            <div class="input-field">
+                <select id="heizlastberechnung" class="required">
+                    <option value="" selected disabled>Auswahl</option>
+                    <option value="ja">ja</option>
+                    <option value="nein">nein</option>
+                </select>
+            </div><br>
+            <p class="hint">
+                <strong>_________________________________</strong><br>
+            </p><br>
+            <div class="input-field">
+                <textarea id="relevante_Details" placeholder="Relevante Details" rows="6"></textarea>
+            </div>
 
-                 <br><br>
+            <br><br>
             <p class="hint"><u>Für eine optimale Angebotserstellung, fügen Sie bitte der E-Mail als Anhang
                     bei:</u><br><br>
                 <strong>• Bemaßter Grundriss</strong> (PDF oder DWG)<br>
@@ -628,6 +629,13 @@
                 <strong>• Heizlastberechnung</strong> (falls vorhanden)<br>
                 <br>
             </p>
+
+            <div class="form-group">
+                <label for="request-files">Dateien hochladen (max. 20 MB pro Datei):</label>
+                <input type="file" id="request-files" multiple>
+                <div id="file-list" class="file-list"></div>
+            </div>
+
 
             <div class="error" id="page5-error" style="color:darkred; margin:10px;"></div>
 
@@ -657,30 +665,30 @@
                 <button onclick="showPage('page-5')">Zurück zur Eingabeseite</button>
             </div>
         </div>
-       
+
         <!-- SEITE 40: KOSTENVORANSCHLAG / ANFRAGE-->
         <div class="page" id="page-40">
             <h2 id="page40-title">Anfrage an NDF</h2>
 
-        <!-- Anfrage-Daten (nur bei Anfrage sichtbar) -->
+            <!-- Anfrage-Daten (nur bei Anfrage sichtbar) -->
             <div id="anfrage-daten" style="display:none; margin:20px auto; max-width:1100px; text-align:left;">
                 <div class="subtitle"></div>
                 <div id="anfrage-daten-content"></div>
                 <hr style="margin:20px 0;">
             </div>
 
-       
-        <!-- Allgemeine Hinweise aus CSV-->
+
+            <!-- Allgemeine Hinweise aus CSV-->
             <div id="hinweise-content"></div>
 
-        <!-- Buttons-->
+            <!-- Buttons-->
             <div class="button-bar">
                 <button onclick="showPage('page-3')">Zurück zum Hauptmenü</button>
                 <button onclick="sendMailPage40()">Senden als Text-Mail</button><br>
                 <button onclick="sendRequestPdfByEmail()">Anfrage absenden</button>
                 <button onclick="printPage40()">Drucken / speichern als PDF</button>
                 <button onclick="sharePdf()">PDF download</button>
-              <!--  <button type="button" class="btn" onclick="exportCsvPage40()">CSV-Export</button>-->
+                <!--  <button type="button" class="btn" onclick="exportCsvPage40()">CSV-Export</button>-->
             </div>
         </div>
 
@@ -694,11 +702,11 @@
 
             <div class="button-bar">
                 <button onclick="showPage('page-5')">zurück zur Checkliste</button>
-                
+
             </div>
         </div>
 
-        
+
         <!-- Eieruhr auf Seite 40 -->
         <div id="loader40" class="loader hidden">
             <div class="spinner"></div>

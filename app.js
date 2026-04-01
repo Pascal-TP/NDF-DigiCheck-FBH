@@ -15,6 +15,7 @@ function unlockAppUI() {
 let logoutTimer;
 let remaining = 600;
 let page40Promise = null;
+let uploadedFiles = JSON.parse(localStorage.getItem("uploadedFiles") || "[]");
 
 // -----------------------------
 // Startbild wechselt nach 3 Sekunden
@@ -177,6 +178,8 @@ import {
     httpsCallable
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-functions.js";
 
+import { deleteObject } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+
 const firebaseConfig = {
     apiKey: "AIzaSyDO8sb2v488jel3LuLCsE7-t40Rhf-aoT0",
     authDomain: "ndf-digicheck-fbh.firebaseapp.com",
@@ -297,6 +300,15 @@ document.addEventListener("DOMContentLoaded", () => {
     if (cb2) cb2.checked = false;
 
     updateAuthButtons();
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const fileInput = document.getElementById("request-files");
+  if (!fileInput) return;
+
+  fileInput.addEventListener("change", handleFileUpload);
+
+  renderFileList();
 });
 
 // -----------------------------
@@ -903,6 +915,92 @@ function savePage5Data() {
 
     localStorage.setItem("page5Data", JSON.stringify(obj));
 }
+
+// -----------------------------
+// SEITE 5 – Uplad-Funktion
+// -----------------------------
+
+async function handleFileUpload(event) {
+  const files = Array.from(event.target.files);
+
+  for (const file of files) {
+    // 🔴 20 MB Limit
+    if (file.size > 20 * 1024 * 1024) {
+      showHinweis(`Datei "${file.name}" ist größer als 20 MB.`);
+      continue;
+    }
+
+    try {
+      const safeMail = (auth.currentUser?.email || "unknown")
+        .replace(/[^a-zA-Z0-9._-]/g, "_");
+
+      const path = `requests/${safeMail}/attachments/${Date.now()}_${file.name}`;
+
+      const fileRef = storageRef(blazeStorage, path);
+
+      await uploadBytes(fileRef, file);
+
+      uploadedFiles.push({
+        name: file.name,
+        path: path,
+        size: file.size
+      });
+
+    } catch (err) {
+      console.error("Upload Fehler:", err);
+      showHinweis("Fehler beim Hochladen: " + file.name);
+    }
+  }
+
+  localStorage.setItem("uploadedFiles", JSON.stringify(uploadedFiles));
+
+  renderFileList();
+
+  // Input zurücksetzen (damit gleiche Datei erneut gewählt werden kann)
+  event.target.value = "";
+}
+
+// SEITE 5 – Anzeie der Dateien
+
+function renderFileList() {
+  const container = document.getElementById("file-list");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  uploadedFiles.forEach((file, index) => {
+    const div = document.createElement("div");
+    div.className = "file-item";
+
+    div.innerHTML = `
+      <span>${file.name}</span>
+      <button onclick="removeFile(${index})">Entfernen</button>
+    `;
+
+    container.appendChild(div);
+  });
+}
+
+// SEITE 5 – Entfernen der Dateien
+
+async function removeFile(index) {
+  const file = uploadedFiles[index];
+
+  try {
+    const fileRef = storageRef(blazeStorage, file.path);
+    await deleteObject(fileRef);
+  } catch (err) {
+    console.warn("Datei konnte nicht gelöscht werden:", err);
+  }
+
+  uploadedFiles.splice(index, 1);
+
+  localStorage.setItem("uploadedFiles", JSON.stringify(uploadedFiles));
+
+  renderFileList();
+}
+
+window.removeFile = removeFile;
 
 // -----------------------------
 // SEITE 40 – Ausgabeseite Kostenvoranschlag / Anfrage

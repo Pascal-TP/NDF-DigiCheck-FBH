@@ -590,3 +590,20 @@ button.btn-disabled:hover {
 .modal-content button {
   cursor: pointer;
 }
+
+.file-list {
+  margin-top: 10px;
+  font-size: 0.9em;
+}
+
+.file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.file-item button {
+  margin-left: 10px;
+  font-size: 0.8em;
+}
