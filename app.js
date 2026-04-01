@@ -14,6 +14,7 @@ function unlockAppUI() {
 
 let logoutTimer;
 let remaining = 600;
+let page40Promise = null;
 
 // -----------------------------
 // Startbild wechselt nach 3 Sekunden
@@ -1528,9 +1529,6 @@ async function sendRequestPdfByEmail() {
 }
 
 window.sendRequestPdfByEmail = sendRequestPdfByEmail;
-
-window.sendRequestPdfByEmail = sendRequestPdfByEmail;
-
 
 // -----------------------------
 // showLoader40 - EIERUHR 
