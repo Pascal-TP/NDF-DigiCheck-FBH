@@ -1182,6 +1182,23 @@ async function loadPage40() {
             "relevante_Details": "Relevante Details"
         };
 
+        const uploadedFilesSection = document.getElementById("uploaded-files-section");
+        const uploadedFilesSummary = document.getElementById("uploaded-files-summary");
+
+        if (uploadedFilesSection && uploadedFilesSummary) {
+            const files = JSON.parse(localStorage.getItem("uploadedFiles") || "[]");
+
+            if (files.length > 0) {
+                uploadedFilesSummary.innerHTML = files
+                    .map(file => `<div style="margin:6px 0;">• ${file.name}</div>`)
+                    .join("");
+                uploadedFilesSection.style.display = "block";
+            } else {
+                uploadedFilesSummary.innerHTML = "";
+                uploadedFilesSection.style.display = "none";
+            }
+        }
+
         let html = "";
         Object.keys(labels).forEach(id => {
             const val = (p5[id] || "").trim();
@@ -1656,6 +1673,7 @@ async function sendRequestPdfByEmail() {
 
         // Zusatzdaten für die Mail / Function
         const page5Data = JSON.parse(localStorage.getItem("page5Data") || "{}");
+        const uploadedFiles = JSON.parse(localStorage.getItem("uploadedFiles") || "[]");
 
         const sendPdfMail = httpsCallable(blazeFunctions, "sendRequestPdfMail");
         await sendPdfMail({
@@ -1669,7 +1687,8 @@ async function sendRequestPdfByEmail() {
             shkEmail: page5Data["shk-email"] || "",
             siteAddress: page5Data["site-address"] || "",
             offerDate: page5Data["offer-date"] || "",
-            executionDate: page5Data["execution-date"] || ""
+            executionDate: page5Data["execution-date"] || "",
+            attachmentFiles: uploadedFiles
         });
 
         showHinweis("Die Anfrage wurde erfolgreich per E-Mail versendet.");
