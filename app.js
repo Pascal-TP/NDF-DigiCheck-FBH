@@ -171,7 +171,7 @@ import {
 import {
     getStorage,
     ref as storageRef,
-    uploadBytes,
+    uploadBytesResumable,
     deleteObject
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js";
 
@@ -947,7 +947,32 @@ async function handleFileUpload(event) {
 
             const fileRef = storageRef(blazeStorage, path);
 
-            await uploadBytes(fileRef, file);
+            const uploadTask = uploadBytesResumable(fileRef, file);
+
+            const progressContainer = document.getElementById("upload-progress-container");
+            const progressBar = document.getElementById("upload-progress-bar");
+            const progressText = document.getElementById("upload-progress-text");
+
+            progressContainer.style.display = "block";
+
+            await new Promise((resolve, reject) => {
+                uploadTask.on(
+                    "state_changed",
+                    (snapshot) => {
+                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        progressBar.style.width = progress + "%";
+                        progressText.innerText = Math.round(progress) + " %";
+                    },
+                    (error) => {
+                        reject(error);
+                    },
+                    () => {
+                        progressBar.style.width = "100%";
+                        progressText.innerText = "Upload abgeschlossen";
+                        resolve();
+                    }
+                );
+            });
 
             uploadedFiles.push({
                 name: file.name,
@@ -967,11 +992,19 @@ async function handleFileUpload(event) {
 
     // Input zurücksetzen (damit gleiche Datei erneut gewählt werden kann)
     event.target.value = "";
+
+    setTimeout(() => {
+    progressBar.style.width = "0%";
+    progressText.innerText = "0%";
+    progressContainer.style.display = "none";
+}, 1000);
 }
 
 function getUploadedFilesTotalSize() {
     return uploadedFiles.reduce((sum, file) => sum + (file.size || 0), 0);
 }
+
+
 
 // SEITE 5 – Anzeie der Dateien
 
@@ -1686,7 +1719,7 @@ async function sendRequestPdfByEmail() {
         await sendPdfMail({
             storagePath: path,
             filename: filename,
-            to: "pascal.gasch@tpholding.de, Tilman.Patsalis@tpholding.de",
+            to: "pascal.gasch@tpholding.de",
             cc: userEmail,
             requesterEmail: auth.currentUser?.email || "",
             angebotTyp: angebotTyp,
