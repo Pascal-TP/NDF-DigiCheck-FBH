@@ -1673,6 +1673,7 @@ async function sendRequestPdfByEmail() {
 
         // Zusatzdaten für die Mail / Function
         const page5Data = JSON.parse(localStorage.getItem("page5Data") || "{}");
+        const userEmail = auth.currentUser?.email || "";
         const uploadedFiles = JSON.parse(localStorage.getItem("uploadedFiles") || "[]");
         const totalSize = uploadedFiles.reduce((sum, f) => sum + (f.size || 0), 0);
 
