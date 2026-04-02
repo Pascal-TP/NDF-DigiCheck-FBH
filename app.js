@@ -171,6 +171,7 @@ import {
 import {
     getStorage,
     ref as storageRef,
+    uploadBytes,
     uploadBytesResumable,
     deleteObject
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-storage.js";
