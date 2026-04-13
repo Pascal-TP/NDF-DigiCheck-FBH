@@ -75,8 +75,8 @@ function resetStoredInputsOnReload() {
     keysToRemove.forEach(k => localStorage.removeItem(k));
 }
 
-// SOFORT ausführen (möglichst früh)
-resetStoredInputsOnReload();
+
+
 
 // -----------------------------
 // Firebase - E-Mail+Passwort
@@ -122,6 +122,10 @@ const blazeApp = initializeApp(blazeConfig, "blazeApp");
 const blazeStorage = getStorage(blazeApp);
 const blazeFunctions = getFunctions(blazeApp, "europe-west1");
 
+let uploadedFiles = JSON.parse(localStorage.getItem("uploadedFiles") || "[]");
+let page40Promise = null;
+resetStoredInputsOnReload();
+
 document.addEventListener("DOMContentLoaded", () => {
     const app = document.getElementById("app");
     app?.classList.remove("hidden");
@@ -138,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-let uploadedFiles = JSON.parse(localStorage.getItem("uploadedFiles") || "[]");
+
 
 // -----------------------------
 // allgemeine Hinweise-Checkbox Gate (Login + Registrierung)
@@ -326,6 +330,10 @@ function getRequesterKey() {
 async function handleFileUpload(event) {
     const files = Array.from(event.target.files);
 
+    const progressContainer = document.getElementById("upload-progress-container");
+    const progressBar = document.getElementById("upload-progress-bar");
+    const progressText = document.getElementById("upload-progress-text");
+
     const currentTotal = getUploadedFilesTotalSize();
     const newFilesTotal = files.reduce((sum, file) => sum + file.size, 0);
     const maxTotalSize = 10 * 1024 * 1024;
@@ -346,9 +354,7 @@ async function handleFileUpload(event) {
 
             const uploadTask = uploadBytesResumable(fileRef, file);
 
-            const progressContainer = document.getElementById("upload-progress-container");
-            const progressBar = document.getElementById("upload-progress-bar");
-            const progressText = document.getElementById("upload-progress-text");
+
 
             progressContainer.style.display = "block";
 
@@ -494,7 +500,7 @@ function renderHinweisLine(colA, colB) {
 }
 
 async function loadPage40() {
-    
+
     const angebotTyp = localStorage.getItem("angebotTyp") || "kv";
     const titleEl = document.getElementById("page40-title");
     if (titleEl) {
