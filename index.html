@@ -106,42 +106,55 @@
                 E-Mail: info@ndf-gmbh.de
 
                 <h3>2. Zweck und Rechtsgrundlage der Verarbeitung</h3>
-                Wir verarbeiten personenbezogene Daten, um die Nutzung des Tools zu ermöglichen, insbesondere:<br>
+                Wir verarbeiten personenbezogene Daten ausschließlich zur Bearbeitung von Anfragen über das Tool „NDF
+                DigiCheck FBH“.<br><br>
 
-                - Registrierung und Anmeldung von Nutzern<br>
+                Dabei werden die eingegebenen Daten verwendet für:<br>
+                - Erstellung einer Anfrage<br>
+                - Generierung eines PDF-Dokuments<br>
+                - Versand der Anfrage per E-Mail an NDF sowie als Kopie an den Anfragenden<br>
+                - Speicherung von hochgeladenen Dateien zur Weiterverarbeitung der Anfrage<br><br>
 
-                - Bereitstellung der Funktionen des Tools (Kalkulation, PDF-Erstellung)
-                Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Vertrag / vorvertragliche Maßnahmen) bzw. Art. 6 Abs. 1
-                lit.
-                f DSGVO (berechtigtes Interesse an der sicheren Bereitstellung des Tools), soweit anwendbar.
+                Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen) sowie Art. 6 Abs. 1 lit. f
+                DSGVO (berechtigtes Interesse an einer effizienten Bearbeitung von Anfragen).
 
                 <h3>3. Welche Daten verarbeiten wir?</h3>
-                Je nach Nutzung des Tools können folgende Daten verarbeitet werden:<br>
+                Im Rahmen der Nutzung des Tools werden folgende Daten verarbeitet:<br><br>
 
-                a) Registrierung/Anmeldung (Pflichtangaben)<br>
-
+                a) Kontaktdaten (Pflichtfelder)<br>
+                - SHK-Kundennummer<br>
+                - Firmenname<br>
+                - Ansprechpartner<br>
                 - E-Mail-Adresse<br>
+                - Telefonnummer<br>
+                - Baustellenadresse<br><br>
 
-                - Passwort (wird im Regelfall von Firebase als Hash/Authentifizierungsinformation verarbeitet, nicht im
-                Klartext von uns)<br>
+                b) Projektdaten<br>
+                - Ausführungstermin<br>
+                - Angebotsdatum<br>
+                - technische Auswahlparameter (z. B. System, Dämmung, Rohrtyp etc.)<br>
+                - Freitextangaben<br><br>
 
-                - Technische Metadaten zur Anmeldung (z. B. Zeitpunkt der Anmeldung)<br>
+                c) Hochgeladene Dateien<br>
+                - z. B. Grundrisse, Berechnungen oder sonstige projektrelevante Dokumente<br><br>
 
-                b) Nutzungsdaten / technische Daten<br>
-                Bei der Nutzung können technisch erforderliche Daten anfallen (z. B. IP-Adresse,
-                Geräte-/Browser-Informationen, Zeitstempel), soweit dies zur Bereitstellung und Sicherheit des Dienstes
-                erforderlich ist.<br>
+                d) Technische Daten<br>
+                - IP-Adresse<br>
+                - Zeitstempel<br>
+                - Browser-Informationen (nur soweit technisch erforderlich)<br><br>
 
-                c) Eingaben im Tool / PDF-Erstellung<br>
-                Sofern das Tool Eingabefelder für personenbezogene Angaben enthält (z. B. Name/Adresse), werden diese
-                ausschließlich zur Darstellung/Verarbeitung im Tool und zur Erstellung von PDF-Dokumenten verwendet.
-                Eingaben werden nach Neuladen oder über ‚Eingaben löschen‘ entfernt und nicht dauerhaft gespeichert.
+                Die eingegebenen Daten werden ausschließlich zur Erstellung und Übermittlung der Anfrage verwendet.
 
                 <h3>4. Empfänger / Dienstleister (Firebase/Google)</h3>
-                Zur Bereitstellung von Authentifizierung und ggf. Datenhaltung nutzen wir Google Firebase (Google
-                Ireland
-                Limited bzw. Google LLC als Konzernunternehmen). Firebase wird hierbei typischerweise als
-                Auftragsverarbeiter tätig.
+                ZZur technischen Bereitstellung des Tools nutzen wir Google Firebase (Google Ireland Limited bzw. Google
+                LLC).<br><br>
+
+                Dabei werden folgende Dienste verwendet:<br>
+                - Firebase Hosting (Bereitstellung der Website)<br>
+                - Firebase Cloud Storage (temporäre Speicherung von Uploads)<br>
+                - Firebase Cloud Functions (E-Mail-Versand)<br><br>
+
+                Firebase wird als Auftragsverarbeiter im Sinne der DSGVO eingesetzt.
 
                 <h3>5. Drittlandübermittlung</h3>
                 Im Rahmen der Nutzung von Firebase kann es zu Datenübermittlungen in Drittländer (z. B. USA) kommen. Wir
@@ -149,15 +162,16 @@
                 Standardvertragsklauseln / entsprechende Mechanismen von Google).
 
                 <h3>6. Speicherdauer / Löschung</h3>
-                Wir speichern personenbezogene Daten nur so lange, wie es für die oben genannten Zwecke erforderlich
-                ist:<br>
+                Die im Tool eingegebenen Daten werden nicht dauerhaft gespeichert.<br><br>
 
-                - Registrierungs-/Kontodaten: bis zur Löschung des Benutzerkontos bzw. solange ein aktiver Zugang
-                besteht<br>
+                - Formulardaten werden nur temporär im Browser verarbeitet und nach dem Absenden oder Neuladen
+                gelöscht<br>
+                - Hochgeladene Dateien werden in Firebase Cloud Storage gespeichert und automatisch nach kurzer Zeit
+                gelöscht (z. B. nach 24 Stunden, sofern entsprechend konfiguriert)<br>
+                - E-Mail-Daten werden nur im Rahmen der Anfrageverarbeitung genutzt<br><br>
 
-                - Protokoll-/Sicherheitsdaten: 90 Tage<br>
-
-                - Eingaben zur PDF-Erstellung: bis durch Nutzer gelöscht
+                Eine darüber hinausgehende Speicherung erfolgt nur, wenn dies zur Bearbeitung der Anfrage erforderlich
+                ist.
 
                 <h3>7. Rechte der betroffenen Personen</h3>
                 Betroffene Personen haben – soweit die Voraussetzungen vorliegen – folgende Rechte:<br>
@@ -178,10 +192,21 @@
                 Sie haben das Recht, sich bei einer Datenschutzaufsichtsbehörde zu beschweren.
 
                 <h3>9. Pflicht zur Bereitstellung von Daten</h3>
-                Ohne die für Registrierung/Anmeldung erforderlichen Daten ist eine Nutzung des Tools nicht möglich.
+                Die Bereitstellung der als Pflichtfelder gekennzeichneten Daten ist erforderlich, um eine Anfrage über
+                das Tool stellen zu können.
+                Ohne diese Angaben kann die Anfrage nicht verarbeitet oder versendet werden.
 
                 <h3>10. Automatisierte Entscheidungen / Profiling</h3>
                 Eine automatisierte Entscheidungsfindung einschließlich Profiling findet nicht statt.
+
+                <h3></h3>11. E-Mail-Versand</h3>
+                Die im Tool eingegebene E-Mail-Adresse wird verwendet, um:<br>
+                - eine Kopie der Anfrage an den Anfragenden zu senden<br>
+                - die Anfrage intern bei NDF zuzustellen<br><br>
+
+                Der Versand erfolgt automatisiert über eine serverseitige Funktion (Firebase Cloud Functions).<br><br>
+
+                Die E-Mail-Adresse wird ausschließlich für diesen Zweck verwendet.<br><br>
 
                 Stand: 27.02.2026<br><br>
             </div>
