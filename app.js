@@ -83,31 +83,6 @@ resetStoredInputsOnReload();
 // -----------------------------
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-import {
-    getAuth,
-    signInWithEmailAndPassword,
-    sendPasswordResetEmail,
-    updatePassword,
-    signOut,
-    onAuthStateChanged,
-    setPersistence,
-    browserSessionPersistence,
-    createUserWithEmailAndPassword
-} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-
-import {
-    getFirestore,
-    addDoc,
-    collection,
-    serverTimestamp,
-    doc,
-    setDoc,
-    getDoc,
-    updateDoc,
-    query,
-    where,
-    getDocs
-} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
 import {
     getStorage,
@@ -143,92 +118,34 @@ const blazeConfig = {
 };
 
 const fbApp = initializeApp(firebaseConfig);
-const auth = getAuth(fbApp);
 const blazeApp = initializeApp(blazeConfig, "blazeApp");
 const blazeStorage = getStorage(blazeApp);
 const blazeFunctions = getFunctions(blazeApp, "europe-west1");
 
-
-(async () => {
-    // 1) Persistenz: nichts im Browser behalten
-    await setPersistence(auth, browserSessionPersistence);
-
-    // 2) EINMALIGER Cleanup: falls noch eine alte Session (local) rumliegt, abmelden
-    // (nachdem du das einmal deployed hast, ist es danach dauerhaft sauber)
-    // await signOut(auth);
-
-    // 3) Listener erst DANACH
+document.addEventListener("DOMContentLoaded", () => {
     const app = document.getElementById("app");
-    onAuthStateChanged(auth, user => {
-        currentUser = user || null;
+    app?.classList.remove("hidden");
 
-        const actions = document.getElementById("user-actions");
-        const info = document.getElementById("login-info");
+    const fileInput = document.getElementById("request-files");
+    if (fileInput) {
+        fileInput.addEventListener("change", handleFileUpload);
+    }
 
-        if (user) {
-            // UI
-            actions?.classList.remove("hidden");
-            if (info) info.innerText = "Angemeldet als: " + user.email;
-            updateAdminUI_();
+    renderFileList();
 
-            // direkt ins Tool (ohne Splash)
-            const target = getInitialPage(); // oder dein lastPage-Mechanismus
-            history.replaceState({ page: target }, "", "#" + target);
-            showPage(target, true);
+    const startPage = location.hash.replace("#", "") || "page-start";
+    showPage(startPage, true);
+});
 
-        } else {
-            // UI
-            actions?.classList.add("hidden");
-            if (info) info.innerText = "";
-            updateAdminUI_();
 
-            // Splash zeigen und dann zum Login
-            showPage("page-start", true);
-            startSplashScreen();
-        }
 
-        // App sichtbar machen
-        app?.classList.remove("hidden");
-    });
-})();
-
-const db = getFirestore(fbApp);
 
 // -----------------------------
 // allgemeine Hinweise-Checkbox Gate (Login + Registrierung)
 // (ohne Persistenz: nach Reload wieder leer, Haken frei entfernbar)
 // -----------------------------
 
-function isPrivacyAccepted() {
-    const cb1 = document.getElementById("chkPrivacyAck");
-    const cb2 = document.getElementById("chkPrivacyAck2");
-    return !!(cb1?.checked || cb2?.checked);
-}
 
-function updateAuthButtons() {
-    const ok = isPrivacyAccepted();
-
-    const btnLogin = document.getElementById("btnLogin");
-    const btnRegisterSend = document.getElementById("btnRegisterSend");
-
-    // NICHT disabled setzen -> sonst kein Klick -> keine Fehlermeldung
-    btnLogin?.classList.toggle("btn-disabled", !ok);
-    btnRegisterSend?.classList.toggle("btn-disabled", !ok);
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    const cb1 = document.getElementById("chkPrivacyAck");
-    const cb2 = document.getElementById("chkPrivacyAck2");
-
-    cb1?.addEventListener("change", updateAuthButtons);
-    cb2?.addEventListener("change", updateAuthButtons);
-
-    // Startzustand: ohne Haken
-    if (cb1) cb1.checked = false;
-    if (cb2) cb2.checked = false;
-
-    updateAuthButtons();
-});
 
 document.addEventListener("DOMContentLoaded", () => {
     const fileInput = document.getElementById("request-files");
@@ -244,35 +161,16 @@ document.addEventListener("DOMContentLoaded", () => {
 // -----------------------------
 
 async function showPage(id, fromHistory = false) {
-
-    // Ohne Login nur diese Seiten erlauben:
-    const publicPages = new Set([
-        "page-start",
-        "page-privacy",
-        "page-imprint",
-        "page-hinweis"
-    ]);
-
-    if (!isLoggedIn() && !publicPages.has(id)) {
-        console.warn("Blocked navigation (not logged in):", id);
-        id = "page-login";
-    }
-
-    // letzte Seite merken (nur wenn eingeloggt und nicht login/start)
-    if (isLoggedIn()) {
-        sessionStorage.setItem("lastPage", id);
-    }
-
-    // Browser-History nur setzen, wenn NICHT durch Zurück/Vor ausgelöst
     if (!fromHistory) {
         history.pushState({ page: id }, "", "#" + id);
     }
 
     document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-    const el = document.getElementById(id);
-    if (!el) return;           // Sicherheitsnetz
 
-    document.getElementById(id).classList.add("active");
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    el.classList.add("active");
 
     if (id === "page-40") {
         showLoader40(true);
@@ -283,19 +181,6 @@ async function showPage(id, fromHistory = false) {
             showLoader40(false);
         }
     }
-
-    if (id === "page-admin") {
-        await loadAdminPage();
-    }
-
-    // Checkboxen beim Seitenwechsel zurücksetzen
-    const cb1 = document.getElementById("chkPrivacyAck");
-    const cb2 = document.getElementById("chkPrivacyAck2");
-
-    if (cb1) cb1.checked = false;
-    if (cb2) cb2.checked = false;
-
-    updateAuthButtons();
 }
 
 // -----------------------------
@@ -357,8 +242,6 @@ function updatePage5DetailUI() {
 
 function submitPage5() {
 
-    const detailAktiv = !!document.getElementById("chkDetail")?.checked;
-
     const fields = [
         { id: "pj-number", name: "SHK - Kunden-Nr." },
         { id: "shk-name", name: "SHK Name/Firma" },
@@ -404,8 +287,9 @@ function submitPage5() {
     errorDiv.innerText = "";
 
     savePage5Data();
+    localStorage.setItem("angebotTyp", "anfrage");
 
-    showPage(detailAktiv ? "page-21" : "page-4");
+    showPage("page-40");
 }
 
 function savePage5Data() {
@@ -430,6 +314,13 @@ function savePage5Data() {
 // SEITE 5 – Uplad-Funktion
 // -----------------------------
 
+function getRequesterKey() {
+    const mail =
+        (document.getElementById("shk-email")?.value || "").trim().toLowerCase();
+
+    return (mail || "unknown").replace(/[^a-z0-9._-]/g, "_");
+}
+
 async function handleFileUpload(event) {
     const files = Array.from(event.target.files);
 
@@ -446,10 +337,8 @@ async function handleFileUpload(event) {
     for (const file of files) {
 
         try {
-            const safeMail = (auth.currentUser?.email || "unknown")
-                .replace(/[^a-zA-Z0-9._-]/g, "_");
-
-            const path = `requests/${safeMail}/attachments/${Date.now()}_${file.name}`;
+            const requesterKey = getRequesterKey();
+            const path = `requests/${requesterKey}/attachments/${Date.now()}_${file.name}`;
 
             const fileRef = storageRef(blazeStorage, path);
 
