@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-
+let uploadedFiles = JSON.parse(localStorage.getItem("uploadedFiles") || "[]");
 
 // -----------------------------
 // allgemeine Hinweise-Checkbox Gate (Login + Registrierung)
