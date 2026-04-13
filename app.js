@@ -951,7 +951,7 @@ async function sendRequestPdfByEmail() {
         await sendPdfMail({
             storagePath: path,
             filename: filename,
-            to: "pascal.gasch@tpholding.de, Tilman.Patsalis@tpholding.de",
+            to: "pascal.gasch@tpholding.de",
             cc: requesterEmail,
             requesterEmail: requesterEmail,
             angebotTyp: angebotTyp,
