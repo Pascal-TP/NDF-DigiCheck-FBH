@@ -321,6 +321,15 @@ function getRequesterKey() {
     return (mail || "unknown").replace(/[^a-z0-9._-]/g, "_");
 }
 
+function getRequesterEmail() {
+    return (document.getElementById("shk-email")?.value || "").trim().toLowerCase();
+}
+
+function getRequesterKey() {
+    const mail = getRequesterEmail();
+    return (mail || "unknown").replace(/[^a-z0-9._-]/g, "_");
+}
+
 async function handleFileUpload(event) {
     const files = Array.from(event.target.files);
 
@@ -902,48 +911,42 @@ async function buildPage40PdfBlob() {
 window.buildPage40PdfBlob = buildPage40PdfBlob;
 
 async function sendRequestPdfByEmail() {
-    if (!isLoggedIn()) {
-        showHinweis("Bitte zuerst anmelden.");
-        return;
-    }
-
     const angebotTyp = localStorage.getItem("angebotTyp") || "kv";
     if (angebotTyp !== "anfrage") {
         showHinweis("Der PDF-Versand ist nur für Anfragen vorgesehen.");
         return;
     }
 
+    const page5Data = JSON.parse(localStorage.getItem("page5Data") || "{}");
+    const requesterEmail = (page5Data["shk-email"] || "").trim().toLowerCase();
+
+    if (!requesterEmail) {
+        showHinweis("Bitte geben Sie auf Seite 5 eine SHK-E-Mail-Adresse an.");
+        return;
+    }
+
     try {
         showLoader40(true);
 
-        // Sicherstellen, dass Seite 40 vollständig aufgebaut ist
         if (typeof page40Promise !== "undefined" && page40Promise) {
             await page40Promise;
             await new Promise(r => setTimeout(r, 150));
         }
 
-        // PDF erzeugen
         const { blob, filename } = await buildPage40PdfBlob();
 
         if (!blob || !filename) {
             throw new Error("PDF konnte nicht erzeugt werden.");
         }
 
-        // Speicherpfad bauen
-        const safeMail = (auth.currentUser?.email || "unknown")
-            .replace(/[^a-zA-Z0-9._-]/g, "_");
+        const requesterKey = requesterEmail.replace(/[^a-z0-9._-]/g, "_");
+        const path = `requests/${requesterKey}/${Date.now()}_${filename}`;
 
-        const path = `requests/${safeMail}/${Date.now()}_${filename}`;
-
-        // Upload ins Blaze-Storage
         const fileRef = storageRef(blazeStorage, path);
         await uploadBytes(fileRef, blob, {
             contentType: "application/pdf"
         });
 
-        // Zusatzdaten für die Mail / Function
-        const page5Data = JSON.parse(localStorage.getItem("page5Data") || "{}");
-        const userEmail = auth.currentUser?.email || "";
         const uploadedFiles = JSON.parse(localStorage.getItem("uploadedFiles") || "[]");
         const totalSize = uploadedFiles.reduce((sum, f) => sum + (f.size || 0), 0);
 
@@ -957,12 +960,12 @@ async function sendRequestPdfByEmail() {
             storagePath: path,
             filename: filename,
             to: "pascal.gasch@tpholding.de, Tilman.Patsalis@tpholding.de",
-            cc: userEmail,
-            requesterEmail: auth.currentUser?.email || "",
+            cc: requesterEmail,
+            requesterEmail: requesterEmail,
             angebotTyp: angebotTyp,
             shkName: page5Data["shk-name"] || "",
             shkContact: page5Data["shk-contact"] || "",
-            shkEmail: page5Data["shk-email"] || "",
+            shkEmail: requesterEmail,
             siteAddress: page5Data["site-address"] || "",
             offerDate: page5Data["offer-date"] || "",
             executionDate: page5Data["execution-date"] || "",
@@ -994,27 +997,14 @@ function showLoader40(show) {
 
 window.addEventListener("popstate", (e) => {
     const page = e.state?.page;
-
     if (!page) return;
-
-    // Sicherheit: Login-Seite blockieren, wenn eingeloggt
-    if (page === "page-login" && auth.currentUser) {
-        showPage("page-3", true);
-        return;
-    }
-
     showPage(page, true);
 });
 
 function getInitialPage() {
     const hash = location.hash.replace("#", "");
-    return hash || "page-3";
+    return hash || "page-start";
 }
-
-// -----------------------------
-
-document.body.addEventListener("mousemove", () => remaining = 600);
-document.body.addEventListener("keydown", () => remaining = 600);
 
 // -----------------------------
 // Funktionen für HTML global verfügbar machen
