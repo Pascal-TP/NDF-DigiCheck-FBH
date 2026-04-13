@@ -1,31 +1,4 @@
-let currentUser = null;
 document.documentElement.classList.add("js");
-function isLoggedIn() {
-    return !!auth.currentUser;
-}
-
-function lockAppUI() {
-    document.body.classList.add("app-locked");
-}
-
-function unlockAppUI() {
-    document.body.classList.remove("app-locked");
-}
-
-let logoutTimer;
-let remaining = 600;
-let page40Promise = null;
-let uploadedFiles = JSON.parse(localStorage.getItem("uploadedFiles") || "[]");
-
-// -----------------------------
-// Startbild wechselt nach 3 Sekunden
-// -----------------------------
-
-function startSplashScreen() {
-    setTimeout(() => {
-        showPage("page-login");
-    }, 3000);
-}
 
 // -----------------------------
 // Hinweistexte in eigenen Hinweisfenster
@@ -104,38 +77,6 @@ function resetStoredInputsOnReload() {
 
 // SOFORT ausführen (möglichst früh)
 resetStoredInputsOnReload();
-
-// -----------------------------
-// Drop-down Menü
-// -----------------------------
-
-function handleUserAction(val) {
-    if (!val) return;
-
-    // ✅ Navigationseinträge
-    if (val.startsWith("nav:")) {
-        const pageId = val.replace("nav:", "");
-        showPage(pageId);
-        const sel = document.getElementById("user-action-select");
-        if (sel) sel.value = "";
-        return;
-    }
-
-    // bestehende Aktionen
-    if (val === "changePw") goToChange();
-    if (val === "clear") {
-        showConfirm("Alle Eingaben wirklich löschen?", () => {
-            clearInputs();
-        });
-    }
-    if (val === "logout") logout();
-
-    // zurücksetzen, damit man die gleiche Aktion nochmal wählen kann
-    const sel = document.getElementById("user-action-select");
-    if (sel) sel.value = "";
-}
-window.handleUserAction = handleUserAction;
-
 
 // -----------------------------
 // Firebase - E-Mail+Passwort
@@ -254,20 +195,6 @@ const blazeFunctions = getFunctions(blazeApp, "europe-west1");
 const db = getFirestore(fbApp);
 
 // -----------------------------
-// Admin-Liste
-// -----------------------------
-const ADMIN_EMAILS = [
-    "pascal.gasch@tpholding.de",
-    "marcel.zens@tpholding.de",
-    "julian.kniep@tga-nord.de"
-];
-
-function isAdminUser() {
-    const email = (auth.currentUser?.email || "").toLowerCase();
-    return ADMIN_EMAILS.includes(email);
-}
-
-// -----------------------------
 // allgemeine Hinweise-Checkbox Gate (Login + Registrierung)
 // (ohne Persistenz: nach Reload wieder leer, Haken frei entfernbar)
 // -----------------------------
@@ -313,96 +240,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // -----------------------------
-// Registrierung anlegen (mit Zufallspasswort)
-// -----------------------------
-
-function makeTempPassword(len = 18) {
-    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@$%*-_";
-    let out = "";
-    for (let i = 0; i < len; i++) out += chars[Math.floor(Math.random() * chars.length)];
-    return out;
-}
-
-async function registerRequest() {
-    const err = document.getElementById("reg-error");
-    const info = document.getElementById("reg-info");
-    if (err) err.innerText = "";
-    if (info) info.innerText = "";
-
-    const firma = (document.getElementById("reg-firma")?.value || "").trim();
-    const name = (document.getElementById("reg-name")?.value || "").trim();
-    const strasse = (document.getElementById("reg-strasse")?.value || "").trim();
-    const hausnr = (document.getElementById("reg-hausnr")?.value || "").trim();
-    const plz = (document.getElementById("reg-plz")?.value || "").trim();
-    const ort = (document.getElementById("reg-ort")?.value || "").trim();
-    const email = (document.getElementById("reg-email")?.value || "").trim().toLowerCase();
-    const tel = (document.getElementById("reg-tel")?.value || "").trim();
-
-    // 1) Erst Pflichtfelder prüfen
-    const missing = [];
-    if (!firma) missing.push("Firmenname");
-    if (!name) missing.push("Name Ansprechpartner");
-    if (!strasse) missing.push("Straße");
-    if (!hausnr) missing.push("Hausnummer");
-    if (!plz) missing.push("PLZ");
-    if (!ort) missing.push("Ort");
-    if (!email) missing.push("E-Mail-Adresse");
-    if (!tel) missing.push("Telefonnummer");
-
-    if (missing.length) {
-        if (err) err.innerText = "Bitte ausfüllen: " + missing.join(", ");
-        return;
-    }
-
-    // 2) Dann Checkbox prüfen
-    if (!isPrivacyAccepted()) {
-        if (err) err.innerText =
-            "Bitte bestätigen Sie die Datenschutzerklärung (Haken setzen), um die Registrierung abzusenden.";
-        return;
-    }
-
-    try {
-        const cred = await createUserWithEmailAndPassword(auth, email, makeTempPassword());
-
-        await setDoc(doc(db, "users", cred.user.uid), {
-            firma, name, strasse, hausnr, plz, ort, email, tel,
-            approved: false,
-            createdAt: serverTimestamp()
-        });
-
-        await addDoc(collection(db, "registrationRequests"), {
-            uid: cred.user.uid,
-            email,
-            firma,
-            name,
-            createdAt: serverTimestamp(),
-            status: "pending"
-        });
-
-        await signOut(auth);
-
-        if (info) info.innerText = "Registrierung eingegangen. Du erhältst Zugang nach Freigabe.";
-
-        // zurück zum Login
-        showPage("page-login");
-        const loginError = document.getElementById("loginError");
-        if (loginError) loginError.innerText = "Registrierung eingegangen. Bitte auf Freigabe warten.";
-
-    } catch (e) {
-        console.error(e);
-        if (err) {
-            if (String(e?.code || "").includes("auth/email-already-in-use")) {
-                err.innerText = "Diese E-Mail ist bereits registriert. Nutze 'Passwort vergessen' oder kontaktiere den Admin.";
-            } else {
-                err.innerText = "Registrierung fehlgeschlagen. Bitte prüfen und erneut versuchen.";
-            }
-        }
-    }
-}
-
-window.registerRequest = registerRequest;
-
-// -----------------------------
 // showPage
 // -----------------------------
 
@@ -410,9 +247,7 @@ async function showPage(id, fromHistory = false) {
 
     // Ohne Login nur diese Seiten erlauben:
     const publicPages = new Set([
-        "page-login",
         "page-start",
-        "page-register",
         "page-privacy",
         "page-imprint",
         "page-hinweis"
@@ -461,336 +296,6 @@ async function showPage(id, fromHistory = false) {
     if (cb2) cb2.checked = false;
 
     updateAuthButtons();
-}
-
-// -----------------------------
-// LOGIN - LOGOUT - PASSWORD
-// -----------------------------
-
-async function login() {
-    const loginError = document.getElementById("loginError");
-
-    const email = (document.getElementById("loginUser")?.value || "").trim();
-    const pw = (document.getElementById("loginPass")?.value || "");
-
-    // 1) Erst Eingaben prüfen
-    if (!email || !pw) {
-        loginError.innerText = "Bitte E-Mail und Passwort eingeben.";
-        return;
-    }
-
-    // 2) Dann Datenschutz-Haken prüfen
-    if (!isPrivacyAccepted()) {
-        if (loginError) loginError.innerText =
-            "Bitte bestätigen Sie die Datenschutzerklärung und die allgemeinen Hinweise (Haken setzen), um sich anzumelden.";
-        return;
-    }
-
-    try {
-        const cred = await signInWithEmailAndPassword(auth, email, pw);
-        currentUser = cred.user;
-
-        // zentral loggen
-        await addDoc(collection(db, "loginLogs"), {
-            uid: currentUser.uid,
-            email: currentUser.email,
-            event: "LOGIN_SUCCESS",
-            time: serverTimestamp()
-        });
-
-        const udoc = await getDoc(doc(db, "users", currentUser.uid));
-        const approved = udoc.exists() && udoc.data().approved === true;
-
-        if (!approved) {
-            await signOut(auth);
-            currentUser = null;
-            showPage("page-login");
-            loginError.innerText = "Account ist noch nicht freigeschaltet. Bitte auf Freigabe warten.";
-            return;
-        }
-
-        await clearUploadedFilesFromStorage();
-        localStorage.removeItem("uploadedFiles");
-
-        updateAdminUI_();
-        startTimer();
-        showPage("page-3");
-    } catch (e) {
-        console.error("LOGIN ERROR:", e?.code, e?.message, e);
-        loginError.innerText = `Login fehlgeschlagen: ${e?.code || "unknown"}\n${e?.message || ""}`;
-    }
-}
-
-function toggleUserMenu() {
-    const actions = document.getElementById("user-actions");
-    if (!actions) return;
-    actions.classList.toggle("hidden");
-}
-window.toggleUserMenu = toggleUserMenu;
-
-
-async function logout() {
-    try {
-        await clearUploadedFilesFromStorage();
-        await signOut(auth);
-
-        currentUser = null;
-
-        // Timer stoppen + Anzeige zurücksetzen
-        clearInterval(logoutTimer);
-        remaining = 600;
-        const t = document.getElementById("timer");
-        if (t) t.innerText = "Logout in: 10:00";
-
-        // Admin-Button ausblenden
-        updateAdminUI_();
-
-        // optional: Login-Felder leeren
-        loginPass.value = "";
-        // loginUser.value = ""; // nur wenn du auch die Mail leeren willst
-
-        const info = document.getElementById("login-info");
-        if (info) info.innerText = "";
-
-        showPage("page-login");
-        loginError.innerText = "Erfolgreich abgemeldet.";
-    } catch (e) {
-        console.error(e);
-        alert("Abmelden fehlgeschlagen");
-    }
-}
-
-async function forgotPassword() {
-    const email = loginUser.value.trim();
-    if (!email) {
-        loginError.innerText = "Bitte E-Mail eingeben.";
-        return;
-    }
-    try {
-        await sendPasswordResetEmail(auth, email);
-        loginError.innerText = "Reset-Link wurde per E-Mail gesendet. Schauen Sie auch in Ihrem Spam-Ordner nach.";
-    } catch (e) {
-        loginError.innerText = "Reset-Mail konnte nicht gesendet werden.";
-    }
-}
-
-function goToChange() {
-    if (!auth.currentUser) {
-        loginError.innerText = "Bitte erst anmelden.";
-        return;
-    }
-    showPage("page-change");
-}
-
-async function savePassword() {
-    const n1 = newPass1.value;
-    const n2 = newPass2.value;
-
-    if (!n1 || !n2) {
-        changeError.innerText = "Bitte alle Felder ausfüllen.";
-        return;
-    }
-    if (n1 !== n2) {
-        changeError.innerText = "Neue Passwörter stimmen nicht überein.";
-        return;
-    }
-    if (!auth.currentUser) {
-        changeError.innerText = "Nicht eingeloggt.";
-        return;
-    }
-
-    try {
-        await updatePassword(auth.currentUser, n1);
-        changeError.innerText = "";
-        alert("Passwort geändert.");
-        showPage("page-3");
-    } catch (e) {
-        changeError.innerText = "Passwort konnte nicht geändert werden (ggf. neu einloggen).";
-    }
-}
-
-async function exportLoginLog() {
-    const isAdmin = isAdminUser();
-
-    if (!isAdmin) {
-        alert("Keine Berechtigung.");
-        return;
-    }
-
-    const { getDocs, query, orderBy } = await import(
-        "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js"
-    );
-
-    const q = query(collection(db, "loginLogs"), orderBy("time", "desc"));
-    const snap = await getDocs(q);
-
-    // -----------------------------
-    // LOGBUCH - NUR FÜR ADMIN
-    // -----------------------------
-
-    let csv = "time;email;event\n";
-    snap.forEach(d => {
-        const x = d.data();
-        const time = x.time?.toDate ? x.time.toDate().toISOString() : "";
-        csv += `${time};${x.email || ""};${x.event || ""}\n`;
-    });
-
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "login-log.csv";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-}
-window.exportLoginLog = exportLoginLog;
-
-// -----------------------------
-// Admin-Freigabe + Mail auslösen (ohne Backend)
-// -----------------------------
-
-async function loadPendingUsers() {
-    const isAdmin = isAdminUser();
-
-    if (!isAdmin) {
-        alert("Keine Berechtigung.");
-        return;
-    }
-
-    const q = query(collection(db, "users"), where("approved", "==", false));
-    const snap = await getDocs(q);
-
-    const list = [];
-    snap.forEach(d => list.push({ uid: d.id, ...d.data() }));
-    return list;
-}
-
-async function approveUser(uid, email) {
-    const isAdmin = isAdminUser();
-
-    if (!isAdmin) {
-        alert("Keine Berechtigung.");
-        return;
-    }
-
-    // ✅ udoc holen
-    const uref = doc(db, "users", uid);
-    const udoc = await getDoc(uref);
-
-    // ✅ schon freigegeben?
-    if (udoc.exists() && udoc.data().approved === true) {
-        alert("User ist bereits freigegeben.");
-        return;
-    }
-
-    await updateDoc(uref, {
-        approved: true,
-        approvedAt: serverTimestamp(),
-        approvedBy: auth.currentUser.email
-    });
-
-    await sendPasswordResetEmail(auth, email);
-
-    alert("Freigegeben. Passwort-Reset-Mail wurde gesendet.");
-    if (typeof loadAdminPage === "function") loadAdminPage();
-}
-
-window.loadPendingUsers = loadPendingUsers;
-window.approveUser = approveUser;
-
-
-// -----------------------------
-// LOGBUCH - NUR FÜR ADMIN
-// -----------------------------
-
-
-
-function updateAdminUI_() {
-    const isAdmin = isAdminUser();
-
-    const btn = document.getElementById("btnExportLog");
-    if (btn) btn.classList.toggle("hidden", !isAdmin);
-
-    const btnAdmin = document.getElementById("btnAdmin");
-    if (btnAdmin) btnAdmin.classList.toggle("hidden", !isAdmin);
-}
-
-// -----------------------------
-// ADMIN-SEITE: offene Registrierungen anzeigen
-// -----------------------------
-
-async function loadAdminPage() {
-    const box = document.getElementById("admin-registrations");
-    if (!box) return;
-
-    const isAdmin = isAdminUser();
-
-    if (!isAdmin) {
-        alert("Keine Berechtigung.");
-        return;
-    }
-
-    box.innerHTML = "<div>Lade…</div>";
-
-    try {
-        const q = query(collection(db, "users"), where("approved", "==", false));
-        const snap = await getDocs(q);
-
-        if (snap.empty) {
-            box.innerHTML = "<div>Keine offenen Registrierungen 🎉</div>";
-            return;
-        }
-
-        let html = "";
-        snap.forEach(d => {
-            const u = d.data();
-            html += `
-        <div style="border:1px solid #ddd; padding:10px; margin:10px 0; border-radius:8px;">
-          <div><strong>Firma:</strong> ${u.firma || ""}</div>
-          <div><strong>Ansprechpartner:</strong> ${u.name || u.ansprechpartner || ""}</div>
-          <div><strong>Adresse:</strong> ${u.strasse || ""} ${u.hausnr || ""}, ${u.plz || ""} ${u.ort || ""}</div>
-          <div><strong>E-Mail:</strong> ${u.email || ""}</div>
-          <div><strong>Telefon:</strong> ${u.tel || ""}</div>
-
-          <div style="margin-top:8px;">
-            <button onclick="approveUser('${d.id}','${(u.email || "").replace(/'/g, "\\'")}')">
-              Freigeben + Passwort-Link senden
-            </button>
-          </div>
-        </div>
-      `;
-        });
-
-        box.innerHTML = html;
-
-    } catch (e) {
-        console.error("loadAdminPage Fehler:", e);
-        box.innerHTML = "<div>Fehler beim Laden der Registrierungen.</div>";
-    }
-}
-
-window.loadAdminPage = loadAdminPage;
-
-// -----------------------------
-//  LOGOUT-TIMER
-// -----------------------------
-
-function startTimer() {
-    remaining = 600;
-    clearInterval(logoutTimer);
-    logoutTimer = setInterval(() => {
-        remaining--;
-        let m = Math.floor(remaining / 60);
-        let s = remaining % 60;
-        timer.innerText = `Logout in: ${m}:${s.toString().padStart(2, "0")}`;
-        if (remaining <= 0) {
-            alert("Automatisch ausgeloggt.");
-            location.reload();
-        }
-    }, 1000);
 }
 
 // -----------------------------
@@ -995,10 +500,10 @@ async function handleFileUpload(event) {
     event.target.value = "";
 
     setTimeout(() => {
-    progressBar.style.width = "0%";
-    progressText.innerText = "0%";
-    progressContainer.style.display = "none";
-}, 1000);
+        progressBar.style.width = "0%";
+        progressText.innerText = "0%";
+        progressContainer.style.display = "none";
+    }, 1000);
 }
 
 function getUploadedFilesTotalSize() {
@@ -1007,7 +512,7 @@ function getUploadedFilesTotalSize() {
 
 
 
-// SEITE 5 – Anzeie der Dateien
+// SEITE 5 – Anzeige der Dateien
 
 function renderFileList() {
     const container = document.getElementById("file-list");
@@ -1082,14 +587,8 @@ async function clearUploadedFilesFromStorage() {
 window.clearUploadedFilesFromStorage = clearUploadedFilesFromStorage
 
 // -----------------------------
-// SEITE 40 – Ausgabeseite Kostenvoranschlag / Anfrage
+// SEITE 40 – Ausgabeseite Anfrage
 // -----------------------------
-
-function isPreisZeile(colD) {
-    if (!colD) return false;
-    const p = parseFloat(String(colD).replace(",", "."));
-    return !isNaN(p);
-}
 
 function renderHinweisLine(colA, colB) {
     const text = (colB || "").trim();
@@ -1102,74 +601,6 @@ function renderHinweisLine(colA, colB) {
     // “Beschreibungstext”-Zeilen (no-price)
     return `<div class="hinweis-row">${text}</div>`;
 }
-
-/**
- * Extrahiert Textblöcke (Titel/Untertitel/Zwischentitel + no-price-Beschreibungen)
- * so, dass ein Block NUR dann ausgegeben wird, wenn darunter (bis zum nächsten Block)
- * mindestens eine Artikelposition Menge > 0 hat.
- */
-function extractTriggeredTextBlocks(lines, dataObj) {
-    const out = [];
-
-    let pendingHeaderParts = [];      // sammelt Textzeilen bis zur ersten Preiszeile (oder bis zum nächsten Block)
-    let sectionHeaderHtml = "";       // “Header” für die aktuelle Preis-Sektion
-    let inSection = false;
-    let sectionHasQty = false;
-
-    function flushSectionIfNeeded() {
-        if (inSection && sectionHasQty && sectionHeaderHtml.trim()) {
-            out.push(sectionHeaderHtml);
-        }
-    }
-
-    for (let index = 0; index < lines.length; index++) {
-        const line = lines[index];
-        if (!line || !line.trim()) continue;
-
-        const cols = line.split(";");
-        const colA = (cols[0] || "").trim();
-        const colB = (cols[1] || "").trim();
-        const colD = (cols[3] || "").trim();
-
-        const istTitelZeile = (colA === "Titel" || colA === "Untertitel" || colA === "Zwischentitel");
-        const preisVorhanden = isPreisZeile(colD);
-
-        // TEXT-ZEILE (Titel/Untertitel/Zwischentitel oder "no-price"-Beschreibung)
-        if (istTitelZeile || !preisVorhanden) {
-            // Wenn wir gerade in einer Preis-Sektion waren und jetzt ein neuer Textblock beginnt:
-            if (inSection) {
-                flushSectionIfNeeded();
-                inSection = false;
-                sectionHasQty = false;
-                sectionHeaderHtml = "";
-                pendingHeaderParts = [];
-            }
-
-            const html = renderHinweisLine(colA, colB);
-            if (html) pendingHeaderParts.push(html);
-            continue;
-        }
-
-        // PREIS-ZEILE
-        const menge = parseFloat((dataObj[index] ?? 0)) || 0;
-
-        // Start einer neuen Preis-Sektion: der bis dahin gesammelte Textblock ist der “Header”
-        if (!inSection) {
-            inSection = true;
-            sectionHasQty = false;
-            sectionHeaderHtml = pendingHeaderParts.join("");
-            pendingHeaderParts = [];
-        }
-
-        if (menge > 0) sectionHasQty = true;
-    }
-
-    // Letzte Sektion am Ende flushen
-    flushSectionIfNeeded();
-
-    return out.join("");
-}
-
 
 async function loadPage40() {
     if (!isLoggedIn()) return;
@@ -1271,8 +702,6 @@ async function loadPage40() {
 
     let gesamt = 0;
 
-
-
     let seitenHinweiseHtml = "";
     let firstHinweisBlock = true;
 
@@ -1329,71 +758,6 @@ async function loadPage40() {
             seitenHinweiseContainer.innerHTML = seitenHinweiseHtml;
         });
     }
-
-
-    refreshRabattDisplays();
-
-}
-
-// -----------------------------
-// direktZumAngebot (Button)
-// -----------------------------
-
-function direktZumAngebot() {
-
-    const ids = [
-        "pj-number", "shk-name", "shk-contact",
-        "shk-email", "shk-phone", "site-address", "execution-date", "offer-date", "estrich", "bodenbelag",
-        "systemmarke", "system", "rohrtyp1", "rohrtyp2", "dämmung", "wärmeleitgruppe1", "wärmeleitgruppe2", "aufbauhöhe", "unbeheizt",
-        "heizkreisverteiler", "besichtigung", "schnellauslegung", "berechnung", "heizlastberechnung"
-    ];
-
-    const alleAusgefüllt = ids.every(id => {
-        const val = document.getElementById(id)?.value?.trim();
-        return val && val.length > 0;
-    });
-    if (alleAusgefüllt) {
-        savePage5Data();
-        localStorage.setItem("angebotTyp", "anfrage");
-        showPage("page-40");
-    } else {
-        localStorage.setItem("angebotTyp", "kv");
-        showPage("page-41");
-    }
-}
-
-// -----------------------------
-// SEITE 40 – printPage - (Button "Drucken / als PDF speichern")
-// -----------------------------
-
-function printPage40() {
-    window.print();
-}
-
-// -----------------------------
-// SEITE 40 – sendMail - (Button "Als Text-Mail versenden")
-// -----------------------------
-
-function sendMailPage40() {
-    if (!isLoggedIn()) return;
-
-    const angebotTyp = localStorage.getItem("angebotTyp") || "kv";
-
-    let subject = "";
-    let mailAdresse = "";
-
-    if (angebotTyp === "anfrage") {
-        subject = "Anfrage NDF GmbH";
-        mailAdresse = "info@ndf-gmbh.de";
-    } else {
-        subject = `Kostenvoranschlag Peter Jensen - NDF - ${new Date().toLocaleDateString("de-DE")}`;
-        mailAdresse = "";
-    }
-
-    const body = encodeURIComponent(document.getElementById("page-40").innerText);
-
-    window.location.href =
-        `mailto:${mailAdresse}?subject=${encodeURIComponent(subject)}&body=${body}`;
 }
 
 // -----------------------------
@@ -1447,23 +811,6 @@ async function clearInputs() {
 }
 
 window.clearInputs = clearInputs
-
-// -----------------------------
-// Spaltenüberschriften
-// -----------------------------
-
-function renderTableHeader() {
-    return `
-    <div class="row table-header">
-      <div></div>
-      <div>Beschreibung</div>
-      <div>Einheit</div>
-      <div style="text-align:center;">Menge</div>
-      <div style="text-align:right;">Preis / Einheit</div>
-      <div style="text-align:right;">Positionsergebnis</div>
-    </div>
-  `;
-}
 
 // -----------------------------
 // Blob - Button - PDF download / teilen 
@@ -1784,18 +1131,9 @@ document.body.addEventListener("keydown", () => remaining = 600);
 // Funktionen für HTML global verfügbar machen
 // -----------------------------
 
-window.login = login;
-window.forgotPassword = forgotPassword;
-window.savePassword = savePassword;
-window.exportLoginLog = exportLoginLog;
 window.showPage = showPage;
 window.clearInputs = clearInputs;
-window.goToChange = goToChange;
-window.logout = logout;
 window.submitPage5 = submitPage5;
-window.direktZumAngebot = direktZumAngebot;
-window.printPage40 = printPage40;
-window.sendMailPage40 = sendMailPage40;
 window.savePage5Data = savePage5Data;
 window.loadPage40 = loadPage40;
 window.clearInputs = clearInputs;

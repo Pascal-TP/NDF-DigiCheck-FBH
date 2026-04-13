@@ -22,65 +22,22 @@
     <div id="app" class="hidden">
         <img src="logo.png" class="logo">
 
-        <!-- Countdown -->
         <div id="release-info">Release: V1.0.1</div>
-        <div id="timer">Logout in: 10:00</div>
-
-        <!-- NEU: Angemeldet als -->
-        <div id="login-info" onclick="toggleUserMenu()"></div>
-
-        <div id="user-actions" class="hidden">
-            <select id="user-action-select" onchange="handleUserAction(this.value)">
-                <option value="">Aktion auswählen…</option>
-
-                <optgroup label="Aktionen">
-                    <option value="clear">Eingaben löschen</option>
-                    <option value="changePw">Passwort ändern</option>
-                    <option value="logout">⏻ Abmelden</option>
-                </optgroup>
-
-                <option value="nav:page-5">➡️ FBH-Checkliste</option>
-                <option value="nav:page-34">➡️ Downloadbereich</option>
-
-            </select>
-        </div>
 
 
         <!-- SEITE 0: STARTSEITE -->
         <div class="page active" id="page-start">
 
             <div class="start-slogan">
-                Fußbodenheizung-Montage<br><br>
-                ...von Aufmaß bis Zeitmanagement...
-            </div>
-        </div>
-
-        <!-- SEITE 1: LOGIN -->
-        <div class="page" id="page-login">
-            <h2>Login</h2>
-
-            <input id="loginUser" type="email" placeholder="E-Mail">
-            <input id="loginPass" type="password" placeholder="Passwort">
-
-            <div class="error" id="loginError"></div>
-
-            <div class="ack-row">
-                <label class="ack-label">
-                    <input type="checkbox" id="chkPrivacyAck">
-                    <span>Ich habe die Datenschutzerklärung und allgemeinen Hinweise zur Kenntnis genommen.</span>
-                </label>
+                Die digitale Checkliste...<br><br>
+                ...für ein qualifiziertes Angebot.
             </div>
 
-            <button id="btnLogin" onclick="login()">Anmelden</button>
-            <button onclick="forgotPassword()">Passwort vergessen</button><br><br>
 
-            <p>(Auf dem Smartphone genießen Sie die optimale Ansicht im Querformat.)</p>
-            <br><br>
-            <p><strong>Noch keine Login-Daten?</strong><br>
-                <button onclick="showPage('page-register')">Hier registrieren</button>
-                <br>
-                <br>
-                <!-- Buttons/Links zu Datenschutz & Impressum -->
+            <button onclick="showPage('page-5')">FBH-Checkliste</button><br><br>
+            <button onclick="showPage('page-34')">Downloadbereich</button><br><br>
+
+            <!-- Buttons/Links zu Datenschutz & Impressum -->
             <div class="legal-links">
                 <a href="#" class="legal-link"
                     onclick="showPage('page-privacy'); return false;">Datenschutzerklärung</a>
@@ -88,59 +45,6 @@
                 <a href="#" class="legal-link" onclick="showPage('page-imprint'); return false;">Impressum</a>
                 <span class="legal-sep">|</span>
                 <a href="#" class="legal-link" onclick="showPage('page-hinweis'); return false;">Allgemeine Hinweise</a>
-            </div>
-        </div>
-
-        <!-- SEITE 1.1 Registrierung:  -->
-        <div id="page-register" class="page">
-            <h2>Registrierung</h2>
-
-            <input id="reg-firma" placeholder="Firmenname *">
-            <input id="reg-name" placeholder="Name Ansprechpartner *">
-            <input id="reg-strasse" placeholder="Straße *">
-            <input id="reg-hausnr" placeholder="Hausnummer *">
-            <input id="reg-plz" placeholder="PLZ *">
-            <input id="reg-ort" placeholder="Ort *">
-            <input id="reg-email" placeholder="E-Mail-Adresse *">
-            <input id="reg-tel" placeholder="Telefonnummer *">
-
-            <div id="reg-error" style="color:red; margin-top:8px;"></div>
-            <div id="reg-info" style="color:green; margin-top:8px;"></div><br>
-
-            <p>Wir prüfen Ihre Angaben und Sie erhalten innerhalb<br>von 24h eine System-E-Mail für Ihre
-                Passwortvergabe.<br>(Schauen Sie auch in Ihrem Spam-Ordner.)</p>
-            <br>
-
-            <div class="ack-row">
-                <label class="ack-label">
-                    <input type="checkbox" id="chkPrivacyAck2">
-                    <span>Ich habe die Datenschutzerklärung zur Kenntnis genommen.</span>
-                </label>
-            </div>
-
-            <button id="btnRegisterSend" onclick="registerRequest()">Registrierung absenden</button>
-            <button type="button" onclick="showPage('page-login')">Zurück zum Login</button>
-            <br>
-            <br>
-            <div class="legal-links">
-                <a href="#" class="legal-link"
-                    onclick="showPage('page-privacy'); return false;">Datenschutzerklärung</a>
-                <span class="legal-sep">|</span>
-                <a href="#" class="legal-link" onclick="showPage('page-imprint'); return false;">Impressum</a>
-            </div>
-        </div>
-
-        <!-- SEITE 1.1 Registrierung:  -->
-        <div id="page-admin" class="page">
-            <h2>Adminbereich</h2>
-
-            <div style="margin: 10px 0;">
-                <button onclick="showPage('page-3')">← Zurück</button>
-            </div>
-
-            <h3>Registrierungen (wartend)</h3>
-            <div id="admin-registrations" class="box">
-                <div>Lade Daten…</div>
             </div>
         </div>
 
@@ -182,7 +86,7 @@
             </div>
 
             <div class="button-bar">
-                <button onclick="showPage('page-login')">Zurück zum Login</button>
+                <button onclick="showPage('page-start')">Zurück zum Login</button>
             </div>
         </div>
 
@@ -284,7 +188,7 @@
 
 
             <div class="button-bar">
-                <button onclick="showPage('page-login')">Zurück zum Login</button>
+                <button onclick="showPage('page-start')">Zurück zum Login</button>
             </div>
         </div>
 
@@ -335,40 +239,8 @@
 
 
             <div class="button-bar">
-                <button onclick="showPage('page-login')">Zurück zum Login</button>
+                <button onclick="showPage('page-start')">Zurück zum Login</button>
             </div>
-        </div>
-
-        <!-- SEITE 2: PASSWORT ÄNDERN -->
-        <div class="page" id="page-change">
-            <h2>Passwort ändern</h2>
-
-            <input id="oldPass" type="password" placeholder="Altes Passwort">
-            <input id="newPass1" type="password" placeholder="Neues Passwort">
-            <input id="newPass2" type="password" placeholder="Neues Passwort wiederholen"><br><br>
-
-            <p><strong>Passwortrichtlinie:</strong> mind. 8 Zeichen, Großbuchstaben, Kleinbuchstaben, Sonderzeichen,
-                numerische Zeichen</p><br><br>
-
-            <div class="error" id="changeError"></div>
-
-            <button onclick="savePassword()">Speichern</button>
-            <button onclick="showPage('page-3')">Abbrechen</button>
-        </div>
-
-        <!-- SEITE 3: AUSWAHL -->
-        <div class="page" id="page-3">
-            <h2>Bitte auswählen</h2>
-
-            <button onclick="showPage('page-34')">Downloadbereich</button>
-            <button onclick="showPage('page-5')">FBH-Checkliste</button>
-            <br>
-            <br>
-            <br>
-            <button id="btnExportLog" class="hidden" onclick="exportLoginLog()">Login-Log herunterladen</button>
-            <button id="btnAdmin" class="hidden"
-                onclick="showPage('page-admin'); loadAdminPage();">Adminbereich</button>
-
         </div>
 
         <!-- SEITE 5: ANFRAGE AN NDF -->
@@ -641,7 +513,8 @@
 
             <div id="upload-progress-container" style=" display:none; margin:15px auto; max-width:250px; ">
                 <div style="background:#eee; border-radius:6px; overflow:hidden;">
-                    <div id="upload-progress-bar" style="width:0%; height:20px; background:#4caf50; transition:width 0.2s; "></div>
+                    <div id="upload-progress-bar"
+                        style="width:0%; height:20px; background:#4caf50; transition:width 0.2s; "></div>
                 </div>
                 <div id="upload-progress-text" style="margin-top:5px; font-size:14px;">
                     0%
@@ -677,7 +550,7 @@
             </div>
         </div>
 
-        <!-- SEITE 40: KOSTENVORANSCHLAG / ANFRAGE-->
+        <!-- SEITE 40: ANFRAGE-->
         <div class="page" id="page-40">
             <h2 id="page40-title">Anfrage an NDF</h2>
 
@@ -699,11 +572,9 @@
 
             <!-- Buttons-->
             <div class="button-bar">
-                <button onclick="showPage('page-3')">Zurück zum Hauptmenü</button>
-                <button onclick="sendMailPage40()">Senden als Text-Mail</button><br>
                 <button onclick="sendRequestPdfByEmail()">Anfrage absenden</button>
-                <button onclick="printPage40()">Drucken / speichern als PDF</button>
-                <button onclick="sharePdf()">PDF download</button>
+                <button onclick="sharePdf()">PDF download</button><br>
+                <button onclick="showPage('page-start')">Zurück zur Startseite</button>
                 <!--  <button type="button" class="btn" onclick="exportCsvPage40()">CSV-Export</button>-->
             </div>
         </div>
@@ -758,12 +629,9 @@
         <a href="Allgemeine Hinweise.pdf" target="_blank">
             Info - Allgemeine Hinweise
         </a><br><br>
-
-
-
         <br><br>
 
-        <button onclick="showPage('page-3')">Zurück zum Hauptmenü</button>
+        <button onclick="showPage('page-start')">Zurück zur Startseite</button>
     </div>
 
     <!-- Hinweisfenster -->
