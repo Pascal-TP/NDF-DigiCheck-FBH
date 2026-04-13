@@ -4,8 +4,7 @@ document.documentElement.classList.add("js");
 // Hinweistexte in eigenen Hinweisfenster
 // -----------------------------
 
-function showHinweis(text) {
-
+function showHinweis(text, onOk = null) {
     const modal = document.getElementById("hinweisModal");
     const textBox = document.getElementById("hinweisText");
     const okBtn = document.getElementById("hinweisOk");
@@ -13,8 +12,14 @@ function showHinweis(text) {
 
     textBox.innerText = text;
 
-    cancelBtn.style.display = "none";   // Abbrechen ausblenden
-    okBtn.onclick = closeHinweis;
+    cancelBtn.style.display = "none";
+
+    okBtn.onclick = async () => {
+        closeHinweis();
+        if (typeof onOk === "function") {
+            await onOk();
+        }
+    };
 
     modal.style.display = "block";
 }
@@ -50,7 +55,6 @@ window.showHinweis = showHinweis;
 window.closeHinweis = closeHinweis;
 window.showConfirm = showConfirm;
 
-
 // -----------------------------
 // Bei Reload (F5) Eingabefelder auf 0 setzen
 // -----------------------------
@@ -74,9 +78,6 @@ function resetStoredInputsOnReload() {
 
     keysToRemove.forEach(k => localStorage.removeItem(k));
 }
-
-
-
 
 // -----------------------------
 // Firebase - E-Mail+Passwort
@@ -137,27 +138,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     renderFileList();
 
-    const startPage = location.hash.replace("#", "") || "page-start";
-    showPage(startPage, true);
-});
-
-
-
-
-// -----------------------------
-// allgemeine Hinweise-Checkbox Gate (Login + Registrierung)
-// (ohne Persistenz: nach Reload wieder leer, Haken frei entfernbar)
-// -----------------------------
-
-
-
-document.addEventListener("DOMContentLoaded", () => {
-    const fileInput = document.getElementById("request-files");
-    if (!fileInput) return;
-
-    fileInput.addEventListener("change", handleFileUpload);
-
-    renderFileList();
+    history.replaceState({ page: "page-start" }, "", "#page-start");
+    showPage("page-start", true);
 });
 
 // -----------------------------
@@ -406,8 +388,6 @@ async function handleFileUpload(event) {
 function getUploadedFilesTotalSize() {
     return uploadedFiles.reduce((sum, file) => sum + (file.size || 0), 0);
 }
-
-
 
 // SEITE 5 – Anzeige der Dateien
 
@@ -661,49 +641,31 @@ async function loadPage40() {
 // -----------------------------
 
 async function clearInputs() {
-
     await clearUploadedFilesFromStorage();
 
-    localStorage.clear();
     localStorage.removeItem("page5Data");
     localStorage.removeItem("angebotTyp");
     localStorage.removeItem("uploadedFiles");
 
+    uploadedFiles = [];
 
-    // Eingabefelder im DOM leeren
-    document.querySelectorAll("input").forEach(inp => inp.value = "");
-
-    const chkDetail = document.getElementById("chkDetail");
-    if (chkDetail) chkDetail.checked = false;
-
-    // clearPage5DetailFields();
-    updatePage5DetailUI();
+    document.querySelectorAll("#page-5 input").forEach(inp => inp.value = "");
+    document.querySelectorAll("#page-5 textarea").forEach(t => t.value = "");
+    document.querySelectorAll("#page-5 select").forEach(sel => sel.selectedIndex = 0);
 
     const page5Error = document.getElementById("page5-error");
     if (page5Error) page5Error.innerText = "";
 
-    // Dynamische Inhalte leeren (damit nichts „stehen bleibt“)
-    const idsToClear = [
-        "page5Data"
+    const anfrageContent = document.getElementById("anfrage-daten-content");
+    if (anfrageContent) anfrageContent.innerHTML = "";
 
-    ];
-    idsToClear.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.innerHTML = "";
+    const uploadedFilesSummary = document.getElementById("uploaded-files-summary");
+    if (uploadedFilesSummary) uploadedFilesSummary.innerHTML = "";
 
-        document.querySelectorAll("select").forEach(sel => sel.selectedIndex = 0);
+    const uploadedFilesSection = document.getElementById("uploaded-files-section");
+    if (uploadedFilesSection) uploadedFilesSection.style.display = "none";
 
-        const chkDetail = document.getElementById("chkDetail");
-        if (chkDetail) chkDetail.checked = false;
-
-        if (typeof updatePage5DetailUI === "function") {
-            updatePage5DetailUI();
-        }
-
-    });
-
-    updateAdminUI_();
-
+    renderFileList();
 }
 
 window.clearInputs = clearInputs
@@ -970,7 +932,11 @@ async function sendRequestPdfByEmail() {
             attachmentFiles: uploadedFiles
         });
 
-        showHinweis("Die Anfrage wurde erfolgreich per E-Mail versendet.");
+        showHinweis("Anfrage erfolgreich versendet.", async () => {
+            await clearInputs();
+            history.replaceState({ page: "page-start" }, "", "#page-start");
+            location.reload();
+        });
     } catch (err) {
         console.error("sendRequestPdfByEmail Fehler:", err);
         showHinweis("Die Anfrage konnte nicht versendet werden:\n" + (err?.message || err));
