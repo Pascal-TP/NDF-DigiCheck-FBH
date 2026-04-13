@@ -314,13 +314,6 @@ function savePage5Data() {
 // SEITE 5 – Uplad-Funktion
 // -----------------------------
 
-function getRequesterKey() {
-    const mail =
-        (document.getElementById("shk-email")?.value || "").trim().toLowerCase();
-
-    return (mail || "unknown").replace(/[^a-z0-9._-]/g, "_");
-}
-
 function getRequesterEmail() {
     return (document.getElementById("shk-email")?.value || "").trim().toLowerCase();
 }
@@ -501,8 +494,7 @@ function renderHinweisLine(colA, colB) {
 }
 
 async function loadPage40() {
-    if (!isLoggedIn()) return;
-
+    
     const angebotTyp = localStorage.getItem("angebotTyp") || "kv";
     const titleEl = document.getElementById("page40-title");
     if (titleEl) {
